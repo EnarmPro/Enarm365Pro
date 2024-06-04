@@ -122,7 +122,7 @@ def simulador_free(request):
     return render(request, template_name, context)
 
 def simulador_Personalizado(request):
-    template_name = 'Simulator/simulator_Personalizado.html'
+    template_name = 'Simulator/simulator_personalizado.html'
     if request.method == "POST":
         tipo_tiempo = request.POST.get('tiempo')
         preguntas_cantidad = request.POST.get('numero')
@@ -167,7 +167,7 @@ def simulador_Personalizado(request):
             preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
             # Mezclar aleatoriamente las preguntas con sus respuestas
-            preguntas_con_respuestas_mezcladas
+            random.shuffle(preguntas_con_respuestas_mezcladas)
 
         context = {
                 'userName': userName,
