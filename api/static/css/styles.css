@@ -10,6 +10,10 @@ body.backlogin{
   background-image: url('../img/fondos/LoginBackground.webp') ;
   background-size: cover;
 }
+body.backregister{
+  background-image: url('../img/fondos/passforgot.webp') ;
+  background-size: cover;
+}
 .logincontainer {
  
   display: flex;
