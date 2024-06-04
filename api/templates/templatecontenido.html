@@ -94,7 +94,7 @@
                     </button>
 
                     <!-- Navbar Brand -->
-                    <a href="index.html"
+                    <a href=""
                        class="navbar-brand mr-16pt d-lg-none">
                         <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
                             <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
@@ -177,7 +177,7 @@
                     </form>
                 </div>
 
-                <a href="index.html"class="sidebar-brand ">
+                <a href=""class="sidebar-brand ">
                     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
                         <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
                          class="img-fluid"alt="logo" /></span>
@@ -186,7 +186,7 @@
                     <span>ENARM365</span>
                 </a>
 
-                <div class="sidebar-heading">Studiante</div>
+                <div class="sidebar-heading">Estudiante</div>
                 <ul class="sidebar-menu">
 
                     <li class="sidebar-menu-item active">
@@ -219,21 +219,21 @@
                     </li>
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
-                           href="help.html">
+                           href="">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
                             <span class="sidebar-menu-text">Help</span>
                         </a>
                     </li>
                     
                 </ul>
-                <div class="sidebar-heading">Instructor</div>
+                <div class="sidebar-heading">Dashboard</div>
                 <ul class="sidebar-menu">
 
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
                            href="{% url 'dashboard' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
-                            <span class="sidebar-menu-text">Instructor Dashboard</span>
+                            <span class="sidebar-menu-text">Dashboard</span>
                         </a>
                     </li>
             
@@ -257,79 +257,41 @@
                             id="account_menu">
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
-                                   href="pricing.html">
+                                   href="">
                                     <span class="sidebar-menu-text">Pricing</span>
                                 </a>
                             </li>
+                            
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
-                                   href="login.html">
-                                    <span class="sidebar-menu-text">Login</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="register.html">
-                                    <span class="sidebar-menu-text">Signup</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="signup-payment.html">
+                                   href="">
                                     <span class="sidebar-menu-text">Payment</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="resetpassword.html">
-                                    <span class="sidebar-menu-text">Reset Password</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="forgotpassword.html">
-                                    <span class="sidebar-menu-text">Change Password</span>
-                                </a>
-                            </li>
+                            
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
                                    href="{% url 'actualizar_datos' %}">
                                     <span class="sidebar-menu-text">Edit Account</span>
                                 </a>
                             </li>
+                            
+                            
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
-                                   href="edit-account-password.html">
-                                    <span class="sidebar-menu-text">Account Password</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="billing.html">
-                                    <span class="sidebar-menu-text">Subscription</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="billing-upgrade.html">
-                                    <span class="sidebar-menu-text">Upgrade Account</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="billing-payment.html">
+                                   href="">
                                     <span class="sidebar-menu-text">Payment Information</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
-                                   href="billing-history.html">
+                                   href="">
                                     <span class="sidebar-menu-text">Payment History</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
-                                   href="billing-invoice.html">
+                                   href="">
                                     <span class="sidebar-menu-text">Invoice</span>
                                 </a>
                             </li>
@@ -346,39 +308,12 @@
                         </a>
                         <ul class="sidebar-submenu collapse sm-indent"
                             id="community_menu">
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="teachers.html">
-
-                                    <span class="sidebar-menu-text">Browse Teachers</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="student-profile.html">
-
-                                    <span class="sidebar-menu-text">Student Profile</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="teacher-profile.html">
-
-                                    <span class="sidebar-menu-text">Teacher Profile</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="blog.html">
-
-                                    <span class="sidebar-menu-text">Blog</span>
-                                </a>
-                            </li>
+                            
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
                                    href="blog-post.html">
 
-                                    <span class="sidebar-menu-text">Blog Post</span>
+                                    <span class="sidebar-menu-text">Blog</span>
                                 </a>
                             </li>
                         </ul>
