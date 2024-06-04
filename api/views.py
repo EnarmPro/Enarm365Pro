@@ -53,7 +53,7 @@ def index(request):
 
 
 def simulador_free(request):
-    template_name = 'simulator/simulator_free.html'
+    template_name = 'Simulator/simulator_free.html'
     
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:
@@ -122,7 +122,7 @@ def simulador_free(request):
     return render(request, template_name, context)
 
 def simulador_Personalizado(request):
-    template_name = 'simulator/simulator_Personalizado.html'
+    template_name = 'Simulator/simulator_Personalizado.html'
     if request.method == "POST":
         tipo_tiempo = request.POST.get('tiempo')
         preguntas_cantidad = request.POST.get('numero')
@@ -710,7 +710,7 @@ def dashboard(request):
 
 
 def simulador_diagnostico(request):
-    template_name = 'simulator/simulator_diagnostico.html'
+    template_name = 'Simulator/simulator_diagnostico.html'
     
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:

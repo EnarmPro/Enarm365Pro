@@ -224,3 +224,9 @@ a {
 .modal-header .close.modal-comentarios:hover {
     color: #000; /* Color del icono de cierre al pasar el ratón */
 }
+.image_login{
+  width: 100%;
+}
+.text_login{
+  color: #ffffff;
+}
