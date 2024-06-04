@@ -6,11 +6,13 @@ html {
 body {
   background-color: rgb(212, 212, 225);
 }
-
+body.backlogin{
+  background-image: url('../img/fondos/LoginBackground.webp') ;
+  background-size: cover;
+}
 .logincontainer {
+ 
   display: flex;
-  background-color: #F1FAEE;
-  flex-direction: column;
   /* Alinea los elementos verticalmente */
   justify-content: center;
   /* Centra los elementos verticalmente en el contenedor */
@@ -23,7 +25,7 @@ body {
 }
 
 .logologin {
-  max-width: 600px;
+  max-width: 40%;
   /* Hace que la imagen sea responsive y no sobrepase el contenedor */
   height: auto;
   /* Mantiene la proporción de la imagen al ajustar el ancho */
@@ -58,8 +60,11 @@ form {
   -moz-transition: -moz-transform 300ms, box-shadow 300ms;
   transition: transform 300ms, box-shadow 300ms;
   box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+  color: #fff;
 }
-
+form a{
+  color: darkgray;
+}
 form::before,
 form::after {
   content: "";
@@ -280,5 +285,12 @@ body.custom-background {
 
   .text_login a {
     font-size: 1em;
+  }
+  
+  .logologin {
+    max-width: 100%;
+  }
+  .login{
+    width: 80%;
   }
 }
