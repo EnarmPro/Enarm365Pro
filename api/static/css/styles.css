@@ -1,0 +1,226 @@
+html {
+  height: 100%;
+  font-family: 'Montserrat';
+}
+
+body {
+  background-color: rgb(212, 212, 225);
+}
+
+.logincontainer {
+  display: flex;
+  background-color: #F1FAEE;
+  flex-direction: column;
+  /* Alinea los elementos verticalmente */
+  justify-content: center;
+  /* Centra los elementos verticalmente en el contenedor */
+  align-items: center;
+  /* Centra los elementos horizontalmente en el contenedor */
+  height: 100vh;
+  /* 100% de la altura de la ventana del navegador */
+  width: 100%;
+  /* Se extiende a lo ancho del contenedor (usualmente el viewport) */
+}
+
+.logologin {
+  max-width: 600px;
+  /* Hace que la imagen sea responsive y no sobrepase el contenedor */
+  height: auto;
+  /* Mantiene la proporción de la imagen al ajustar el ancho */
+  margin-bottom: 400px;
+  /* Espacio entre la imagen y el formulario */
+}
+
+.logoregister {
+  max-width: 600px;
+  /* Hace que la imagen sea responsive y no sobrepase el contenedor */
+  height: auto;
+  /* Mantiene la proporción de la imagen al ajustar el ancho */
+  margin-bottom: -50px;
+  /* Espacio entre la imagen y el formulario */
+}
+
+form {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 30px 30px 30px 30px;
+  border-radius: 10px;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: -webkit-transform 300ms, box-shadow 300ms;
+  -moz-transition: -moz-transform 300ms, box-shadow 300ms;
+  transition: transform 300ms, box-shadow 300ms;
+  box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+}
+
+form::before,
+form::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-top-left-radius: 40%;
+  border-top-right-radius: 45%;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 40%;
+  z-index: -1;
+}
+
+form::before {
+  left: 40%;
+  bottom: -130%;
+  background-color: #1D3557;
+  -webkit-animation: wawes 6s infinite linear;
+  -moz-animation: wawes 6s infinite linear;
+  animation: wawes 6s infinite linear;
+}
+
+form::after {
+  left: 50%;
+  bottom: -125%;
+  background-color: #f45b69;
+  -webkit-animation: wawes 7s infinite;
+  -moz-animation: wawes 7s infinite;
+  animation: wawes 7s infinite;
+}
+
+form input,
+form select,
+form textarea {
+  font-family: "Asap", sans-serif;
+  display: block;
+  border-radius: 5px;
+  font-size: 16px;
+  background: white;
+  width: 100%;
+  border: 0;
+  padding: 10px 10px;
+  margin: 15px -10px;
+}
+
+form button {
+  font-family: "Asap", sans-serif;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  width: 80px;
+  border: 0;
+  padding: 10px 0;
+  margin-top: 10px;
+  margin-left: -5px;
+  border-radius: 5px;
+  background-color: #f45b69;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  transition: background-color 300ms;
+}
+
+form button:hover {
+  background-color: #1D3557;
+}
+
+@-webkit-keyframes wawes {
+  from {
+    -webkit-transform: rotate(0);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes wawes {
+  from {
+    -moz-transform: rotate(0);
+  }
+
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@keyframes wawes {
+  from {
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+a {
+  padding-left: 35px;
+  text-decoration: underline;
+  color: #53532e;
+  bottom: 10px;
+  font-size: 15px;
+}
+.modal-comentarios {
+  position: fixed;
+  top: 0;
+  z-index: -1100 !important;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Estilo para el fondo oscuro */
+.modal-backdrop.modal-comentarios {
+    background-color: rgba(0, 0, 0, 0.5); /* Color negro con una opacidad del 50% */
+}
+
+/* Estilo para el modal */
+.modal.modal-comentarios {
+    background-color: #ffffff; /* Color de fondo del modal */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Sombra para el modal */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilo para el título del modal */
+.modal-title.modal-comentarios {
+    color: #333; /* Color del texto del título */
+    font-weight: bold; /* Peso de la fuente del título */
+    border-bottom: 1px solid #ccc; /* Línea divisoria bajo el título */
+    padding-bottom: 10px; /* Espaciado inferior */
+    margin-bottom: 10px; /* Margen inferior */
+}
+
+/* Estilo para el cuerpo del modal */
+.modal-body.modal-comentarios {
+    color: #666; /* Color del texto del cuerpo */
+}
+
+/* Estilo para los botones del modal */
+.modal-footer.modal-comentarios {
+    background-color: #f8f9fa; /* Color de fondo del pie del modal */
+    border-top: none; /* Sin borde superior */
+}
+
+/* Estilo para el botón de cierre del modal */
+.modal-header .close.modal-comentarios {
+    color: #333; /* Color del icono de cierre */
+    font-size: 30px; /* Tamaño del icono de cierre */
+    opacity: 1; /* Opacidad completa */
+    padding: 10px; /* Espaciado interior */
+}
+
+/* Estilo para el botón de cierre del modal al pasar el ratón */
+.modal-header .close.modal-comentarios:hover {
+    color: #000; /* Color del icono de cierre al pasar el ratón */
+}

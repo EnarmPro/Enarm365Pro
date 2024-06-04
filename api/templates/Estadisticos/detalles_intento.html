@@ -1,0 +1,124 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+    {% endblock %}
+    {%block appcontenido%}
+
+    <!-- INICIA Feedback -->
+    <div class="page-section">
+        <div class="container page__container">
+            <div class="page-headline text-center">
+                <h2>Resultados Intento : {{numero_intento}} Tema: {{tema}}</h2>
+                <h5 class=" mx-auto">Preguntas correctas : {{respuestas_correctas}}</h5>
+            </div>
+
+            <div class="position-relative carousel-card p-0 mx-auto">
+                <div class="row d-block js-mdk-carousel" id="carousel-feedback">
+                    <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#carousel-feedback"
+                        role="button" data-slide="next">
+                        <span class="carousel-control-icon material-icons"
+                            aria-hidden="true">keyboard_arrow_right</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                    <div class="mdk-carousel__content">
+
+                        {% for intento in intentos %}
+                        <div class="col-12 col-md-6">
+
+                            <div class="card card-feedback card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <h4 class="text-40 text-justify mb-4">Pregunta: {{ intento.fkPregunta.nombrePregunta }}</h4>
+                                    <h5 class="text-40 mb-4">Respuesta seleccionada: <label class="text-underline">{{ intento.fkRespuesta.nombreRespuestas }}</label></h5>
+
+                                    {% if intento.es_correcta %}
+                                    <h6 class="text-70 mb-4  btn btn-success">Respuesta: Correcta</h6>
+                                    {% else %}
+                                    <p class=" mb-4 btn btn-danger">Respuesta: Incorrecta</p>
+                                    <h5 class=" mb-4 btn btn-primary ">Justificación: {{ intento.justificacion }}</h5>
+                                    {% endif %}
+                                </blockquote>
+                            </div>
+                            <div class="media ml-12pt">
+                                <div class="media-left mr-12pt">
+                                    <a href="" class="avatar avatar-sm">
+                                        <!-- <img src="../../public/images/people/110/guy-.jpg" width="40" alt="avatar" class="rounded-circle"> -->
+                                        <span class="avatar-title rounded-circle">{{forloop.counter}}</span>
+                                    </a>
+                                </div>
+                                <div class="media-body media-middle">
+                                    <a href="" class="card-title">Tema: {{ intento.fkPregunta.fkTemarios.nombreTemario }}</a>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Termina Feedback -->
+
+
+    <!-- // END Page Content /////////////////////////////////////////////////-->
+
+    {% endblock%}

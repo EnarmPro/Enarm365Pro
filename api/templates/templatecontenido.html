@@ -1,0 +1,453 @@
+{% load static %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en"
+      dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible"
+              content="IE=edge">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{%block titleapp%} ENARM 365 {% endblock%}</title>
+        <meta content="ENARM365 Mobile App" name="Todos los días contigo" />
+        <meta content="ENARM365 App" name="Lygnum" />
+
+         <!-- Flavicons -->
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+        <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+        <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+        
+
+
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+              rel="stylesheet">
+
+        <!-- Preloader -->
+        <link type="text/css"
+              href="{% static 'css/spinkit.css'%}"
+              rel="stylesheet">
+
+        <!-- Perfect Scrollbar Igual y se quita-->
+        <link type="text/css"
+              href="{% static 'css/perfect-scrollbar.css'%}"
+              rel="stylesheet">
+
+        <!-- Material Design Icons -->
+        <link type="text/css"
+              href="{% static 'css/material-icons.css'%}"
+              rel="stylesheet">
+
+        <!-- Font Awesome Icons -->
+        <link type="text/css"
+              href="{% static 'css/fontawesome.css'%}"
+              rel="stylesheet">
+
+        <!-- Preloader -->
+        <link type="text/css"
+              href="{% static 'css/preloader.css'%}"
+              rel="stylesheet">
+
+        <!-- App CSS -->
+        <link type="text/css"
+              href="{% static 'css/app.css'%}"
+              rel="stylesheet">
+
+    </head>
+
+    <body class="layout-app ">
+         <!-- Preloader Layout -->
+        <div class="preloader">
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+        </div>
+
+        <!-- Drawer Layout -->
+
+        <div class="mdk-drawer-layout js-mdk-drawer-layout"
+             data-push
+             data-responsive-width="992px">
+            <div class="mdk-drawer-layout__content page-content">
+
+                <!-- Header -->
+
+                <div class="navbar navbar-expand navbar-light border-bottom-2"
+                     id="default-navbar"
+                     data-primary>
+
+                    <!-- Navbar toggler -->
+                    <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
+                            type="button"
+                            data-toggle="sidebar">
+                        <span class="material-icons">short_text</span>
+                    </button>
+
+                    <!-- Navbar Brand -->
+                    <a href="index.html"
+                       class="navbar-brand mr-16pt d-lg-none">
+                        <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+                            <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
+                                     alt="logo"
+                                     class="img-fluid" />
+                            </span>
+
+                        </span>
+
+                        <span class="d-none d-lg-block">ENARM365</span>
+                    </a>
+
+                        {% block navegador %}
+
+                        {% endblock %}
+                    
+                    <!-- Termina Menu Superior-->
+                </div>
+                
+                <!-- // END Header -->
+
+            
+
+                <!-- Page Content /////////////////////////////////////////////////////////-->
+                 {%block appcontenido%}  
+                    
+
+
+
+
+                 {% endblock%}
+                
+                <!-- // END Page Content /////////////////////////////////////////////////-->
+
+                <!-- Footer -->
+
+                <div class="bg-white border-top-2 mt-auto">
+                    <div class="container page__container page-section d-flex flex-column">
+                        <p class="text-70 brand mb-24pt">
+                            <img class="brand-icon"
+                                 src="{%static 'img/LogoGeneralSinFondo.png'%}"
+                                 width="150" 
+                                 alt="ENARM 365"> 
+                        </p>
+                        <p class="measure-lead-max text-70-white small mr-8pt">ENARM 365 es una plataforma interactiva y elegante diseñada específicamente para el aprendizaje y la preparación de certificaciones médicas, ofreciendo una amplia gama de funcionalidades como cuestionarios personalizados, lecciones en video, paneles de control para estudiantes, gestión de currículo, seguimiento de progreso, e informes detallados,</p>
+                        <p class="mb-8pt d-flex">
+                            <a href=""
+                               class="text-70-white text-underline mr-8pt small">Terminos y Condiciones</a>
+                            <a href=""
+                               class="text-70-white text-underline small">Privacy policy</a>
+                        </p>
+                        <p class="text-70-white small mt-n1 mb-0">Made with hearth by <a href="lygnum.com.mx">Lygnum</a> @2024 &copy; All rights reserved.</p>
+                    </div>
+                </div>
+
+                <!-- // END Footer -->
+
+            </div>
+
+            <!-- // END drawer-layout__content -->
+
+            <!-- Drawer -->
+
+            <div class="mdk-drawer js-mdk-drawer"
+                 id="default-drawer">
+                <div class="mdk-drawer__content">
+                    <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
+                         data-perfect-scrollbar>
+
+                        <!-- Sidebar Content -->
+
+                   <div class="d-flex align-items-center navbar-height">
+                    <form action="index.html"
+                          class="search-form search-form--black mx-16pt pr-0 pl-16pt">
+                        <input type="text"
+                               class="form-control pl-0"
+                               placeholder="Search">
+                        <button class="btn"
+                                type="submit"><i class="material-icons">search</i></button>
+                    </form>
+                </div>
+
+                <a href="index.html"class="sidebar-brand ">
+                    <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+                        <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
+                         class="img-fluid"alt="logo" /></span>
+                    </span>
+
+                    <span>ENARM365</span>
+                </a>
+
+                <div class="sidebar-heading">Studiante</div>
+                <ul class="sidebar-menu">
+
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'index' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                            <span class="sidebar-menu-text">Home</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'mostrar_temas' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
+                            <span class="sidebar-menu-text">Simuladores</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'resultados' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
+                            <span class="sidebar-menu-text">Estadisticas</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'foro_comentarios' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
+                            <span class="sidebar-menu-text">Foro de Comentarios</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="help.html">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
+                            <span class="sidebar-menu-text">Help</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <div class="sidebar-heading">Instructor</div>
+                <ul class="sidebar-menu">
+
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'dashboard' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                            <span class="sidebar-menu-text">Instructor Dashboard</span>
+                        </a>
+                    </li>
+            
+
+                </ul>
+
+                <div class="sidebar-heading">Centro de Conexion</div>
+                <ul class="sidebar-menu">
+
+                  
+                
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           data-toggle="collapse"
+                           href="#account_menu">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
+                            Cuenta
+                            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                        </a>
+                        <ul class="sidebar-submenu collapse sm-indent"
+                            id="account_menu">
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="pricing.html">
+                                    <span class="sidebar-menu-text">Pricing</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="login.html">
+                                    <span class="sidebar-menu-text">Login</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="register.html">
+                                    <span class="sidebar-menu-text">Signup</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="signup-payment.html">
+                                    <span class="sidebar-menu-text">Payment</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="resetpassword.html">
+                                    <span class="sidebar-menu-text">Reset Password</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="forgotpassword.html">
+                                    <span class="sidebar-menu-text">Change Password</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="{% url 'actualizar_datos' %}">
+                                    <span class="sidebar-menu-text">Edit Account</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="edit-account-password.html">
+                                    <span class="sidebar-menu-text">Account Password</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="billing.html">
+                                    <span class="sidebar-menu-text">Subscription</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="billing-upgrade.html">
+                                    <span class="sidebar-menu-text">Upgrade Account</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="billing-payment.html">
+                                    <span class="sidebar-menu-text">Payment Information</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="billing-history.html">
+                                    <span class="sidebar-menu-text">Payment History</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="billing-invoice.html">
+                                    <span class="sidebar-menu-text">Invoice</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           data-toggle="collapse"
+                           href="#community_menu">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
+                            Comunidad
+                            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                        </a>
+                        <ul class="sidebar-submenu collapse sm-indent"
+                            id="community_menu">
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="teachers.html">
+
+                                    <span class="sidebar-menu-text">Browse Teachers</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="student-profile.html">
+
+                                    <span class="sidebar-menu-text">Student Profile</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="teacher-profile.html">
+
+                                    <span class="sidebar-menu-text">Teacher Profile</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="blog.html">
+
+                                    <span class="sidebar-menu-text">Blog</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
+                                   href="blog-post.html">
+
+                                    <span class="sidebar-menu-text">Blog Post</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                
+
+                <!-- // END Sidebar Content -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- // END Drawer -->
+
+        </div>
+
+        <!-- // END Drawer Layout -->
+
+        <!-- jQuery -->
+        <script src="{%static 'js/jquery.min.js'%}"></script>
+
+        <!-- Bootstrap -->
+        <script src="{%static 'js/popper.min.js'%}"></script>
+        <script src="{%static 'js/bootstrap.min.js'%}"></script>
+
+        <!-- Perfect Scrollbar -->
+        <script src="{%static 'js/perfect-scrollbar.min.js'%}"></script>
+
+        <!-- DOM Factory -->
+        <script src="{%static 'js/dom-factory.js'%}"></script>
+
+        <!-- MDK -->
+        <script src="{%static 'js/material-design-kit.js'%}"></script>
+
+        <!-- App JS -->
+        <script src="{%static 'js/app.js'%}"></script>
+
+        <!-- Preloader -->
+        <script src="{%static 'js/preloader.js'%}"></script>
+        <script src="{%static 'js/copy_paste.js'%}"></script>
+
+        {% block js%}
+        {% endblock %}
+       
+
+    </body>
+
+</html>
+{% else %}
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{%block title%} ENARM 365 {% endblock%}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" type ="text/css" href="{%static 'css/styles.css'%}"/>
+</head>
+<body>
+     <form>
+        <p>Welcome, new user. Please:</p>
+        <p> <a href="{% url 'login' %}">Login</a>  </p>
+        <p> <a href="{% url 'register' %}">Register</a> </p>
+    </form>
+</body>
+</html>
+ 
+{% endif %}

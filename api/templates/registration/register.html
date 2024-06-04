@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static%}
+
+{%block title%}Register{%endblock%}
+
+
+{%block content%}
+<div class = "logincontainer"> 
+   <form method="post" action="{%url 'register' %}" class="login">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Register</button>
+    <a href="{% url 'password_reset' %}">Already have an account?</a>
+   </form>
+</div>
+{%endblock%}

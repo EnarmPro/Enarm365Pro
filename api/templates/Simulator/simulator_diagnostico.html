@@ -1,0 +1,197 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown active">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+
+        <div class="page-separator">
+            <div class="page-separator__text">Bienvenido al Examen Diagnóstico</div>
+        </div>
+
+
+        <div class="posts-cards">
+
+            <div class="card posts-card mb-0">
+                <div class="posts-card__content d-flex align-items-center flex-wrap">
+                    <div class="avatar avatar-lg mr-3">
+                        <a href="blog-post.html"><img src="{% static 'img/LogoGeneralSinFondo.png' %}" alt="avatar"
+                                class="avatar-img rounded"></a>
+                    </div>
+                    <div class="posts-card__title flex d-flex flex-column">
+                        <a href="" class="card-title mr-3">Simulador ENARM</a>
+                        <small class="text-50">Examen Diagnóstico</small>
+                    </div>
+                    {% if not Intento %}
+                    <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                        <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                            <i class="material-icons text-primary mr-1">check_circle</i>Pro
+                        </div>
+                        <div class="mr-3 text-50 posts-card__date">
+                            <small class="btn btn-primary">Ya Realizado</small>
+                        </div>
+                        <div class="media ml-sm-auto align-items-center">
+                            <div class="media-left mr-2 avatar-group">
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <img src="{% static 'img/avatares/256_rsz_1andy-lee-642320-unsplash.jpg' %}"
+                                        alt="Avatar" class="avatar-img rounded-circle">
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <a href=""> {{userName}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                        
+                        <div class="mr-2 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                            <i class="material-icons text-success mr-1">check_circle</i>Pro
+                        </div>
+                        <div class="mr-3 text-50 posts-card__date">
+                            <small class="btn btn-success">Disponible</small>
+                        </div>
+                        <div class="media ml-sm-auto align-items-center">
+                            <div class="media-left mr-2 avatar-group">
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <img src="{% static 'img/avatares/256_rsz_1andy-lee-642320-unsplash.jpg' %}"
+                                        alt="Avatar" class="avatar-img rounded-circle">
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <a href=""> {{userName}}</a>
+                            </div>
+                            <i class="material-icons mx-16pt">timer</i>
+                            <div class="timer" id="timer">15:00</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% if Intento %}
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <h5 class="page-separator__text">Conoce tu nivel - Examen Diagnóstico</h5>
+        </div>
+        <label for="">Para las preguntas a continuación, por favor elige la mejor opción para completar</label>
+        <div class="posts-cards">
+            <div class="card" id="preguntas">
+                <div class="pregunta-actual">
+                    {% for pregunta, respuestas_mezcladas in preguntas_con_respuestas_mezcladas %}
+                    <form action="" class="formulario-gratuito pregunta" data-question-id="{{ pregunta.idPregunta }}" id="formulario-{{ pregunta.idPregunta }}">
+                        {% csrf_token %}
+                        <h5 class="title-question"><i class="material-icons text-muted-light mr-1">help_outline</i>Pregunta: {{ pregunta.nombrePregunta }}</h5>
+                        {% for respuesta in respuestas_mezcladas %}
+                            <div class="answer_type" data-radio-id="{{ pregunta.idPregunta }}">
+                                <input type="radio" id="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}" name="respuesta_{{ pregunta.idPregunta }}" value="{{ respuesta.idRespuestas }}">
+                                <label for="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}">{{ respuesta.nombreRespuestas }}</label>
+                            </div>
+                        {% endfor %}
+                        <div class="text-center mb-24pt">
+                            <input type="button" class="btn btn-primary btn-lg btn-siguiente" value="Siguiente">
+                        </div>
+                        
+                    </form>
+                    
+                    {% endfor %}
+                </div>
+                <div class="progress-bar-simulator ">
+                    <div class="progress-simulator"></div>
+                </div>
+                <p class="mx-16pt" > Total de preguntas ( {{ preguntas_con_respuestas_mezcladas|length }} )</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <h5 class="page-separator__text">Conoce tu nivel - Examen Diagnóstico</h5>
+        </div>
+        <label for="">Ya has realizado está encuesta por favor espera 45 días para que se active nuevamente</label>
+        </div>
+        </div>
+{% endif %}
+
+{% block js %}
+{% if Intento %}
+<!-- Aquí puedes agregar el atributo data-totalpreguntas a cualquier elemento HTML que desees -->
+<div id="preguntas-data" data-totalpreguntas="{{ preguntas_con_respuestas_mezcladas|length }}">
+    <!-- Contenido de las preguntas -->
+</div>
+<script src="{% static 'js/simulador-diagnostico.js'%}"></script>
+
+
+{% endif %}
+{% endblock %}
+
+{% endblock%}

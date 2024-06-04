@@ -1,0 +1,433 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+
+
+
+
+
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <!-- Termina Seccion de Simuladores -->
+            <div class="page-separator__text"><h1>Resultados</h1></div>
+
+        </div>
+        <h3>Examen - Gratuito</h3>
+        <div class="row card-group-row">
+            
+        {% for intento in intentos %}
+
+        
+        {% if  intento.fkPregunta__fkTemarios__nombreTemario == 'Gratuito'%}
+
+        
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            
+            <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                data-toggle="popover" data-trigger="click">
+                
+
+                <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                    <img src="{% static 'img/fondos/Resultados.gif' %} " alt="course">
+                    <span class="overlay__content">
+                        <span class="overlay__action d-flex flex-column text-center">
+                            <i class="material-icons icon-32pt">play_circle_outline</i>
+                            <span class="card-title text-white">Revisa tu resultados</span>
+                        </span>
+                    </span>
+                </a>
+
+                <div class="card-body flex">
+                    <div class="d-flex">
+                        <div class="flex">
+                            <a class="card-title text-primary" href=""><i class="material-icons icon-10pt">assignment</i><label for="" class="text-50 small font-weight-bold">Examen {{ intento.numeroIntento }} - Tema: {{ intento.fkPregunta__fkTemarios__nombreTemario }} {{intento.fechaContestacion}}</label></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                    
+                        <div class="col-auto d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>¡Revisa tus resultados!</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popoverContainer d-none">
+                <div class="media">
+                    <div class="media-left mr-12pt">
+                        <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Enarm 365"
+                            class="rounded">
+                    </div>
+                    <div class="media-body">
+                        <div class="card-title mb-0">Resultados</div>
+                        <p class="lh-1 mb-0">
+                            <span class="text-50 small font-weight-bold">Revisa tu progreso</span>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="my-16pt text-70">Accede y obten tu retroalimentación de cada examen.</p>
+
+                <div class="mb-16pt">
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Verifica tus resultados</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Toma notas importantes</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Recibe retroalimentación por pregunta</small></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col text-center">
+                        <a href="{% url 'detalle_intento' intento.numeroIntento intento.fkPregunta__fkTemarios__nombreTemario %}" class="btn btn-primary">Resultados</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+        <h3>Examen - Diagnostico</h3>
+        <div class="row card-group-row">
+            
+        {% for intento in intentos %}
+
+        
+        {% if  intento.fkPregunta__fkTemarios__nombreTemario == 'Diagnostico'%}
+
+        
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            
+            <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                data-toggle="popover" data-trigger="click">
+                
+
+                <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                    <img src="{% static 'img/fondos/Resultados.gif' %} " alt="course">
+                    <span class="overlay__content">
+                        <span class="overlay__action d-flex flex-column text-center">
+                            <i class="material-icons icon-32pt">play_circle_outline</i>
+                            <span class="card-title text-white">Revisa tu resultados</span>
+                        </span>
+                    </span>
+                </a>
+
+                <div class="card-body flex">
+                    <div class="d-flex">
+                        <div class="flex">
+                            <a class="card-title text-primary" href=""><i class="material-icons icon-10pt">assignment</i><label for="" class="text-50 small font-weight-bold">Examen {{ intento.numeroIntento }} - Tema: {{ intento.fkPregunta__fkTemarios__nombreTemario }} {{intento.fechaContestacion}}</label></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                    
+                        <div class="col-auto d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>¡Revisa tus resultados!</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popoverContainer d-none">
+                <div class="media">
+                    <div class="media-left mr-12pt">
+                        <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Enarm 365"
+                            class="rounded">
+                    </div>
+                    <div class="media-body">
+                        <div class="card-title mb-0">Resultados</div>
+                        <p class="lh-1 mb-0">
+                            <span class="text-50 small font-weight-bold">Revisa tu progreso</span>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="my-16pt text-70">Accede y obten tu retroalimentación de cada examen.</p>
+
+                <div class="mb-16pt">
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Verifica tus resultados</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Toma notas importantes</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Recibe retroalimentación por pregunta</small></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col text-center">
+                        <a href="{% url 'detalle_intento' intento.numeroIntento intento.fkPregunta__fkTemarios__nombreTemario %}" class="btn btn-primary">Resultados</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+        
+        <h3>Examen - Tema</h3>
+        <div class="row card-group-row">
+            
+        {% for intento in intentos %}
+
+        
+        {% if not intento.fkPregunta__fkTemarios__nombreTemario == 'Gratuito' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Diagnostico'%}
+
+        
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            
+            <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                data-toggle="popover" data-trigger="click">
+                
+
+                <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                    <img src="{% static 'img/fondos/Resultados.gif' %} " alt="course">
+                    <span class="overlay__content">
+                        <span class="overlay__action d-flex flex-column text-center">
+                            <i class="material-icons icon-32pt">play_circle_outline</i>
+                            <span class="card-title text-white">Revisa tu resultados</span>
+                        </span>
+                    </span>
+                </a>
+
+                <div class="card-body flex">
+                    <div class="d-flex">
+                        <div class="flex">
+                            <a class="card-title text-primary" href=""><i class="material-icons icon-10pt">assignment</i><label for="" class="text-50 small font-weight-bold">Examen {{ intento.numeroIntento }} - Tema: {{ intento.fkPregunta__fkTemarios__nombreTemario }} {{intento.fechaContestacion}}</label></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                    
+                        <div class="col-auto d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>¡Revisa tus resultados!</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popoverContainer d-none">
+                <div class="media">
+                    <div class="media-left mr-12pt">
+                        <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Enarm 365"
+                            class="rounded">
+                    </div>
+                    <div class="media-body">
+                        <div class="card-title mb-0">Resultados</div>
+                        <p class="lh-1 mb-0">
+                            <span class="text-50 small font-weight-bold">Revisa tu progreso</span>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="my-16pt text-70">Accede y obten tu retroalimentación de cada examen.</p>
+
+                <div class="mb-16pt">
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Verifica tus resultados</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Toma notas importantes</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Recibe retroalimentación por pregunta</small></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col text-center">
+                        <a href="{% url 'detalle_intento' intento.numeroIntento intento.fkPregunta__fkTemarios__nombreTemario %}" class="btn btn-primary">Resultados</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+        
+        <h3>Examen - Enarm</h3>
+        <div class="row card-group-row">
+            
+        {% for intento in intentos %}
+
+        
+        {% if intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 25' or intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 50' or intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 100'%}
+
+        
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            
+            <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                data-toggle="popover" data-trigger="click">
+                
+
+                <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                    <img src="{% static 'img/fondos/Resultados.gif' %} " alt="course">
+                    <span class="overlay__content">
+                        <span class="overlay__action d-flex flex-column text-center">
+                            <i class="material-icons icon-32pt">play_circle_outline</i>
+                            <span class="card-title text-white">Revisa tu resultados</span>
+                        </span>
+                    </span>
+                </a>
+
+                <div class="card-body flex">
+                    <div class="d-flex">
+                        <div class="flex">
+                            <a class="card-title text-primary" href=""><i class="material-icons icon-10pt">assignment</i><label for="" class="text-50 small font-weight-bold">Examen {{ intento.numeroIntento }} - Tema: {{ intento.fkPregunta__fkTemarios__nombreTemario }} {{intento.fechaContestacion}}</label></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                    
+                        <div class="col-auto d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>¡Revisa tus resultados!</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popoverContainer d-none">
+                <div class="media">
+                    <div class="media-left mr-12pt">
+                        <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Enarm 365"
+                            class="rounded">
+                    </div>
+                    <div class="media-body">
+                        <div class="card-title mb-0">Resultados</div>
+                        <p class="lh-1 mb-0">
+                            <span class="text-50 small font-weight-bold">Revisa tu progreso</span>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="my-16pt text-70">Accede y obten tu retroalimentación de cada examen.</p>
+
+                <div class="mb-16pt">
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Verifica tus resultados</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Toma notas importantes</small></p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                        <p class="flex text-50 lh-1 mb-0"><small>Recibe retroalimentación por pregunta</small></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col text-center">
+                        <a href="{% url 'detalle_intento' intento.numeroIntento intento.fkPregunta__fkTemarios__nombreTemario %}" class="btn btn-primary">Resultados</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+        
+    </div>
+</div>
+<!-- Termina Feedback -->
+
+
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}

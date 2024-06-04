@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static%}
+
+{%block title%}Login{%endblock%}
+
+
+{%block content%}
+<div class = "logincontainer"> 
+    <img class= "logologin" src="{%static 'img/HorizontalUnaTinta.png' %}" alt="Enarm 365 Logo">
+   <form method="post" action="{%url 'login'%}" class="login">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Login</button>
+    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+    <a href="{% url 'register' %}">Register</a>
+   </form>
+</div>
+{%endblock%}

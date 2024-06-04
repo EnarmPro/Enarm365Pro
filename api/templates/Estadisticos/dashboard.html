@@ -1,0 +1,321 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+
+
+
+
+
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <!-- Termina Seccion de Simuladores -->
+            <div class="page-separator__text"><h3>Resultados Generales ( {{user.username}} )</h3></div>
+            <h6>¡Por favor revisa tus resultados, comparalos y sigue intentandolo!</h6>
+        </div>
+        
+        <div class="row">
+            <div class="card col-12 col-md-6 col-lg-4 p-3">
+                
+                <h5> Total de pruebas realizadas</h5>
+                <h2 class="h2-style"> <img src="{% static 'img/icons/report-card.png' %}" alt="" srcset="" class="img-dash">{{ total_intentos }}</h2>
+                
+
+                
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 p-3">
+                <h5>Total de Respuestas</h5>
+                <h2 class="h2-style"> <img src="{% static 'img/icons/question.png' %}" alt="" srcset="" class="img-dash">{{ total_respuestas }}</h2>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 p-3">
+                <h5>Total de Respuestas Correctas</h5>
+                <h2 class="h2-style"> <img src="{% static 'img/icons/correct.png' %}" alt="" srcset="" class="img-dash">{{ total_correctas }}</h2>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 p-3">
+                <h5>Total de Respuestas Incorrectas</h5>
+                <h2 class="h2-style"> <img src="{% static 'img/icons/failed.png' %}" alt="" srcset="" class="img-dash">{{ total_incorrectas }}</h2>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 p-3">
+                <h5>Porcentaje de Respuestas Correctas </h5>
+                <h2 class="h2-style"> <img src="{% static 'img/icons/check-mark.png' %}" alt="" srcset="" class="img-dash">{{ porcentaje_correctas|floatformat:2 }}%</h2>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-6 p-3">
+                <h2 >Distribución por área</h2>
+                <canvas id="intentosPorTemaChart2"></canvas>
+
+            </div>
+            <div class="card col-12 col-md-6 col-lg-6 p-3">
+                <h2>Distribución en '%' de intentos por Categoría</h2>
+                <canvas id="intentosPorTemaChartPie"></canvas>
+
+            </div>
+            <div class="card col-12 p-3">
+                <h2>Preguntas contestadas por Categoría</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Total de Preguntas Contestadas</th>
+                            <th>Total Correctas</th>
+                            <th>Porcentaje Correctas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for categoria in intentos_por_categoria %}
+                            <tr>
+                                <td>{{ categoria.categoria }}</td>
+                                <td>{{ categoria.total }}</td>
+                                <td>{{ categoria.correctas }}</td>
+                                <td>{{ categoria.porcentaje_correctas|floatformat:2 }}%</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="row">
+            <div class="card col-12 col-md-6 col-lg-6">
+                <h2>Distribución de preguntas contestadas por Tema</h2>
+                <canvas id="intentosPorTemaChart"></canvas>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-6">
+                <h2>Distribución de preguntas contestadas por Tema</h2>
+                <canvas id="barrasChart"></canvas>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Termina Feedback -->
+
+{% block js %}
+
+ 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var intentosPorTema = {
+        labels: [
+            {% for tema in intentos_por_tema %}
+                "{{ tema.tema }}",
+            {% endfor %}
+        ],
+        datasets: [{
+            label: 'Tema',
+            data: [
+                {% for tema in intentos_por_tema %}
+                    {{ tema.total }},
+                {% endfor %}
+            ],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: 'origin'
+        }]
+    };
+
+    var ctx = document.getElementById('intentosPorTemaChart').getContext('2d');
+    var intentosPorTemaChart = new Chart(ctx, {
+        type: 'line',
+        data: intentosPorTema,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+
+<script>
+    var ctx = document.getElementById('barrasChart').getContext('2d');
+    var barrasChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ categorias|safe }},
+            datasets: [{
+                label: 'Categoría',
+                data: {{ totales|safe }},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+    var intentosPorTema = {
+        labels: [
+            {% for tema in intentos_por_tema %}
+                "{{ tema.tema }}",
+            {% endfor %}
+        ],
+        datasets: [{
+            label: 'Áreas',
+            data: [
+                {% for tema in intentos_por_tema %}
+                    {{ tema.total }},
+                {% endfor %}
+            ],
+            backgroundColor: 'rgba(153, 102, 255, 0.2)', // Morado
+            borderColor: 'rgba(153, 102, 255, 1)', // Morado
+            borderWidth: 1,
+            fill: 'origin'
+        }]
+    };
+
+    var ctx = document.getElementById('intentosPorTemaChart2').getContext('2d');
+    var intentosPorTemaChart = new Chart(ctx, {
+        type: 'radar', // Cambiado a radar
+        data: intentosPorTema,
+        options: {
+            plugins: {
+                legend: {
+                    display: true // Oculta la leyenda
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    var intentosPorTema = {
+        labels: [
+            {% for tema in intentos_por_tema %}
+                "{{ tema.tema }}",
+            {% endfor %}
+        ],
+        datasets: [{
+            data: [
+                {% for tema in intentos_por_tema %}
+                    {{ tema.total }},
+                {% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)', // Color para el primer sector
+                'rgba(54, 162, 235, 0.2)', // Color para el segundo sector
+                'rgba(255, 206, 86, 0.2)', // Color para el tercer sector
+                'rgba(75, 192, 192, 0.2)', // Color para el cuarto sector
+                'rgba(153, 102, 255, 0.2)', // Color para el quinto sector
+                'rgba(255, 159, 64, 0.2)' // Color para el sexto sector
+                // Agrega más colores si necesitas para más sectores
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Calcular el total de intentos
+    var total = intentosPorTema.datasets[0].data.reduce((a, b) => a + b, 0);
+
+    // Calcular los porcentajes y reemplazar los datos
+    intentosPorTema.datasets[0].data = intentosPorTema.datasets[0].data.map(value => ((value / total) * 100).toFixed(2));
+
+    var ctx = document.getElementById('intentosPorTemaChartPie').getContext('2d');
+    var intentosPorTemaChart = new Chart(ctx, {
+        type: 'doughnut', // Cambiado a doughnut
+        data: intentosPorTema,
+        options: {
+            plugins: {
+                legend: {
+                    display: true // Muestra la leyenda
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue + "%";
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+
+
+
+
+
+{% endblock %}
+
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}

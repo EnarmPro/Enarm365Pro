@@ -1,0 +1,847 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+<!-- Page Content ////////////////////////////////////////////////////////// -->
+
+<div class="mdk-box mdk-box--bg-primary bg-dark js-mdk-box mb-0" data-effects="parallax-background blend-background">
+    <!-- No se para que sirve el Blend Background -->
+    <div class="mdk-box__bg">
+        <div class="mdk-box__bg-front img-erm-principal"></div>
+        <!-- Este es la clase para cambiar el color del background [dir] .mdk-box--bg-primary .mdk-box__bg-front:after -->
+    </div>
+    <div class="mdk-box__content justify-content-center">
+        <div class="hero container page__container text-center py-112pt">
+            <h1 class="text-white text-shadow">Supera el ENARM con nosotros.</h1>
+            <p class="lead measure-hero-lead mx-auto text-white text-shadow mb-48pt">Practica todos los dias, en todo
+                momento, en todos lados.</p>
+
+            <a href="courses.html" class="btn btn-lg btn-white btn--raised mb-16pt">Iniciar Practica Diaria</a>
+            <!-- Para Mover el color hay que modificar la clase btn-white -->
+
+            <p class="mb-0"><a href="" class="text-white text-shadow"><strong>Dudas?</strong></a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="border-bottom-2 py-16pt navbar-light bg-white border-bottom-2">
+    <div class="container page__container">
+        <div class="row align-items-center">
+            <div class="d-flex col-md align-items-center border-bottom border-md-0 mb-16pt mb-md-0 pb-16pt pb-md-0">
+                <div class="rounded-circle  w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                    <i class="material-icons text-white">subscriptions</i>
+                </div>
+                <div class="flex">
+                    <div class="card-title mb-4pt">8,000+ Preguntas</div>
+                    <p class="card-subtitle ">Practica en todas las areas.</p>
+                </div>
+            </div>
+            <div class="d-flex col-md align-items-center border-bottom border-md-0 mb-16pt mb-md-0 pb-16pt pb-md-0">
+                <div class="rounded-circle w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                    <i class="material-icons text-white">verified_user</i>
+                </div>
+                <div class="flex">
+                    <div class="card-title mb-4pt">Expertos</div>
+                    <p class="card-subtitle">Sientete respaldado por Expertos.</p>
+                </div>
+            </div>
+            <div class="d-flex col-md align-items-center">
+                <div class="rounded-circle w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
+                    <i class="material-icons text-white">update</i>
+                </div>
+                <div class="flex">
+                    <div class="card-title mb-4pt">Sin limite</div>
+                    <p class="card-subtitle">Desbloquea todos los recursos con la subscripcion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+
+        <div class="page-separator">
+            <div class="page-separator__text">Lee Nuestro Blog</div>
+        </div>
+
+        <div class="row card-group-row">
+
+            <div class="col-md-6 col-lg-4 card-group-row__col">
+
+                <div class="card card--elevated posts-card-popular overlay card-group-row__card">
+                    <img src="{% static 'img/fondos/registro.webp' %}" alt="" class="card-img">
+                    <div class="fullbleed bg-primary" style="opacity: .5"></div>
+                    <div class="posts-card-popular__content">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="avatar-group flex">
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <a href=""><img
+                                            src="{% static 'img/avatares/256_luke-porter-261779-unsplash.jpg' %}"
+                                            alt="Avatar" class="avatar-img rounded-circle"></a>
+                                </div>
+                            </div>
+                            <a style="text-decoration: none;" class="d-flex align-items-center" href=""><i
+                                    class="material-icons mr-1" style="font-size: inherit;">remove_red_eye</i>
+                                <small>327</small></a>
+                        </div>
+                        <div class="posts-card-popular__title card-body">
+                            <small class="text-muted text-uppercase">Ansiedad</small>
+                            <a class="card-title" href="blog-post.html">Como manejar la ansiedad ante el examen?</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4 card-group-row__col">
+
+                <div class="card card--elevated posts-card-popular overlay card-group-row__card">
+                    <img src="{% static 'img/fondos/LoginBackground.webp' %}" alt="" class="card-img">
+                    <div class="fullbleed bg-primary" style="opacity: .5"></div>
+                    <div class="posts-card-popular__content">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="avatar-group flex">
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <a href=""><img
+                                            src="{% static 'img/avatares/256_jeremy-banks-798787-unsplash.jpg' %}"
+                                            alt="Avatar" class="avatar-img rounded-circle"></a>
+                                </div>
+                            </div>
+                            <a style="text-decoration: none;" class="d-flex align-items-center" href=""><i
+                                    class="material-icons mr-1" style="font-size: inherit;">remove_red_eye</i>
+                                <small>327</small></a>
+                        </div>
+                        <div class="posts-card-popular__title card-body">
+                            <small class="text-muted text-uppercase">Preparacion</small>
+                            <a class="card-title" href="blog-post.html">Como estudio todos los dias?</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4 card-group-row__col">
+
+                <div class="card card--elevated posts-card-popular overlay card-group-row__card">
+                    <img src="{% static 'img/fondos/passforgot.webp' %}" alt="" class="card-img">
+                    <div class="fullbleed bg-primary" style="opacity: .5"></div>
+                    <div class="posts-card-popular__content">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="avatar-group flex">
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <a href=""><img
+                                            src="{% static 'img/avatares/256_rsz_1andy-lee-642320-unsplash.jpg' %}"
+                                            alt="Avatar" class="avatar-img rounded-circle"></a>
+                                </div>
+                            </div>
+                            <a style="text-decoration: none;" class="d-flex align-items-center" href=""><i
+                                    class="material-icons mr-1" style="font-size: inherit;">remove_red_eye</i>
+                                <small>327</small></a>
+                        </div>
+                        <div class="posts-card-popular__title card-body">
+                            <small class="text-muted text-uppercase">Motivacion</small>
+                            <a class="card-title" href="blog-post.html">Como mantenerme motivado?</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="posts-cards">
+
+            <div class="card posts-card mb-0">
+                <div class="posts-card__content d-flex align-items-center flex-wrap">
+                    <div class="avatar avatar-lg mr-3">
+                        <a href="blog-post.html"><img src="{% static 'img/LogoGeneralSinFondo.png' %}" alt="avatar"
+                                class="avatar-img rounded"></a>
+                    </div>
+                    <div class="posts-card__title flex d-flex flex-column">
+                        <a href="blog-post.html" class="card-title mr-3">Simulador ENARM</a>
+                        <small class="text-50">Practica todo el examen.</small>
+                    </div>
+                    <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                        <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                            <i class="material-icons text-muted-light mr-1">folder_open</i> ENARM365
+                        </div>
+                        <div class="mr-3 text-50 posts-card__date">
+                            <small>Suscripción Pro</small>
+                        </div>
+                        <div class="media ml-sm-auto align-items-center">
+                            <div class="media-left mr-2 avatar-group">
+
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <img src="{% static 'img/avatares/256_rsz_1andy-lee-642320-unsplash.jpg' %}"
+                                        alt="Avatar" class="avatar-img rounded-circle">
+                                </div>
+
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <img src="{% static 'img/avatares/256_michael-dam-258165-unsplash.jpg' %}"
+                                        alt="Avatar" class="avatar-img rounded-circle">
+                                </div>
+
+                                <div class="avatar avatar-xs" data-toggle="tooltip" data-placement="top"
+                                    title="Janell D.">
+                                    <img src="{% static 'img/avatares/256_luke-porter-261779-unsplash.jpg' %}"
+                                        alt="Avatar" class="avatar-img rounded-circle">
+                                </div>
+
+                            </div>
+                            <div class="media-body">
+
+                                <a href="">+2 more</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Inicia Seccion de Simuladores -->
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <div class="page-separator__text">Nuestros Simuladores</div>
+        </div>
+
+        <div class="row card-group-row">
+
+            <div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
+
+                <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                    data-toggle="popover" data-trigger="click">
+
+                    <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                        <img src="{% static 'img/fondos/passforgot.webp' %}" alt="course">
+                        <span class="overlay__content">
+                            <span class="overlay__action d-flex flex-column text-center">
+                                <i class="material-icons icon-32pt">play_circle_outline</i>
+                                <span class="card-title text-white">Simulador</span>
+                            </span>
+                        </span>
+                    </a>
+
+                    <div class="card-body flex">
+                        <div class="d-flex">
+                            <div class="flex">
+                                <a class="card-title" href="student-course.html">Simulador ENARM</a>
+                                <small class="text-50 font-weight-bold mb-4pt">Suscripción Pro</small>
+                            </div>
+                            <a href="student-course.html" data-toggle="tooltip" data-title="Add Favorite"
+                                data-placement="top" data-boundary="window"
+                                class="ml-4pt material-icons text-20 card-course__icon-favorite">favorite_border</a>
+                        </div>
+                        <div class="d-flex">
+                            <div class="rating flex">
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star_border</span></span>
+                            </div>
+                            <!-- <small class="text-50">6 hours</small> -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row justify-content-between">
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>200+ Preguntas</small></p>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>{{contadorEnarm}} Simulador</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popoverContainer d-none">
+                    <div class="media">
+                        <div class="media-left mr-12pt">
+                            <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Angular"
+                                class="rounded">
+                        </div>
+                        <div class="media-body">
+                            <div class="card-title mb-0">ENARM</div>
+                            <p class="lh-1 mb-0">
+                                <span class="text-50 small">with</span>
+                                <span class="text-50 small font-weight-bold">Suscripción Pro</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="my-16pt text-70">Simula el examen de ENARM, con toda las preguntas.</p>
+
+                    <div class="mb-16pt">
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Cronometrado</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Preguntas reales.</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Preguntas verificadas por expertos</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Obten feedback y recomendaciones.</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Practica las veces que necesites.</small></p>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>200+ Preguntas</small></p>
+                            </div>
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>{{contadorEnarm}} Simulador</small></p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>Suscripción Pro</small></p>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{% url 'mostrar_enarm'%}" class="btn btn-primary">Inicia Examen</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
+
+                <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                    data-toggle="popover" data-trigger="click">
+
+                    <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                        <img src="{% static 'img/fondos/registro.webp' %} " alt="course">
+                        <span class="overlay__content">
+                            <span class="overlay__action d-flex flex-column text-center">
+                                <i class="material-icons icon-32pt">play_circle_outline</i>
+                                <span class="card-title text-white">Suscripción Pro</span>
+                            </span>
+                        </span>
+                    </a>
+
+                    <div class="card-body flex">
+                        <div class="d-flex">
+                            <div class="flex">
+                                <a class="card-title" href="student-course.html">Simulador Personalizado</a>
+                                <small class="text-50 font-weight-bold mb-4pt">Suscripción Pro</small>
+                            </div>
+                            <a href="student-course.html" data-toggle="tooltip" data-title="Add Favorite"
+                                data-placement="top" data-boundary="window"
+                                class="ml-4pt material-icons text-20 card-course__icon-favorite">favorite_border</a>
+                        </div>
+                        <div class="d-flex">
+                            <div class="rating flex">
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star_border</span></span>
+                            </div>
+                            <!-- <small class="text-50">6 hours</small> -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row justify-content-between">
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>30+ Preguntas</small></p>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>{{contadorTemario}}+ Simuladores</small></p>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>Diferentes Cronometros</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popoverContainer d-none">
+                    <div class="media">
+                        <div class="media-left mr-12pt">
+                            <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Angular"
+                                class="rounded">
+                        </div>
+                        <div class="media-body">
+                            <div class="card-title mb-0">Simulador por tema</div>
+                            <p class="lh-1 mb-0">
+                                <span class="text-50 small">with</span>
+                                <span class="text-50 small font-weight-bold">Suscripción Pro</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="my-16pt text-70">Practica tus conocimientos por tema, mejorando donde mas lo necesites.
+                    </p>
+
+                    <div class="mb-16pt">
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Practica un tema especifico</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Obten feedback</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Repite las veces que requieras</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Acceso en todo lugar</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Cambia de tema cuando lo requieras</small></p>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>56 Preguntas</small></p>
+                            </div>
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>{{contadorTemario}}+ Simuladores</small></p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>Suscripción Pro</small></p>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{% url 'mostrar_temas' %}" class="btn btn-primary">Inicia Simulador</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
+
+                <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                    data-toggle="popover" data-trigger="click">
+
+                    <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                        <img src="{% static 'img/fondos/LoginBackground.webp' %} " alt="course">
+                        <span class="overlay__content">
+                            <span class="overlay__action d-flex flex-column text-center">
+                                <i class="material-icons icon-32pt">play_circle_outline</i>
+                                <span class="card-title text-white">Inicia Simulador</span>
+                            </span>
+                        </span>
+                    </a>
+
+                    <div class="card-body flex">
+                        <div class="d-flex">
+                            <div class="flex">
+                                <a class="card-title" href="student-course.html">Simulador Diagnóstico</a>
+                                <small class="text-50 font-weight-bold mb-4pt">Suscripción Pro</small>
+                            </div>
+                            <a href="student-course.html" data-toggle="tooltip" data-title="Add Favorite"
+                                data-placement="top" data-boundary="window"
+                                class="ml-4pt material-icons text-20 card-course__icon-favorite">favorite_border</a>
+                        </div>
+                        <div class="d-flex">
+                            <div class="rating flex">
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star_border</span></span>
+                            </div>
+                            <!-- <small class="text-50">6 hours</small> -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row justify-content-between">
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>100 Preguntas</small></p>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>1 Simuladores</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popoverContainer d-none">
+                    <div class="media">
+                        <div class="media-left mr-12pt">
+                            <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Angular"
+                                class="rounded">
+                        </div>
+                        <div class="media-body">
+                            <div class="card-title mb-0">Simulador Diagnóstico</div>
+                            <p class="lh-1 mb-0">
+                                <span class="text-50 small">with</span>
+                                <span class="text-50 small font-weight-bold">Suscripción Pro</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="my-16pt text-70">Simula el examen con diferentes temas, mejorando tus
+                        conocimientos.</p>
+
+                    <div class="mb-16pt">
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Elige la modalidad de tiempo</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Elige el tema</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Recibe Feedback</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Practica donde quieras</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Practica cuando quieras. </small></p>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>100 Preguntas</small></p>
+                            </div>
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>1 Simuladores</small></p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>Suscripción Pro</small></p>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{% url 'simulador_diagnostico' %}" class="btn btn-primary">Inicia Simulador</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
+
+                <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+                    data-toggle="popover" data-trigger="click">
+
+                    <a href="student-course.html" class="card-img-top js-image" data-position="" data-height="140">
+                        <img src="{% static 'img/fondos/forgotpassword.webp' %} " alt="course">
+                        <span class="overlay__content">
+                            <span class="overlay__action d-flex flex-column text-center">
+                                <i class="material-icons icon-32pt">play_circle_outline</i>
+                                <span class="card-title text-white">Inicia Simulador</span>
+                            </span>
+                        </span>
+                    </a>
+
+                    <div class="card-body flex">
+                        <div class="d-flex">
+                            <div class="flex">
+                                <a class="card-title" href="">Simulador Diario</a>
+                                <small class="text-50 font-weight-bold mb-4pt">Gratis!</small>
+                            </div>
+                            <a href="" data-toggle="tooltip" data-title="Add Favorite"
+                                data-placement="top" data-boundary="window"
+                                class="ml-4pt material-icons text-20 card-course__icon-favorite">favorite_border</a>
+                        </div>
+                        <div class="d-flex">
+                            <div class="rating flex">
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star</span></span>
+                                <span class="rating__item"><span class="material-icons">star_border</span></span>
+                            </div>
+                            <!-- <small class="text-50">6 hours</small> -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row justify-content-between">
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>10 Preguntas Diarias</small></p>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>1 Simulador</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popoverContainer d-none">
+                    <div class="media">
+                        <div class="media-left mr-12pt">
+                            <img src="{% static 'img/Unatinta.png' %}" width="50" height="40" alt="Enarm 365"
+                                class="rounded">
+                        </div>
+                        <div class="media-body">
+                            <div class="card-title mb-0">Simulador Gratuito</div>
+                            <p class="lh-1 mb-0">
+                                <span class="text-50 small">with</span>
+                                <span class="text-50 small font-weight-bold">Suscripción Gratuita</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="my-16pt text-70">Practica gratis, con preguntas que cambian diariamente.</p>
+
+                    <div class="mb-16pt">
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Practica el ENARM de forma Gratuita</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Preguntas de todos los temas</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Recibe Feedback</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>Preguntas de dificultad real</small></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="material-icons icon-16pt text-50 mr-8pt">check</span>
+                            <p class="flex text-50 lh-1 mb-0"><small>10 preguntas diarias.</small></p>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">access_time</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>10 Preguntas</small></p>
+                            </div>
+                            <div class="d-flex align-items-center mb-4pt">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>1 Simulador</small></p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                                <p class="flex text-50 lh-1 mb-0"><small>Gratis</small></p>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{% url 'simulator_free' %}" class="btn btn-primary">Inicia Simulador</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Termina Seccion de Simuladores -->
+
+<!-- INICIA Feedback -->
+<div class="page-section">
+    <div class="container page__container">
+        <div class="page-headline text-center">
+            <h2>Feedback</h2>
+            <p class="lead measure-lead mx-auto text-70">Mira lo que otros estudiantes comentan sobre su experiencia en
+                ENARM 365</p>
+        </div>
+
+        <div class="position-relative carousel-card p-0 mx-auto">
+            <div class="row d-block js-mdk-carousel" id="carousel-feedback">
+                <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#carousel-feedback"
+                    role="button" data-slide="next">
+                    <span class="carousel-control-icon material-icons" aria-hidden="true">keyboard_arrow_right</span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <div class="mdk-carousel__content">
+                    {% for comentario in comentarioUser %}
+                    <div class="col-12 col-md-6">
+
+                        <div class="card card-feedback card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p class="text-70 small mb-0">{{ comentario.mensajeForo}}</p>
+                            </blockquote>
+                        </div>
+                        <div class="media ml-12pt">
+                            <div class="media-left mr-12pt">
+                                <a href="student-profile.html" class="avatar avatar-sm">
+                                    <!-- <img src="../../public/images/people/110/guy-.jpg" width="40" alt="avatar" class="rounded-circle"> -->
+                                    <span class="avatar-title rounded-circle material-icons">account_box</span>
+                                </a>
+                            </div>
+                            <div class="media-body media-middle">
+                                <a href="student-profile.html" class="card-title">{{comentario.fk_User.first_name}}</a>
+                                <div class="rating mt-4pt">
+                                    {% if comentario.valorMensaje == 1%}
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    {% elif comentario.valorMensaje == 2 %}
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    {% elif comentario.valorMensaje == 3 %}
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    {% elif comentario.valorMensaje == 4 %}
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star_border</span></span>
+                                    {% elif comentario.valorMensaje == 5 %}
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    <span class="rating__item"><span class="material-icons">star</span></span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal"></div>
+</div>
+<!-- Termina Feedback -->
+
+{% block js %}
+
+<!-- Incluir SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+<script>
+    // Mostrar SweetAlert modal
+    swal({
+        text: "¿Ya has cubierto el pago de la membresía PRO?",
+        icon: "info",
+        buttons: ["No", "si"],
+    })
+    .then((response) => {
+        if (response) {
+            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
+        } else {
+            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
+        }
+    });
+</script>
+</script>
+{% endblock %}
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}

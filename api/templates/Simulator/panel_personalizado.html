@@ -1,0 +1,115 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown active">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href="login.html"
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+
+
+
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+        <div class="page-separator">
+            <h5 class="page-separator__text">Conoce tu nivel - Simulador Personalizado</h5>
+        </div>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-10">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h2 class="text-center mb-4">Tema seleccionado - {{nombre_tema.nombreTemario}}</h2>
+                            <p class="text-center">Selecciona el tiempo y la cantidad de preguntas deseadas</p>
+                            <form action="{% url 'simulador_personalizado' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_tema" value="{{nombre_tema.idTemarios}}">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tiempo" id="tiempoCorto" value="1">
+                                        <label class="form-check-label" for="tiempoCorto">
+                                            Tiempo Corto
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tiempo" id="tiempoExtendido" value="2">
+                                        <label class="form-check-label" for="tiempoExtendido">
+                                            Tiempo Extendido
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <label for="numero">Selecciona o ingresa el número de preguntas</label>
+                                    <div class="mx-auto" style="width: fit-content;">
+                                    <input type="number" class="form-control" name="numero" id="numero" placeholder="Cantidad" max="100" min="10">
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+
+{% endblock%}
