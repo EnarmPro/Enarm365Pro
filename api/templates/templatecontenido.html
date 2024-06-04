@@ -217,6 +217,13 @@
                             <span class="sidebar-menu-text">Foro de Comentarios</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'logout' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">close</span>
+                            <span class="sidebar-menu-text">Logout</span>
+                        </a>
+                    </li>
                 </ul>
                 <div class="sidebar-heading">Dashboard</div>
                 <ul class="sidebar-menu">
@@ -249,6 +256,12 @@
                             id="account_menu">
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
+                                   href="{% url 'logout' %}">
+                                    <span class="sidebar-menu-text">Cierre de Sesión</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a class="sidebar-menu-button"
                                 href="{% url 'pricing' %}">
                                     <span class="sidebar-menu-text">Pricing</span>
                                 </a>
@@ -267,12 +280,7 @@
                                     <span class="sidebar-menu-text">Edit Account</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="{% url 'logout' %}">
-                                    <span class="sidebar-menu-text">Logout</span>
-                                </a>
-                            </li>
+                            
                             
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
