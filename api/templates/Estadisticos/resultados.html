@@ -74,6 +74,7 @@
         </div>
         <h3>Examen - Gratuito</h3>
         <div class="row card-group-row">
+        {% if intentos %}
             
         {% for intento in intentos %}
 
@@ -158,10 +159,11 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% endif %}
     </div>
         <h3>Examen - Diagnostico</h3>
         <div class="row card-group-row">
-            
+            {% if intentos %}
         {% for intento in intentos %}
 
         
@@ -245,11 +247,12 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% endif %}
     </div>
         
         <h3>Examen - Tema</h3>
         <div class="row card-group-row">
-            
+            {% if intentos %}
         {% for intento in intentos %}
 
         
@@ -333,11 +336,12 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% endif %}
     </div>
         
         <h3>Examen - Enarm</h3>
         <div class="row card-group-row">
-            
+            {% if intentos %}
         {% for intento in intentos %}
 
         
@@ -421,6 +425,7 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% endif %}
     </div>
         
     </div>
