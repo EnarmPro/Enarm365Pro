@@ -224,9 +224,61 @@ a {
 .modal-header .close.modal-comentarios:hover {
     color: #000; /* Color del icono de cierre al pasar el ratón */
 }
-.image_login{
-  width: 100%;
+/* styles.css */
+
+body.custom-background {
+
+  background-image: url('../img/fondos/registro.webp') ;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.text_login{
-  color: #ffffff;
+
+.overlay {
+  /*background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+}
+
+.text_login {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: #fff;
+  
+}
+
+.text_login a {
+  text-decoration: none;
+  color: #fff;
+  font-size: large;
+}
+
+.text_login a:hover {
+  text-decoration: underline;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 600px) {
+  .overlay {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .text_login {
+    font-size: 1em;
+  }
+
+  .text_login a {
+    font-size: 1em;
+  }
 }
