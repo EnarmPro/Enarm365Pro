@@ -7,7 +7,7 @@
 {%block content%}
 <body class="backlogin">
     <div class = "logincontainer"> 
-        <img class= "logologin" src="{%static 'img/HorizontalUnaTinta.png' %}" alt="Enarm 365 Logo">
+        <img class= "logologin" src="{%static 'img/Logowhite.png' %}" alt="Enarm 365 Logo">
        <form method="post" action="{%url 'login'%}" class="login">
         {% csrf_token %}
         {{form.as_p}}
