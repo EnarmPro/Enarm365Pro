@@ -850,3 +850,8 @@ def update_username_form(request):
         return JsonResponse({'success': True})
 
     return render(request, 'tu_template.html')
+
+def pricing(request):
+    template_name = 'pricing.html'
+
+    return render(request,template_name)

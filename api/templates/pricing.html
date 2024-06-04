@@ -1,0 +1,119 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'pricing' %}"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href=""
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+<!-- Page Pricing //////////////////////////-->
+<div class="mx-auto mt-40pt ">
+<div class="row card-group-row mb-16pt mb-lg-40pt">
+    <div class="col-lg-10 col-sm-6 card-group-row__col">
+
+        <div class="card card-group-row__card text-center o-hidden card--raised border-0">
+
+            <span class="corner-ribbon corner-ribbon--default-right-top corner-ribbon--shadow bg-accent text-white">Plan</span>
+
+            <div class="card-body d-flex flex-column">
+                <div class="flex-grow mb-16pt">
+                    <span class="w-64 h-64 icon-holder icon-holder--outline-accent rounded-circle d-inline-flex mb-16pt">
+                        <i class="material-icons">person</i>
+                    </span>
+                    <h4 class="mb-8pt">Estudiante</h4>
+                    <p class="text-70 mb-0">Accesa a todos los simuladores. Licencia por persona.</p>
+                </div>
+                <p class="d-flex justify-content-center align-items-center m-0">
+                    <span class="h4 m-0 font-weight-normal">&dollar;</span>
+                    <span class="h1 m-0 font-weight-normal">399</span>
+                    <span class="h4 m-0 font-weight-normal">/ al mes</span>
+                </p>
+                <p class="lh-1 text-muted mb-0"><small>Unete a la comunidad Enarm 365</small></p>
+            </div>
+            <div class="card-footer">
+                <a href=""
+                   class="btn btn-accent">Suscribirme</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- Page Pricing //////////////////////////-->
+{% block js %}
+
+<!-- Incluir SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+<script>
+    // Mostrar SweetAlert modal
+    swal({
+        text: "¿Ya has cubierto el pago de la membresía PRO?",
+        icon: "info",
+        buttons: ["No", "si"],
+    })
+    .then((response) => {
+        if (response) {
+            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
+        } else {
+            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
+        }
+    });
+</script>
+</script>
+{% endblock %}
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}
