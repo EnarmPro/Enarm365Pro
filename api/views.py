@@ -744,7 +744,7 @@ def simulador_diagnostico(request):
     preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Diagnostico')[:100]
 
     # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.filter(fkCategorias=1)
+    respuestas_todas = Respuestas.objects.filter(fkCategorias=5)
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []

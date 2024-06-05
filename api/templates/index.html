@@ -826,20 +826,66 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <script>
-    // Mostrar SweetAlert modal
+    
+   // Función para verificar si el usuario ha realizado el examen diagnóstico
+   function checkDiagnosticExam() {
+        // Aquí deberías incluir la lógica para verificar si el usuario ha realizado el examen
+        // Por ejemplo, podrías hacer una llamada a una API o verificar una variable en JavaScript
+        // Supongamos que tenemos una variable 'hasDoneDiagnosticExam' que indica el estado
+        const hasDoneDiagnosticExam = false; // Cambia esto según la lógica de tu aplicación
+        
+        return hasDoneDiagnosticExam;
+    }
+
+    // Mostrar SweetAlert modal para el pago de la membresía PRO
     swal({
         text: "¿Ya has cubierto el pago de la membresía PRO?",
         icon: "info",
-        buttons: ["No", "si"],
+        buttons: ["No", "Sí"],
     })
     .then((response) => {
         if (response) {
-            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
+            // Si el usuario ha cubierto el pago, verificar si ha realizado el examen diagnóstico
+            if (checkDiagnosticExam()) {
+                swal({
+                    text: "¿Ya has realizado el examen diagnóstico?",
+                    icon: "info",
+                    buttons: ["No", "Sí"],
+                })
+                .then((diagnosticResponse) => {
+                    if (diagnosticResponse) {
+                        swal("¡Excelente!", "Puedes continuar con el uso de la plataforma.", "success");
+                    } else {
+                        swal({
+                            text: "Por favor, realiza el examen diagnóstico.",
+                            icon: "info",
+                            buttons: ["Cancelar", "Ir al examen"],
+                        })
+                        .then((goToExam) => {
+                            if (goToExam) {
+                                // Redirigir al usuario al examen diagnóstico
+                                window.location.href = "url_del_examen_diagnostico"; // Cambia esto por la URL real del examen diagnóstico
+                            }
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    text: "Recuerda realizar el examen diagnóstico.",
+                    icon: "info",
+                    buttons: ["Cancelar", "Ir al examen"],
+                })
+                .then((goToExam) => {
+                    if (goToExam) {
+                        // Redirigir al usuario al examen diagnóstico
+                        window.location.href = "//"; // Cambia esto por la URL real del examen diagnóstico
+                    }
+                });
+            }
         } else {
-            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
+            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO.", "warning");
         }
     });
-</script>
 </script>
 {% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
