@@ -443,7 +443,7 @@ def simuladorEnarmUno(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        preguntas_con_respuestas_mezcladas
+        random.shuffle(preguntas_con_respuestas_mezcladas)
 
     context = {
             'userName': userName,
@@ -501,7 +501,7 @@ def simuladorEnarmSeccionDos(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        preguntas_con_respuestas_mezcladas
+        random.shuffle(preguntas_con_respuestas_mezcladas)
 
     context = {
             'userName': userName,
@@ -559,7 +559,7 @@ def simuladorEnarmSeccionTres(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        preguntas_con_respuestas_mezcladas
+        random.shuffle(preguntas_con_respuestas_mezcladas)
 
     context = {
             'userName': userName,
