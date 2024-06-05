@@ -1,0 +1,152 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span
+                    class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="pricing.html" class="nav-link">Pricing</a>
+    </li>
+
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="login.html" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
+    {% endblock %}
+    {%block appcontenido%}
+
+
+
+
+    <!-- INICIA Feedback -->
+    <div class="page-section">
+        <div class="container page__container">
+            <div class="page-headline text-center">
+                <h2 class="">Tema: {{ topics.titleTopic }}</h2>
+            </div>
+            <div class="text-center mb-16pt">
+                <button onclick="mostrarFeedback()" class="btn btn-primary">Registrar Comentario</button>
+                <button onclick="ocultarFeedback()" class="btn btn-primary">Ocultar Registro</button>
+            </div>
+            <div class="container " id="feedbackSection" style="display: none;">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-10">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="updateUsernameForm" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group text-center">
+                                        <label for="comentario">Registra aquí tus dudas sobre preguntas o algun tema
+                                        </label>
+                                        <input type="hidden" name="id_tema" value="{{ topics.idBlog }}">
+                                        <textarea class="form-control" name="topicos" id="comentario"
+                                            placeholder="Sé claro y conciso. Si es relevante, agrega detalles o ejemplos para respaldar tu opinión."></textarea>
+                                        <button type="submit" class="btn btn-primary mt-2">Abrir Foro</button>
+                                    </div>
+                                    <input type="hidden" name="csrf-token" value="{{ csrf_token }}">
+                                </form>
+                                <hr>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 80%; margin: auto;">
+    <div class="position-relative carousel-card p-0 mx-auto">
+        <div class="row d-block js-mdk-carousel" id="carousel-feedback">
+            <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#carousel-feedback"
+                role="button" data-slide="next">
+                <span class="carousel-control-icon material-icons" aria-hidden="true">keyboard_arrow_right</span>
+                <span class="sr-only">Next</span>
+            </a>
+            <div class="mdk-carousel__content">
+                {% for comentario in comentarios %}
+                <div class="col-12 col-md-6">
+
+                    <div class="card card-feedback card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p class="text-70 small mb-0">{{ comentario.comentarioTitle}}</p>
+                        </blockquote>
+                    </div>
+                    <div class="media ml-12pt">
+                        <div class="media-left mr-12pt">
+                            <a href="" class="avatar avatar-sm">
+                                <!-- <img src="../../public/images/people/110/guy-.jpg" width="40" alt="avatar" class="rounded-circle"> -->
+                                <span class="avatar-title rounded-circle material-icons">account_box</span>
+                            </a>
+                        </div>
+                        <div class="media-body media-middle">
+                            <a href="" class="card-title">{{comentario.fk_User.first_name}}</a>
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+    
+   
+    
+    <!-- Termina Feedback -->
+
+    {% block js %}
+
+    <script src="{% static 'js/registrar_comentarios_temas.js' %}"></script>
+    <script src="{% static 'js/mostrar_comentarios.js' %}"></script>
+
+    {% endblock %}
+    <!-- // END Page Content /////////////////////////////////////////////////-->
+
+    {% endblock%}

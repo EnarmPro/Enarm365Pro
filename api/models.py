@@ -69,3 +69,17 @@ class ForoUsuarios(models.Model):
         db_table = 'ForoUsuarios'
 
 
+class blogTema(models.Model):
+    idBlog = models.AutoField(primary_key=True)
+    titleTopic = models.TextField()
+    fk_User = models.ForeignKey(User,on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'blogTema'
+
+class blogComentario(models.Model):
+    idBlogComentario = models.AutoField(primary_key=True)
+    comentarioTitle = models.TextField()
+    fk_Topic = models.ForeignKey(blogTema,on_delete=models.CASCADE)
+    fk_User = models.ForeignKey(User,on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'blogComentario'

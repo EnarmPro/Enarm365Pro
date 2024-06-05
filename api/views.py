@@ -5,7 +5,7 @@ from django import forms
 from django.db.models import Q,Count
 from collections import defaultdict
 from django.shortcuts import redirect, render
-from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios
+from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario
 from django.http import JsonResponse
 from django.db.models import Max
 from django.core.exceptions import ObjectDoesNotExist
@@ -855,3 +855,56 @@ def pricing(request):
     template_name = 'pricing.html'
 
     return render(request,template_name)
+
+
+def blog(request):
+    template_name ='blog.html'
+    topics = blogTema.objects.all()
+
+    context = {
+        'topics':topics
+    }
+    return render(request,template_name,context)
+
+def blogtemas(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        topico = data.get('topico')
+        
+        user = request.user
+
+        blogTema.objects.create(
+            titleTopic=topico,
+            fk_User=user
+        )
+        return JsonResponse({'success': True})
+
+    return render(request, 'tu_template.html')
+
+def blogcomentarios(request):
+    template_name ='blogcomentarios.html'
+    id_tema = request.GET.get('id_tema')
+    topics = blogTema.objects.get(idBlog=id_tema)
+    comentarios = blogComentario.objects.filter(fk_Topic=id_tema).order_by('-idBlogComentario')
+    context = {
+        'topics':topics,
+        'comentarios':comentarios
+    }
+    return render(request,template_name,context)
+
+def registertemascomentarios(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        id_tema = data.get('id_tema')
+        comentario = data.get('comentario')
+        instance_tema = blogTema.objects.get(idBlog=id_tema)
+        user = request.user
+
+        blogComentario.objects.create(
+            comentarioTitle=comentario,
+            fk_Topic=instance_tema,
+            fk_User=user
+        )
+        return JsonResponse({'success': True})
+
+    return render(request, 'tu_template.html')
