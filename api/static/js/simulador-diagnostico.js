@@ -21,7 +21,7 @@ function main() {
             });
         });
 
-        let currentQuestion = 1;
+        let currentQuestion = 1101;
 
         var preguntasContainer = document.getElementById('preguntas-data');
         var totalQuestions = preguntasContainer.getAttribute('data-totalpreguntas');
