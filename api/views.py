@@ -908,3 +908,18 @@ def registertemascomentarios(request):
         return JsonResponse({'success': True})
 
     return render(request, 'tu_template.html')
+
+def blogansiedad(request):
+    template_name = 'blog1.html'
+
+    return render(request,template_name)
+
+def blogestudio(request):
+    template_name = 'blog2.html'
+
+    return render(request,template_name)
+
+def blogmotivado(request):
+    template_name = 'blog3.html'
+
+    return render(request,template_name)

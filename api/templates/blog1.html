@@ -1,0 +1,206 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<!-- Inicia Menu Superior-->
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'pricing' %}"
+           class="nav-link">Pricing</a>
+    </li>
+    
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href=""
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+<!-- Page Pricing //////////////////////////-->
+<div class="page-section bg-body border-bottom-2">
+    <div class="container page__container">
+
+        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start flex mb-16pt text-center text-md-left">
+            <div class="avatar overlay overlay--primary mb-16pt mb-md-0 mr-md-16pt">
+                <img src="../static/img/fondos/LoginBackground.webp"
+                     class="avatar-img rounded"
+                     alt="lesson">
+                <div class="overlay__content"></div>
+            </div>
+            <div class="flex">
+                <h1 class="h2 measure-lead-max mb-16pt">¿Cómo manejar la ansiedad ante el examen?</h1>
+                <div class="d-flex align-items-center">
+                    <a href="teacher-profile.html"
+                       class="avatar avatar-sm mr-12pt">
+                        <img src="../static/img/Unatinta.png"
+                             alt="author"
+                             class="avatar-img rounded-circle">
+                    </a>
+                    <div class="mr-16pt">
+                        <a href="teacher-profile.html"
+                           class="card-title">Lygnum</a>
+                        <div class="d-flex align-items-center">
+                            <small class="text-50 mr-2">4 de Junio 2024</small>
+                            <small class="text-50 mr-2">2 minutos de lectura</small>
+                            <a href=""
+                               class="text-50"><small>Liked</small></a>
+                        </div>
+                    </div>
+                    <div>
+                        <a href=""
+                           class="text-50 d-flex align-items-center text-decoration-0"><i class="material-icons icon--left">favorite_border</i> 3</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="page-section border-bottom-2">
+    <div class="container page__container">
+
+        <div class="mb-24pt">
+            <a href=""
+               class="chip chip-outline-secondary">Enarm 365</a>
+            <a href=""
+               class="chip chip-outline-secondary">certificaciones</a>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row align-items-md-center mb-16pt">
+            <div class="mb-16pt mb-md-0 mr-md-16pt">
+                <div class="rounded p-relative o-hidden overlay overlay--primary">
+                    <img class="rounded" width="200" height="180"
+                         src="../static/img/Unatinta.png"
+                         alt="image">
+                    <div class="overlay__content"></div>
+                </div>
+            </div>
+            <div class="flex">
+                <p class="lead measure-paragraph-max text-justify">Los exámenes pueden ser una fuente significativa de ansiedad para muchas personas. El estrés de las expectativas, la presión por el rendimiento y el temor a fallar pueden combinarse para crear un ambiente de alta tensión. Sin embargo, existen estrategias y técnicas que puedes implementar para manejar y reducir la ansiedad antes de un examen. A continuación, te ofrecemos algunos consejos prácticos para enfrentarte a esta situación de manera efectiva.</p>
+            </div>
+        </div>
+
+        <blockquote class="blockquote blockquote--reverse pl-0">
+            <p class="text-50">"El éxito no es la clave de la felicidad. La felicidad es la clave del éxito. Si amas lo que haces, tendrás éxito.".</p>
+            <footer class="blockquote-footer">- Albert Schweitzer
+                <cite title="Source Title">Prepara un plan de estudio</cite>
+            </footer>
+        </blockquote>
+
+        <p class="text-50 measure-paragraph-max mb-24pt text-justify">Una de las principales causas de ansiedad es la falta de preparación. Organiza un plan de estudio que te permita repasar todos los temas con tiempo suficiente. Divide el material en partes manejables y establece metas diarias o semanales. Utiliza técnicas como mapas mentales, resúmenes y tarjetas de memoria para facilitar el aprendizaje.</p>
+
+        <h4>Practica técnicas de relajación</h4>
+
+        <div class="d-flex flex-column flex-md-row mb-32pt">
+            <div class="flex mb-16pt mb-md-0 mr-md-16pt">
+                <p class="lead text-70 measure-paragraph-max text-justify">Las técnicas de relajación pueden ser muy efectivas para reducir la ansiedad. Practica la respiración profunda, la meditación o el yoga. Dedica unos minutos cada día a relajarte y despejar tu mente. Estas prácticas pueden ayudarte a mantener la calma y la concentración el día del examen.</p>
+
+                <blockquote class="blockquote">
+                    <p class="text-50">"Un problema compartido es un problema a la mitad."</p>
+                    <footer class="blockquote-footer">Anonimo
+                        <cite title="Source Title">''</cite>
+                    </footer>
+                </blockquote>
+            </div>
+            <div>
+                <div class="rounded p-relative o-hidden overlay overlay--primary">
+                    <img class="rounded" width="200" height="180"
+                         src="../static/img/fondos/Login Test 1500 x 2500.webp"
+                         alt="image">
+                    <div class="overlay__content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="measure-lead-max">
+
+            <div class="mb-8pt">
+                <div class="page-separator">
+                    <div class="page-separator__text">Enarm 365</div>
+                </div>
+
+                <div class="media align-items-center mb-16pt">
+                    <span class="media-left mr-16pt">
+                        <img src="../static/img/HorizontalUnaTinta.png" width="200" height="180"
+                             alt="avatar"
+                             class="rounded-circle">
+                    </span>
+                </div>
+                
+
+                
+            </div>
+        </div>
+    </div>
+          </div>
+
+<!-- Page Pricing //////////////////////////-->
+{% block js %}
+
+<!-- Incluir SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+<script>
+    // Mostrar SweetAlert modal
+    swal({
+        text: "¿Ya has cubierto el pago de la membresía PRO?",
+        icon: "info",
+        buttons: ["No", "si"],
+    })
+    .then((response) => {
+        if (response) {
+            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
+        } else {
+            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
+        }
+    });
+</script>
+</script>
+{% endblock %}
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}

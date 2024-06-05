@@ -2,19 +2,7 @@
 {% load static%}
 {%block titleapp%} ENARM 365 {% endblock%}
 {% block navegador %}
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-    }
-    th {
-        background-color: #f4f4f4;
-    }
-</style>
+
 <!-- Inicia Menu Superior-->
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
     <li class="nav-item  active">
@@ -38,7 +26,7 @@
         </div>
     </li>
     <li class="nav-item">
-        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
     </li>
 
     <ul class="nav navbar-nav ml-auto mr-0">

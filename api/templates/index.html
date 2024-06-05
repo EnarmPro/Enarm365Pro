@@ -72,7 +72,7 @@
             <p class="lead measure-hero-lead mx-auto text-white text-shadow mb-48pt">Practica todos los dias, en todo
                 momento, en todos lados.</p>
 
-            <a href="" class="btn btn-lg btn-white btn--raised mb-16pt">Iniciar Practica Diaria</a>
+            <a href="{% url 'simulator_free' %}" class="btn btn-lg btn-white btn--raised mb-16pt">Iniciar Practica Diaria</a>
             <!-- Para Mover el color hay que modificar la clase btn-white -->
 
             <p class="mb-0"><a href="" class="text-white text-shadow"><strong>Dudas?</strong></a></p>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="posts-card-popular__title card-body">
                             <small class="text-muted text-uppercase">Ansiedad</small>
-                            <a class="card-title" href="">Como manejar la ansiedad ante el examen?</a>
+                            <a class="card-title" href="{% url 'blogansiedad' %}">Como manejar la ansiedad ante el examen?</a>
                         </div>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="posts-card-popular__title card-body">
                             <small class="text-muted text-uppercase">Preparacion</small>
-                            <a class="card-title" href="">Como estudio todos los dias?</a>
+                            <a class="card-title" href="{% url 'blogestudio' %}">Como estudio todos los dias?</a>
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
                         </div>
                         <div class="posts-card-popular__title card-body">
                             <small class="text-muted text-uppercase">Motivacion</small>
-                            <a class="card-title" href="">Como mantenerme motivado?</a>
+                            <a class="card-title" href="{% url 'blogmotivado' %}">Como mantenerme motivado?</a>
                         </div>
                     </div>
                 </div>

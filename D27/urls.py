@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios 
+from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,6 +46,9 @@ urlpatterns = [
     path('blogtemas/', blogtemas, name='blogtemas'),
     path('blogcomentarios/', blogcomentarios, name='blogcomentarios'),
     path('registrar_comentarios/', registertemascomentarios, name='registrar_comentarios'),
+    path('blogansiedad/', blogansiedad, name='blogansiedad'),
+    path('blogestudio/', blogestudio, name='blogestudio'),
+    path('blogmotivado/', blogmotivado, name='blogmotivado'),
     
 ]
 
