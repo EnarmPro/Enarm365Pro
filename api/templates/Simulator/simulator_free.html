@@ -4,11 +4,12 @@
 {% block navegador %}
 <!-- Inicia Menu Superior-->
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
-    <li class="nav-item">
+    <li class="nav-item  active">
         <a href="{% url 'index' %}"
            class="nav-link">Home</a> <!-- Home Up -->
     </li>
-    <li class="nav-item dropdown active">
+    {% if not es_mayor_a_30_dias %}
+    <li class="nav-item dropdown">
         <a href=""
            class="nav-link dropdown-toggle"
            data-toggle="dropdown"
@@ -22,6 +23,8 @@
                class="dropdown-item">Tema</a>
         </div>
     </li>
+    
+    
     <li class="nav-item dropdown">
         <a href="estadisticas.html"
            class="nav-link dropdown-toggle"
@@ -34,6 +37,7 @@
                class="dropdown-item">Dashboard</a>
         </div>
     </li>
+    {% endif %}
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
@@ -41,7 +45,7 @@
     
 <ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
-        <a href="login.html"
+        <a href=""
            class="nav-link"
            data-toggle="tooltip"
            data-title="Login"
