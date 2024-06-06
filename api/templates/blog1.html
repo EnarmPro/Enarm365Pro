@@ -184,22 +184,7 @@
 <!-- Incluir SweetAlert JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-<script>
-    // Mostrar SweetAlert modal
-    swal({
-        text: "¿Ya has cubierto el pago de la membresía PRO?",
-        icon: "info",
-        buttons: ["No", "si"],
-    })
-    .then((response) => {
-        if (response) {
-            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
-        } else {
-            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
-        }
-    });
-</script>
-</script>
+
 {% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
 
