@@ -43,30 +43,37 @@ def registration_view(request):
 
 def index(request):
     template_name = 'index.html'
-    user = request.user
+    
     mostrarTemario = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado')| Q(nombreTemario='Diagnostico')| Q(nombreTemario='Enarm 25') | Q(nombreTemario='Enarm 50')| Q(nombreTemario='Enarm 100')).order_by('-idTemarios')
     contadorTemario = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado')).order_by('-idTemarios').count()
     contadorEnarm = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado') | Q(nombreTemario='Urgencias')| Q(nombreTemario='Cirugía')| Q(nombreTemario='Ginecología')| Q(nombreTemario='Medicina Interna')| Q(nombreTemario='Pediatría')).order_by('-idTemarios').count()
     comentarioUser = ForoUsuarios.objects.all().order_by('-idForo')
     
-    try:
-        # Obtener el registro más reciente de PaypalPago para el usuario actual
-        ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-        # Obtener la fecha actual
-        fecha_actual = timezone.now()
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
 
-        # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
-        diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-        # Verificar si la diferencia es mayor a 30 días
-        if diferencia_tiempo.days > 30:
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
             es_mayor_a_30_dias = True
-        else:
-            es_mayor_a_30_dias = False
-
-    except PaypalPago.DoesNotExist:
-        # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+    else:
         es_mayor_a_30_dias = True
         
     context = {
@@ -78,7 +85,6 @@ def index(request):
     }
 
     return render(request, template_name, context)
-
 
 
 def simulador_free(request):
