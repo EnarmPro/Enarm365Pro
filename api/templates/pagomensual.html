@@ -8,6 +8,7 @@
         <a href="{% url 'index' %}"
            class="nav-link">Home</a> <!-- Home Up -->
     </li>
+    {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
         <a href=""
            class="nav-link dropdown-toggle"
@@ -22,8 +23,10 @@
                class="dropdown-item">Tema</a>
         </div>
     </li>
+    
+    
     <li class="nav-item dropdown">
-        <a href=""
+        <a href="estadisticas.html"
            class="nav-link dropdown-toggle"
            data-toggle="dropdown"
            data-caret="false">Estadisticas</a>
@@ -34,6 +37,7 @@
                class="dropdown-item">Dashboard</a>
         </div>
     </li>
+    {% endif %}
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
@@ -55,6 +59,7 @@
         </form>
     </li> 
 </ul>
+
 {% endblock %}
 {%block appcontenido%}
 
@@ -154,6 +159,7 @@
                                 `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
                             );
                             console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+                            window.location.href = '';
                         }
                     } catch (error) {
                         console.error(error);

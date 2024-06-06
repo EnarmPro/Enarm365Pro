@@ -87,6 +87,7 @@ def index(request):
     return render(request, template_name, context)
 
 
+
 def simulador_free(request):
     template_name = 'Simulator/simulator_free.html'
     
@@ -888,8 +889,38 @@ def update_username_form(request):
 
 def pricing(request):
     template_name = 'pricing.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context ={
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name,context)
 
 
 def blog(request):
@@ -968,13 +999,73 @@ PAYPAL_SECRET = "EI5q1PoOQwNekpA5DkhvWwMEqtGXZ2AZfzIcPM8f-wV3z62HpFCVqb0Rf1xZK2U
 
 def paypal(request):
     template_name = 'pagomensual.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context ={
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name, context)
 
 def paypalanual(request):
     template_name = 'pagoanual.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context ={
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name,context)
 
 def get_paypal_access_token():
     response = requests.post(
@@ -1090,3 +1181,18 @@ def capture_order(request, order_id):
 
         return JsonResponse(capture_data)
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+def historialPagos(request):
+    template_name = 'payments.html'
+
+    user = request.user
+
+    historial_pagos = PaypalPago.objects.filter(fk_User=user)
+
+    context ={
+        'historial_pagos':historial_pagos
+    }
+
+    return render(request,template_name,context)

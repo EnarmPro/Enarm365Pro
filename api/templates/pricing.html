@@ -8,6 +8,7 @@
         <a href="{% url 'index' %}"
            class="nav-link">Home</a> <!-- Home Up -->
     </li>
+    {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
         <a href=""
            class="nav-link dropdown-toggle"
@@ -22,8 +23,10 @@
                class="dropdown-item">Tema</a>
         </div>
     </li>
+    
+    
     <li class="nav-item dropdown">
-        <a href=""
+        <a href="estadisticas.html"
            class="nav-link dropdown-toggle"
            data-toggle="dropdown"
            data-caret="false">Estadisticas</a>
@@ -34,8 +37,9 @@
                class="dropdown-item">Dashboard</a>
         </div>
     </li>
+    {% endif %}
     <li class="nav-item">
-        <a href=""
+        <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
     </li>
     
@@ -55,6 +59,7 @@
         </form>
     </li> 
 </ul>
+
 {% endblock %}
 {%block appcontenido%}
 
@@ -128,23 +133,62 @@
 
 <!-- Incluir SweetAlert JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
+{% if  es_mayor_a_30_dias %}
 <script>
-    // Mostrar SweetAlert modal
-    swal({
-        text: "¿Ya has cubierto el pago de la membresía PRO?",
-        icon: "info",
-        buttons: ["No", "si"],
-    })
-    .then((response) => {
-        if (response) {
-            swal("¡Excelente!", "Recuerda realizar el examen diagnóstico", "success");
-        } else {
-            swal("¡Atención!", "Por favor, realiza el pago de la membresía PRO", "warning");
-        }
-    });
+    
+ // Mostrar SweetAlert modal para el pago de la membresía PRO
+swal({
+    text: "¿Ya has cubierto el pago de la membresía PRO?",
+    icon: "info",
+    buttons: ["No", "Sí"],
+})
+.then((response) => {
+    if (response) {
+        swal("¡Excelente!", "Puedes continuar con el uso de la plataforma.", "success");
+    } else {
+        swal({
+            text: "Por favor, realiza el pago de la membresía PRO.",
+            icon: "warning",
+            buttons: ["Cancelar", "Ir a pagar"],
+        })
+        .then((goToPayment) => {
+            if (goToPayment) {
+                // Redirigir al usuario a la página de pago
+                window.location.href = "{% url 'pricing' %}"; // Cambia esto por la URL real de la página de pago
+            }
+        });
+    }
+});
 </script>
+
+{% else %}
+<script>
+swal({
+    text: "¿Has realizado tu examen diagnóstico?",
+    icon: "info",
+    buttons: ["No", "Sí"],
+})
+.then((response) => {
+    if (response) {
+        swal("¡Excelente!", "Puedes continuar con el uso de la plataforma.", "success");
+    } else {
+        swal({
+            text: "Por favor, realiza tu examen diagnóstico.",
+            icon: "info",
+            buttons: ["Cancelar", "Ir a la acción"],
+        })
+        .then((goToAction) => {
+            if (goToAction) {
+                // Redirigir al usuario a la acción requerida
+                window.location.href = "{% url 'simulador_diagnostico' %}"; // Cambia esto por la URL real de la acción requerida
+            }
+        });
+    }
+});
+
 </script>
+{% endif %}
+
 {% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
 
