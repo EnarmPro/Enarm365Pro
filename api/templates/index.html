@@ -324,6 +324,7 @@
                         </div>
                     </div>
                 </div>
+                {% if not es_mayor_a_30_dias %}
                 <div class="popoverContainer d-none">
                     <div class="media">
                         <div class="media-left mr-12pt">
@@ -385,7 +386,7 @@
                     </div>
 
                 </div>
-
+                {% endif %}
             </div>
 
             <div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
@@ -824,7 +825,7 @@
 
 <!-- Incluir SweetAlert JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
+{% if  es_mayor_a_30_dias %}
 <script>
     
    // Función para verificar si el usuario ha realizado el examen diagnóstico
@@ -887,6 +888,7 @@
         }
     });
 </script>
+{% endif %}
 {% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
 

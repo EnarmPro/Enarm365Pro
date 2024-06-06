@@ -5,12 +5,13 @@ from django import forms
 from django.db.models import Q,Count
 from collections import defaultdict
 from django.shortcuts import redirect, render
-from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario
+from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario, PaypalPago
 from django.http import JsonResponse
 from django.db.models import Max
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from datetime import date,  timedelta
+from django.utils import timezone
 import random, json
 from django.db.models.functions import TruncDay
 from django.contrib import messages
@@ -42,15 +43,38 @@ def registration_view(request):
 
 def index(request):
     template_name = 'index.html'
+    user = request.user
     mostrarTemario = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado')| Q(nombreTemario='Diagnostico')| Q(nombreTemario='Enarm 25') | Q(nombreTemario='Enarm 50')| Q(nombreTemario='Enarm 100')).order_by('-idTemarios')
     contadorTemario = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado')).order_by('-idTemarios').count()
     contadorEnarm = Temarios.objects.exclude(Q(nombreTemario='Gratuito') | Q(nombreTemario='Personalizado') | Q(nombreTemario='Urgencias')| Q(nombreTemario='Cirugía')| Q(nombreTemario='Ginecología')| Q(nombreTemario='Medicina Interna')| Q(nombreTemario='Pediatría')).order_by('-idTemarios').count()
     comentarioUser = ForoUsuarios.objects.all().order_by('-idForo')
+    
+    try:
+        # Obtener el registro más reciente de PaypalPago para el usuario actual
+        ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+        # Obtener la fecha actual
+        fecha_actual = timezone.now()
+
+        # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+        diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+        # Verificar si la diferencia es mayor a 30 días
+        if diferencia_tiempo.days > 30:
+            es_mayor_a_30_dias = True
+        else:
+            es_mayor_a_30_dias = False
+
+    except PaypalPago.DoesNotExist:
+        # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+        es_mayor_a_30_dias = True
+        
     context = {
         'mostrarTemario':mostrarTemario,
         'contadorTemario':contadorTemario,
         'contadorEnarm':contadorEnarm,
-        'comentarioUser': comentarioUser
+        'comentarioUser': comentarioUser,
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
     }
 
     return render(request, template_name, context)
@@ -937,7 +961,12 @@ PAYPAL_CLIENT_ID = "AWzz3HkhsKtu3uYu8mpSPsmG6zboy46fMwNPpCCo3fzZs7CXZd7KJy9U2wIm
 PAYPAL_SECRET = "EI5q1PoOQwNekpA5DkhvWwMEqtGXZ2AZfzIcPM8f-wV3z62HpFCVqb0Rf1xZK2UgwN5KL2mQWOOi1Ryl"  # Reemplaza con tu secret de PayPal
 
 def paypal(request):
-    template_name = 'checkout.html'
+    template_name = 'pagomensual.html'
+
+    return render(request,template_name)
+
+def paypalanual(request):
+    template_name = 'pagoanual.html'
 
     return render(request,template_name)
 
@@ -981,6 +1010,35 @@ def create_order(request):
         return JsonResponse(order_data)
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+def create_order_anual(request):
+    if request.method == 'POST':
+        access_token = get_paypal_access_token()
+        data = json.loads(request.body)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        payload = {
+            "intent": "CAPTURE",
+            "purchase_units": [{
+                "amount": {
+                    "currency_code": "USD",
+                    "value": "160.72"  # Ajusta según el precio total de los productos
+                }
+            }]
+        }
+        
+        response = requests.post(
+            f"{PAYPAL_API_URL}/v2/checkout/orders",
+            headers=headers,
+            json=payload
+        )
+        
+        order_data = response.json()
+        return JsonResponse(order_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
 
 def capture_order(request, order_id):
     if request.method == 'POST':
@@ -999,13 +1057,30 @@ def capture_order(request, order_id):
         user = request.user
         capture_data = response.json()
         create_time = capture_data['purchase_units'][0]['payments']['captures'][0]['create_time']
-        update_time = capture_data['purchase_units'][0]['payments']['captures'][0]['update_time']
+        value_coin = capture_data['purchase_units'][0]['payments']['captures'][0]['amount']['value']
         transaction_status = capture_data['purchase_units'][0]['payments']['captures'][0]['status']
         transaction_id = capture_data['purchase_units'][0]['payments']['captures'][0]['id']
-        print(create_time)
-        print(update_time)
-        print(transaction_status)
-        print(transaction_id)
-        print(user.username)
+
+        if float(value_coin) > 17:
+            # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
+            registro_pago = PaypalPago.objects.create(
+                fecha_pago=create_time,
+                monto_pago=value_coin,
+                status_pago=transaction_status,
+                folio_pago=transaction_id,
+                tipo_membresia='Anual',
+                fk_User=user  # Asignar el número de intento al registro
+            )
+        else:
+            # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
+            registro_pago = PaypalPago.objects.create(
+                fecha_pago=create_time,
+                monto_pago=value_coin,
+                status_pago=transaction_status,
+                folio_pago=transaction_id,
+                tipo_membresia='Mensual',
+                fk_User=user  # Asignar el número de intento al registro
+            )
+
         return JsonResponse(capture_data)
     return JsonResponse({"error": "Invalid request"}, status=400)

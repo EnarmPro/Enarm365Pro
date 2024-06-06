@@ -83,3 +83,14 @@ class blogComentario(models.Model):
     fk_User = models.ForeignKey(User,on_delete=models.CASCADE)
     class Meta:
         db_table = 'blogComentario'
+
+class PaypalPago(models.Model):
+    idPayment = models.AutoField(primary_key=True)
+    fecha_pago = models.DateTimeField()
+    monto_pago = models.CharField(max_length=255)
+    status_pago = models.CharField(max_length=255)
+    folio_pago = models.CharField(max_length=255)
+    tipo_membresia = models.CharField(max_length=255,default='')
+    fk_User = models.ForeignKey(User,on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'PaypalPago'
