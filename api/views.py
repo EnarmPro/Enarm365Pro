@@ -14,6 +14,11 @@ from datetime import date,  timedelta
 import random, json
 from django.db.models.functions import TruncDay
 from django.contrib import messages
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import requests
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -923,3 +928,84 @@ def blogmotivado(request):
     template_name = 'blog3.html'
 
     return render(request,template_name)
+
+# -------------------Paypal--------------------
+
+# URL de la API de PayPal
+PAYPAL_API_URL = "https://api.sandbox.paypal.com"  # Usa el endpoint de sandbox para pruebas
+PAYPAL_CLIENT_ID = "AWzz3HkhsKtu3uYu8mpSPsmG6zboy46fMwNPpCCo3fzZs7CXZd7KJy9U2wImAU3TwbsD3aCWTUgUinMl"  # Reemplaza con tu client ID de PayPal
+PAYPAL_SECRET = "EI5q1PoOQwNekpA5DkhvWwMEqtGXZ2AZfzIcPM8f-wV3z62HpFCVqb0Rf1xZK2UgwN5KL2mQWOOi1Ryl"  # Reemplaza con tu secret de PayPal
+
+def paypal(request):
+    template_name = 'checkout.html'
+
+    return render(request,template_name)
+
+def get_paypal_access_token():
+    response = requests.post(
+        f"{PAYPAL_API_URL}/v1/oauth2/token",
+        headers={"Accept": "application/json", "Accept-Language": "en_US"},
+        data={"grant_type": "client_credentials"},
+        auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET),
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
+
+
+def create_order(request):
+    if request.method == 'POST':
+        access_token = get_paypal_access_token()
+        data = json.loads(request.body)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        payload = {
+            "intent": "CAPTURE",
+            "purchase_units": [{
+                "amount": {
+                    "currency_code": "USD",
+                    "value": "16.02"  # Ajusta según el precio total de los productos
+                }
+            }]
+        }
+        
+        response = requests.post(
+            f"{PAYPAL_API_URL}/v2/checkout/orders",
+            headers=headers,
+            json=payload
+        )
+        
+        order_data = response.json()
+        return JsonResponse(order_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+def capture_order(request, order_id):
+    if request.method == 'POST':
+        access_token = get_paypal_access_token()
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        
+        response = requests.post(
+            f"{PAYPAL_API_URL}/v2/checkout/orders/{order_id}/capture",
+            headers=headers,
+        )
+        
+        user = request.user
+        capture_data = response.json()
+        create_time = capture_data['purchase_units'][0]['payments']['captures'][0]['create_time']
+        update_time = capture_data['purchase_units'][0]['payments']['captures'][0]['update_time']
+        transaction_status = capture_data['purchase_units'][0]['payments']['captures'][0]['status']
+        transaction_id = capture_data['purchase_units'][0]['payments']['captures'][0]['id']
+        print(create_time)
+        print(update_time)
+        print(transaction_status)
+        print(transaction_id)
+        print(user.username)
+        return JsonResponse(capture_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
