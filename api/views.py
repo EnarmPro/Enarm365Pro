@@ -119,6 +119,34 @@ def simulador_free(request):
         userName = None
         revisionIntento = None
 
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+    
+
     # Obtener todas las preguntas gratuitas
     preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:10]
 
@@ -153,6 +181,7 @@ def simulador_free(request):
             'userName': userName,
             'Intento': revisionIntento,
             'preguntas_con_respuestas_mezcladas': preguntas_con_respuestas_mezcladas,
+            'es_mayor_a_30_dias':es_mayor_a_30_dias
         }
 
     return render(request, template_name, context)
