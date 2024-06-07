@@ -6,27 +6,15 @@
 
 {%block content%}
 <body class="backregister">
-   <div class="logincontainer"> 
-       <form method="post" action="{% url 'register' %}" class="login">
-           {% csrf_token %}
-           <div>
-               {% for field in form %}
-                   <div class="form-group">
-                       {{ field.label_tag }}
-                       {{ field }}
-                       {% if field.name == "password" %}
-                           <button type="button" id="togglePassword" class="eye-button">
-                               <span id="eyeIcon" class="material-icons">👁️</span>
-                           </button>
-                       {% endif %}
-                   </div>
-               {% endfor %}
-           </div>
-           <button type="submit">Register</button>
-           <a href="{% url 'login' %}">Already have an account?</a>
-       </form>
-   </div>
-   <script src="{% static 'js/password_toggle.js' %}"></script>
-</body>
+   
 
+<div class = "logincontainer"> 
+   <form method="post" action="{%url 'register' %}" class="login">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Register</button>
+    <a href="{% url 'login' %}">Already have an account?</a>
+   </form>
+</div>
+</body>
 {%endblock%}
