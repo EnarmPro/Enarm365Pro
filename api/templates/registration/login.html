@@ -16,9 +16,9 @@
                         {{ field.label_tag }}
                         {{ field }}
                         {% if field.name == "password" %}
-                            <button type="button" id="togglePassword" class="eye-button">
-                                <span id="eyeIcon">👁️</span>
-                            </button>
+                        <button type="button" id="togglePassword" class="eye-button">
+                            <span id="eyeIcon" class="material-icons">visibility</span>
+                        </button>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -29,7 +29,7 @@
         </form>
     </div>
     <script src="{% static 'js/password_toggle.js' %}"></script>
-    
+
 </body>
 
 {%endblock%}

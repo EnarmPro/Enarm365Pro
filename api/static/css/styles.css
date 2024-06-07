@@ -315,8 +315,8 @@ th {
   border: none !important;
   cursor: pointer !important;
   position: absolute !important;
-  right: 30px;
-  top: 40%;
+  right: 0px;
+  top: 50%;
   transform: translateY(-50%);
 }
 
