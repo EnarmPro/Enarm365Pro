@@ -10,7 +10,9 @@
        <form method="post" action="{% url 'register' %}" class="login">
            {% csrf_token %}
            <div>
+            <div class="mb-16pt">
             <label for="">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</label>
+            </div>
                {% for field in form %}
                    <div class="form-group">
                        {{ field.label_tag }}
@@ -29,8 +31,8 @@
                    </div>
                {% endfor %}
                <div class="text-justify">
-               <label for="">Your password can’t be too similar to your other personal information.
-                  Your password must contain at least 8 characters.
+               <label for="">Your password can’t be too similar to your other personal information.</label>
+               <label for="">Your password must contain at least 8 characters.
                   Your password can’t be a commonly used password.
                   Your password can’t be entirely numeric.</label>
                </div>
