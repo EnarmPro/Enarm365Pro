@@ -17,7 +17,7 @@
                            {{ field }}
                            {% if field.name == "password1" or field.name == "password2" %}
                                <button type="button" class="toggle-password eye-button">
-                                   <span class="eyeIcon material-icons">visibility</span>
+                                   <span class="eyeIcon material-icons">👁️</span>
                                </button>
                            {% endif %}
                        </div>
@@ -31,7 +31,7 @@
            <a href="{% url 'login' %}">Already have an account?</a>
        </form>
    </div>
-   <script src="{% static 'js/password_toggle.js' %}"></script>
+   <script src="{% static 'js/password_toggle_2.js' %}"></script>
 </body>
 
 {%endblock%}
