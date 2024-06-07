@@ -1006,18 +1006,107 @@ def registertemascomentarios(request):
 
 def blogansiedad(request):
     template_name = 'blog1.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context = {
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+    return render(request,template_name,context)
 
 def blogestudio(request):
     template_name = 'blog2.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context = {
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+    return render(request,template_name,context)
+
+
 
 def blogmotivado(request):
     template_name = 'blog3.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-    return render(request,template_name)
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context = {
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+    return render(request,template_name,context)
 
 # -------------------Paypal--------------------
 

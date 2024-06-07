@@ -176,7 +176,7 @@
                                 type=""><i class="material-icons">search</i></button>
                     </div>
                 </div>
-
+                {% if not es_mayor_a_30_dias %}
                 <a href="{% url 'mostrar_enarm' %}"class="sidebar-brand ">
                     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
                         <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
@@ -185,6 +185,16 @@
 
                     <span>ENARM365</span>
                 </a>
+                {% else %}
+                <a href=""class="sidebar-brand ">
+                    <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+                        <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
+                         class="img-fluid"alt="logo" /></span>
+                    </span>
+
+                    <span>ENARM365</span>
+                </a>
+                {% endif %}
 
                 <div class="sidebar-heading">Estudiante</div>
                 <ul class="sidebar-menu">
