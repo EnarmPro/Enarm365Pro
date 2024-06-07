@@ -13,8 +13,13 @@
                {% for field in form %}
                    <div class="form-group">
                        {{ field.label_tag }}
+                       <label for="">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</label>
                        <div class="input-container">
                            {{ field }}
+                           <label for="">Your password can’t be too similar to your other personal information.
+                              Your password must contain at least 8 characters.
+                              Your password can’t be a commonly used password.
+                              Your password can’t be entirely numeric.</label>
                            {% if field.name == "password1" or field.name == "password2" %}
                                <button type="button" class="toggle-password eye-button">
                                    <span class="eyeIcon material-icons">👁️</span>
