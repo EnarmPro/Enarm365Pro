@@ -316,7 +316,7 @@ th {
   cursor: pointer !important;
   position: absolute !important;
   right: 0px;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
 }
 
