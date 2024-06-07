@@ -6,15 +6,30 @@
 
 {%block content%}
 <body class="backlogin">
-    <div class = "logincontainer"> 
-        <img class= "logologin" src="{%static 'img/Logowhite.png' %}" alt="Enarm 365 Logo">
-       <form method="post" action="{%url 'login'%}" class="login">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Login</button>
-        <a href="{% url 'password_reset' %}">Forgot Password?</a>
-        <a href="{% url 'register' %}">Register</a>
-       </form>
+    <div class="logincontainer"> 
+        <img class="logologin" src="{% static 'img/Logowhite.png' %}" alt="Enarm 365 Logo">
+        <form method="post" action="{% url 'login' %}" class="login">
+            {% csrf_token %}
+            <div>
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.name == "password" %}
+                            <button type="button" id="togglePassword" class="eye-button">
+                                <span id="eyeIcon">👁️</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit">Login</button>
+            <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            <a href="{% url 'register' %}">Register</a>
+        </form>
     </div>
+    <script src="{% static 'js/password_toggle.js' %}"></script>
+    
 </body>
+
 {%endblock%}
