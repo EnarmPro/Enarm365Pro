@@ -8,6 +8,7 @@
         <a href="{% url 'index' %}"
            class="nav-link">Home</a> <!-- Home Up -->
     </li>
+    {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
         <a href=""
            class="nav-link dropdown-toggle"
@@ -17,13 +18,15 @@
             <a href="{% url 'simulator_free' %}"
                class="dropdown-item">Gratuito</a>
             <a href="{% url 'mostrar_enarm' %}"
-               class="dropdown-item"><span class="mr-16pt">Enarm365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+               class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
             <a href="{% url 'mostrar_temas' %}"
                class="dropdown-item">Tema</a>
         </div>
     </li>
+    
+    
     <li class="nav-item dropdown">
-        <a href=""
+        <a href="estadisticas.html"
            class="nav-link dropdown-toggle"
            data-toggle="dropdown"
            data-caret="false">Estadisticas</a>
@@ -34,6 +37,7 @@
                class="dropdown-item">Dashboard</a>
         </div>
     </li>
+    {% endif %}
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
