@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         togglePassword.addEventListener('click', function (e) {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            eyeIcon.textContent = type === 'password' ? '👁‍🗨' : '🚫';
+            eyeIcon.textContent = type === 'password' ? '👁️' : '🚫';
         });
     }
 });
