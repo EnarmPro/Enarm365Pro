@@ -1302,7 +1302,7 @@ def create_order(request):
     if request.method == 'POST':
         access_token = get_paypal_access_token()
         data = json.loads(request.body)
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {access_token}",
@@ -1311,18 +1311,18 @@ def create_order(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "USD",
+                    "currency_code": "MXN",
                     "value": "16.02"  # Ajusta según el precio total de los productos
                 }
             }]
         }
-        
+
         response = requests.post(
             f"{PAYPAL_API_URL}/v2/checkout/orders",
             headers=headers,
             json=payload
         )
-        
+
         order_data = response.json()
         return JsonResponse(order_data)
     return JsonResponse({"error": "Invalid request"}, status=400)
