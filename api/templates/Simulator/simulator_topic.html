@@ -37,14 +37,13 @@
         </div>
     </li>
     {% endif %}
-    {% if es_mayor_a_30_dias %}
+    
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
     </li>
     
-    {% endif %}
-    
+
 <ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
         <a href=""
@@ -163,7 +162,22 @@
 
 <script src="{% static 'js/simulador-preguntas-tema.js'%}"></script>
 
+<script>
+    function prevenirRetroceso() {
+        // Añade un estado de historia falso
+        window.history.pushState(null, "", window.location.href);
+        // Escucha cambios en la historia
+        window.onpopstate = function() {
+            // Cuando el usuario intenta retroceder, añade de nuevo un estado falso
+            window.history.pushState(null, "", window.location.href);
+            // Muestra una alerta opcional
+            alert('No puedes regresar a la página anterior.');
+        };
+    }
 
+    // Llama a la función cuando el DOM esté completamente cargado
+    document.addEventListener('DOMContentLoaded', prevenirRetroceso);
+</script>
 
 
 

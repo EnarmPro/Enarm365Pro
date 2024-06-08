@@ -2,7 +2,6 @@
 {% load static%}
 {%block titleapp%} ENARM 365 {% endblock%}
 {% block navegador %}
-<!-- Inicia Menu Superior-->
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
     <li class="nav-item  active">
         <a href="{% url 'index' %}"
@@ -38,14 +37,13 @@
         </div>
     </li>
     {% endif %}
-    {% if es_mayor_a_30_dias %}
+    
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
     </li>
     
-    {% endif %}
-    
+
 <ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
         <a href=""
@@ -62,7 +60,6 @@
         </form>
     </li> 
 </ul>
-
 {% endblock %}
 {%block appcontenido%}
 
