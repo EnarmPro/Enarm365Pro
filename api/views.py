@@ -962,6 +962,7 @@ def pricing(request):
             es_mayor_a_30_dias = True
     else:
         es_mayor_a_30_dias = True
+        ultimo_pago = False
 
     context ={
         'es_mayor_a_30_dias':es_mayor_a_30_dias,
