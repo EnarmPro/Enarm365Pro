@@ -211,7 +211,7 @@
                         <a class="sidebar-menu-button"
                            href="{% url 'mostrar_temas' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
-                            <span class="sidebar-menu-text">Simuladores</span>
+                            <span class="sidebar-menu-text">Simuladores <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% else %}
@@ -219,7 +219,7 @@
                         <a class="sidebar-menu-button pago"
                            >
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
-                            <span class="sidebar-menu-text">Simuladores  <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            <span class="sidebar-menu-text">Simuladores <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% endif %}
@@ -228,7 +228,15 @@
                         <a class="sidebar-menu-button"
                            href="{% url 'resultados' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
-                            <span class="sidebar-menu-text">Estadisticas</span>
+                            <span class="sidebar-menu-text">Estadisticas <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button pago"
+                        >
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
+                            <span class="sidebar-menu-text">Estadisticas <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% endif %}
@@ -237,7 +245,15 @@
                         <a class="sidebar-menu-button"
                            href="{% url 'foro_comentarios' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
-                            <span class="sidebar-menu-text">Comentarios</span>
+                            <span class="sidebar-menu-text">Comentarios <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button pago"
+                           >
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
+                            <span class="sidebar-menu-text">Comentarios <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% endif %}
@@ -246,7 +262,15 @@
                         <a class="sidebar-menu-button"
                            href="{% url 'blog' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
-                            <span class="sidebar-menu-text">Foro Q&A</span>
+                            <span class="sidebar-menu-text">Foro Q&A <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button pago"
+                           >
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
+                            <span class="sidebar-menu-text">Foro Q&A <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% endif %}
@@ -266,14 +290,35 @@
                         <a class="sidebar-menu-button"
                            href="{% url 'dashboard' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
-                            <span class="sidebar-menu-text">Dashboard</span>
+                            <span class="sidebar-menu-text">Dashboard <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
                            href="{% url 'resultados' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
-                            <span class="sidebar-menu-text">Resultados</span>
+                            <span class="sidebar-menu-text">Resultados <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                        </a>
+                    </li>
+            
+
+                </ul>
+                {% else %}
+                <div class="sidebar-heading">Dashboard</div>
+                <ul class="sidebar-menu">
+
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button pago"
+                           >
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                            <span class="sidebar-menu-text">Dashboard <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button pago"
+                           >
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
+                            <span class="sidebar-menu-text">Resultados <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
             
