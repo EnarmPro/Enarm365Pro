@@ -64,7 +64,7 @@
 {%block appcontenido%}
 
 <div class=" mt-16pt" style="margin-left: 20%;">
-    <script src="https://www.paypal.com/sdk/js?client-id=AR33IQD3wlKl-gUPmmFnIKOt8IOLsMQWIvtEjHah4JPZlmJwbvx416M_fKll6I3DTNrqOlIsRFI7UypU&currency=MXN"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AR33IQD3wlKl-gUPmmFnIKOt8IOLsMQWIvtEjHah4JPZlmJwbvx416M_fKll6I3DTNrqOlIsRFI7UypU"></script>
     <div id="paypal-button-container"></div>
     <div id="result-message"></div>
     <script>
@@ -111,17 +111,17 @@
                             }),
                         });
     
-                        const orderData = await response.json();
+                        const responseData = await response.json();
     
-                        console.log('Order Data:', orderData);
+                        console.log('Response Data:', responseData);
     
-                        if (orderData.id) {
-                            return orderData.id;
+                        if (responseData.id) {
+                            return responseData.id;
                         } else {
-                            const errorDetail = orderData?.details?.[0];
+                            const errorDetail = responseData?.details?.[0];
                             const errorMessage = errorDetail
-                                ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                                : JSON.stringify(orderData);
+                                ? `${errorDetail.issue} ${errorDetail.description} (${responseData.debug_id})`
+                                : JSON.stringify(responseData);
     
                             throw new Error(errorMessage);
                         }
@@ -140,22 +140,22 @@
                             },
                         });
     
-                        const orderData = await response.json();
-                        const errorDetail = orderData?.details?.[0];
+                        const responseData = await response.json();
+                        const errorDetail = responseData?.details?.[0];
     
                         if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                             return actions.restart();
                         } else if (errorDetail) {
-                            throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-                        } else if (!orderData.purchase_units) {
-                            throw new Error(JSON.stringify(orderData));
+                            throw new Error(`${errorDetail.description} (${responseData.debug_id})`);
+                        } else if (!responseData.purchase_units) {
+                            throw new Error(JSON.stringify(responseData));
                         } else {
-                            const transaction = orderData.purchase_units[0].payments.captures[0] ||
-                                                orderData.purchase_units[0].payments.authorizations[0];
+                            const transaction = responseData.purchase_units[0].payments.captures[0] ||
+                                                responseData.purchase_units[0].payments.authorizations[0];
                             resultMessage(
                                 `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
                             );
-                            console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+                            console.log("Capture result", responseData, JSON.stringify(responseData, null, 2));
                             window.location.href = '/';
                         }
                     } catch (error) {
@@ -171,6 +171,7 @@
             }
         })();
     </script>
+    
     
     </div>
     {% block js %}
