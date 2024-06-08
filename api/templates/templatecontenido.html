@@ -209,9 +209,17 @@
                     {% if not es_mayor_a_30_dias %}
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
-                           href="{% url 'mostrar_temas' %}">
+                           >
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
                             <span class="sidebar-menu-text">Simuladores</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="{% url 'mostrar_temas' %}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
+                            <span class="sidebar-menu-text">Simuladores  <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
                     </li>
                     {% endif %}
@@ -289,13 +297,14 @@
                         </a>
                         <ul class="sidebar-submenu collapse sm-indent"
                             id="account_menu">
-                            
+                            {% if es_mayor_a_30_dias %}
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
                                 href="{% url 'pricing' %}">
                                     <span class="sidebar-menu-text">Pricing</span>
                                 </a>
                             </li>
+                            {% endif %}
                             
                             <li class="sidebar-menu-item">
                                 <a class="sidebar-menu-button"
