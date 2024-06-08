@@ -209,15 +209,15 @@
                     {% if not es_mayor_a_30_dias %}
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button"
-                           >
+                           href="{% url 'mostrar_temas' %}">
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
                             <span class="sidebar-menu-text">Simuladores</span>
                         </a>
                     </li>
                     {% else %}
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'mostrar_temas' %}">
+                        <a class="sidebar-menu-button pago"
+                           >
                             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
                             <span class="sidebar-menu-text">Simuladores  <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
                         </a>
@@ -360,6 +360,29 @@
         <!-- Preloader -->
         <script src="{%static 'js/preloader.js'%}"></script>
         <script src="{%static 'js/copy_paste.js'%}"></script>
+
+        <script>
+            // Función para mostrar la alerta
+            function mostrarAlerta(event) {
+                // Evita que el enlace se siga
+                event.preventDefault();
+                // Muestra la alerta
+                alert('Necesita pagar para acceder a este contenido.');
+            }
+    
+            // Asigna la función mostrarAlerta a los enlaces con la clase 'pago'
+            function asignarEvento() {
+                // Selecciona todos los enlaces con la clase 'pago'
+                var enlaces = document.querySelectorAll('a.pago');
+                // Asigna el evento click a cada enlace
+                enlaces.forEach(function(enlace) {
+                    enlace.addEventListener('click', mostrarAlerta);
+                });
+            }
+    
+            // Espera a que el DOM esté completamente cargado
+            document.addEventListener('DOMContentLoaded', asignarEvento);
+        </script>
 
         {% block js%}
         {% endblock %}
