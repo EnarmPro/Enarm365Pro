@@ -64,18 +64,18 @@
 {% endblock %}
 {%block appcontenido%}
 
-<div class=" mt-16pt" style="margin-left: 20%;">
+<div class=" mt-16pt mx-auto">
   <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons&enable-funding=venmo,paylater" data-sdk-integration-source="integrationbuilder_sc"></script>
     <div id="paypal-button-container"></div>
     <div id="result-message"></div>
-     <script>
+    <script>
         (function() {
             // Evita la ejecución múltiple
             if (window.paypalScriptLoaded) {
                 return;
             }
             window.paypalScriptLoaded = true;
-
+        
             // Función para obtener el token CSRF
             function getCookie(name) {
                 let cookieValue = null;
@@ -91,34 +91,33 @@
                 }
                 return cookieValue;
             }
-
+        
             const csrftoken = getCookie('csrftoken');
-
+        
             window.paypal.Buttons({
                 style: {
                     shape: 'rect',
                     layout: 'vertical',
                 },
                 createOrder: async function(data, actions) {
-                    try {
-                        const response = await fetch("{% url 'create_order_anual' %}", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                'X-CSRFToken': csrftoken
-                            },
-                            body: JSON.stringify({
-                                cart: [
-                                    {
-                                        id: "YOUR_PRODUCT_ID",
-                                        quantity: "YOUR_PRODUCT_QUANTITY",
-                                    },
-                                ],
-                            }),
-                        });
-
-                        const orderData = await response.json();
-
+                    // Devuelve la promesa directamente para asegurar que el navegador no bloquea la ventana emergente
+                    return fetch("{% url 'create_order_anual' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({
+                            cart: [
+                                {
+                                    id: "YOUR_PRODUCT_ID",
+                                    quantity: "YOUR_PRODUCT_QUANTITY",
+                                },
+                            ],
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(orderData => {
                         if (orderData.id) {
                             return orderData.id;
                         } else {
@@ -126,27 +125,29 @@
                             const errorMessage = errorDetail
                                 ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
                                 : JSON.stringify(orderData);
-
+        
                             throw new Error(errorMessage);
                         }
-                    } catch (error) {
+                    })
+                    .catch(error => {
                         console.error(error);
                         resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
-                    }
+                        throw error;  // Añadido para asegurar que se rechaza la promesa
+                    });
                 },
                 onApprove: async function(data, actions) {
-                    try {
-                        const response = await fetch(`/orders/${data.orderID}/capture`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                'X-CSRFToken': csrftoken
-                            },
-                        });
-
-                        const orderData = await response.json();
+                    // Devuelve la promesa directamente para asegurar que el navegador no bloquea la ventana emergente
+                    return fetch(`/orders/${data.orderID}/capture`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'X-CSRFToken': csrftoken
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(orderData => {
                         const errorDetail = orderData?.details?.[0];
-
+        
                         if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                             return actions.restart();
                         } else if (errorDetail) {
@@ -160,21 +161,23 @@
                                 `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
                             );
                             console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
-                            window.location.href = '';
+                            window.location.href = '/';
                         }
-                    } catch (error) {
+                    })
+                    .catch(error => {
                         console.error(error);
                         resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
-                    }
+                        throw error;  // Añadido para asegurar que se rechaza la promesa
+                    });
                 },
             }).render("#paypal-button-container");
-
+        
             function resultMessage(message) {
                 const container = document.querySelector("#result-message");
                 container.innerHTML = message;
             }
         })();
-    </script>
+        </script>
     </div>
     {% block js %}
 
