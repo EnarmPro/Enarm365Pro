@@ -64,6 +64,7 @@
 {% endblock %}
 {%block appcontenido%}
 
+{% if ultimo_pago %}
 <!-- Page Pricing //////////////////////////-->
 <div class="mx-auto mt-40pt ">
 <div class="row card-group-row mb-16pt mb-lg-40pt">
@@ -129,6 +130,40 @@
     </div>
 </div>
 </div>
+{% else %}
+<div class="mx-auto mt-40pt ">
+    <div class="row card-group-row mb-16pt mb-lg-40pt">
+        <div class="col-lg-10 col-sm-6 card-group-row__col">
+    
+            <div class="card card-group-row__card text-center o-hidden card--raised border-0">
+    
+                <span class="corner-ribbon corner-ribbon--default-right-top corner-ribbon--shadow bg-accent text-white">Plan</span>
+    
+                <div class="card-body d-flex flex-column">
+                    <div class="flex-grow mb-16pt">
+                        <span class="w-64 h-64 icon-holder icon-holder--outline-accent rounded-circle d-inline-flex mb-16pt">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <h4 class="mb-8pt">Estudiante</h4>
+                        <p class="text-70 mb-0">Ya tienes una membresia vigente espera a que se termine</p>
+                    </div>
+                    <p class="d-flex justify-content-center align-items-center m-0">
+                        <span class="h1 m-0 font-weight-normal">{{ultimo_pago.fecha_pago}}</span>
+                        <span class="h4 m-0 font-weight-normal">{{ultimo_pago.tipo_membresia}}</span>
+                    </p>
+                    <p class="lh-1 text-muted mb-0"><small>{{ultimo_pago.folio_pago}}</small></p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'paypal' %}"
+                       class="btn btn-primary">Vigente</a>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    </div>
+
+{% endif %}
 <!-- Page Pricing //////////////////////////-->
 {% block js %}
 
