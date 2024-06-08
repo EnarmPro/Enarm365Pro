@@ -38,10 +38,12 @@
         </div>
     </li>
     {% endif %}
+    {% if es_mayor_a_30_dias %}
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
     </li>
+    {% endif %}
     
 <ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
@@ -161,32 +163,6 @@ swal({
 });
 </script>
 
-{% else %}
-<script>
-swal({
-    text: "¿Has realizado tu examen diagnóstico?",
-    icon: "info",
-    buttons: ["No", "Sí"],
-})
-.then((response) => {
-    if (response) {
-        swal("¡Excelente!", "Puedes continuar con el uso de la plataforma.", "success");
-    } else {
-        swal({
-            text: "Por favor, realiza tu examen diagnóstico.",
-            icon: "info",
-            buttons: ["Cancelar", "Ir a la acción"],
-        })
-        .then((goToAction) => {
-            if (goToAction) {
-                // Redirigir al usuario a la acción requerida
-                window.location.href = "{% url 'simulador_diagnostico' %}"; // Cambia esto por la URL real de la acción requerida
-            }
-        });
-    }
-});
-
-</script>
 {% endif %}
 
 {% endblock %}

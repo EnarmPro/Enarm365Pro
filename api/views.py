@@ -73,15 +73,33 @@ def index(request):
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
             es_mayor_a_30_dias = True
+        try:
+            # Obtener el último intento del usuario actual
+            ultimo_intento = Intentos.objects.filter(fkUser=user,fkCategorias=5).latest('fechaIntento')
+
+            # Obtener la fecha actual
+            fecha_actual = date.today()
+            
+            # Obtener la fecha del último intento
+            fecha_ultimo_intento = ultimo_intento.fechaIntento
+            # Calcular la fecha hace 24 horas
+            fecha_hace_45_horas = fecha_actual + timedelta(days=45)
+            # Verificar si ha pasado más de 24 horas desde el último intento
+            revisionIntento =    fecha_ultimo_intento > fecha_hace_45_horas
+
+        except ObjectDoesNotExist:
+            revisionIntento = True
     else:
         es_mayor_a_30_dias = True
+        revisionIntento = None
         
     context = {
         'mostrarTemario':mostrarTemario,
         'contadorTemario':contadorTemario,
         'contadorEnarm':contadorEnarm,
         'comentarioUser': comentarioUser,
-        'es_mayor_a_30_dias':es_mayor_a_30_dias
+        'es_mayor_a_30_dias':es_mayor_a_30_dias,
+        'revisionIntento':revisionIntento
     }
 
     return render(request, template_name, context)

@@ -38,10 +38,13 @@
         </div>
     </li>
     {% endif %}
+    {% if es_mayor_a_30_dias %}
     <li class="nav-item">
         <a href="{% url 'pricing' %}"
            class="nav-link">Pricing</a>
     </li>
+    
+    {% endif %}
     
 <ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
@@ -59,6 +62,7 @@
         </form>
     </li> 
 </ul>
+
 {% endblock %}
 {%block appcontenido%}
 
@@ -829,6 +833,7 @@ swal({
 </script>
 
 {% else %}
+{% if revisionIntento %}
 <script>
 swal({
     text: "¿Has realizado tu examen diagnóstico?",
@@ -853,6 +858,7 @@ swal({
     }
 });
 </script>
+{% endif %}
 {% endif %}
 {% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
