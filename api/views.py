@@ -62,13 +62,14 @@ def index(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -150,13 +151,14 @@ def simulador_free(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -949,13 +951,14 @@ def pricing(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1041,13 +1044,14 @@ def blogansiedad(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1075,13 +1079,14 @@ def blogestudio(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1111,13 +1116,14 @@ def blogmotivado(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1152,13 +1158,14 @@ def paypal(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1187,13 +1194,14 @@ def paypaltrimestral(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1222,13 +1230,14 @@ def paypalsemestral(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
@@ -1257,13 +1266,14 @@ def paypalanual(request):
             # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
             diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            # Verificar el tipo de membresía y la diferencia de tiempo
             if ultimo_pago.tipo_membresia == 'Mensual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
             elif ultimo_pago.tipo_membresia == 'Anual':
                 es_mayor_a_30_dias = diferencia_tiempo.days > 365
-            else:
-                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
 
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
