@@ -1311,7 +1311,7 @@ def create_order(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "MXN",
+                    "currency_code": "USD",
                     "value": "16.02"  # Ajusta según el precio total de los productos
                 }
             }]
