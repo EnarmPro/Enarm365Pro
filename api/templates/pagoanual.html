@@ -99,8 +99,8 @@
                     shape: 'rect',
                     layout: 'vertical',
                 },
-                createOrder: async function(data, actions) {
-                    // Devuelve la promesa directamente para asegurar que el navegador no bloquea la ventana emergente
+                createOrder: function(data, actions) {
+                    // Realiza la llamada fetch directamente desde el manejador de clic
                     return fetch("{% url 'create_order_anual' %}", {
                         method: "POST",
                         headers: {
@@ -132,11 +132,11 @@
                     .catch(error => {
                         console.error(error);
                         resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
-                        throw error;  // Añadido para asegurar que se rechaza la promesa
+                        throw error;  // Asegura que la promesa se rechaza correctamente
                     });
                 },
-                onApprove: async function(data, actions) {
-                    // Devuelve la promesa directamente para asegurar que el navegador no bloquea la ventana emergente
+                onApprove: function(data, actions) {
+                    // Realiza la captura directamente desde el manejador de clic
                     return fetch(`/orders/${data.orderID}/capture`, {
                         method: "POST",
                         headers: {
@@ -167,7 +167,7 @@
                     .catch(error => {
                         console.error(error);
                         resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
-                        throw error;  // Añadido para asegurar que se rechaza la promesa
+                        throw error;  // Asegura que la promesa se rechaza correctamente
                     });
                 },
             }).render("#paypal-button-container");
