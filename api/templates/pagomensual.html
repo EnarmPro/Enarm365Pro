@@ -67,14 +67,14 @@
   <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons&enable-funding=venmo,paylater" data-sdk-integration-source="integrationbuilder_sc"></script>
     <div id="paypal-button-container"></div>
     <div id="result-message"></div>
-     <script>
+    <script>
         (function() {
             // Evita la ejecución múltiple
             if (window.paypalScriptLoaded) {
                 return;
             }
             window.paypalScriptLoaded = true;
-
+    
             // Función para obtener el token CSRF
             function getCookie(name) {
                 let cookieValue = null;
@@ -90,9 +90,9 @@
                 }
                 return cookieValue;
             }
-
+    
             const csrftoken = getCookie('csrftoken');
-
+    
             window.paypal.Buttons({
                 style: {
                     shape: 'rect',
@@ -107,17 +107,14 @@
                                 'X-CSRFToken': csrftoken
                             },
                             body: JSON.stringify({
-                                cart: [
-                                    {
-                                        id: "1",
-                                        quantity: "1",
-                                    },
-                                ],
+                                cost: "10.00"  // Suponiendo que el costo es 10.00, reemplaza con el valor correcto
                             }),
                         });
-
+    
                         const orderData = await response.json();
-
+    
+                        console.log('Order Data:', orderData);
+    
                         if (orderData.id) {
                             return orderData.id;
                         } else {
@@ -125,11 +122,11 @@
                             const errorMessage = errorDetail
                                 ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
                                 : JSON.stringify(orderData);
-
+    
                             throw new Error(errorMessage);
                         }
                     } catch (error) {
-                        console.error(error);
+                        console.error('Error in createOrder:', error);
                         resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
                     }
                 },
@@ -142,10 +139,10 @@
                                 'X-CSRFToken': csrftoken
                             },
                         });
-
+    
                         const orderData = await response.json();
                         const errorDetail = orderData?.details?.[0];
-
+    
                         if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                             return actions.restart();
                         } else if (errorDetail) {
@@ -162,18 +159,19 @@
                             window.location.href = '/';
                         }
                     } catch (error) {
-                        console.error(error);
+                        console.error('Error in onApprove:', error);
                         resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
                     }
                 },
             }).render("#paypal-button-container");
-
+    
             function resultMessage(message) {
                 const container = document.querySelector("#result-message");
                 container.innerHTML = message;
             }
         })();
     </script>
+    
     </div>
     {% block js %}
 
