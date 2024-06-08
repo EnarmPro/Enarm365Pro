@@ -1172,6 +1172,76 @@ def paypal(request):
 
     return render(request,template_name, context)
 
+def paypaltrimestral(request):
+    template_name = 'pagotrimestral.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context ={
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name, context)
+
+def paypalsemestral(request):
+    template_name = 'pagosemestral.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            # Verificar el tipo de membresía y la diferencia de tiempo
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+            else:
+                es_mayor_a_30_dias = True  # Manejar otros casos de membresía si existen
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+    else:
+        es_mayor_a_30_dias = True
+
+    context ={
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name, context)
+
 def paypalanual(request):
     template_name = 'pagoanual.html'
     if request.user.is_authenticated:
@@ -1276,6 +1346,64 @@ def create_order_anual(request):
         return JsonResponse(order_data)
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+def create_order_trimestral(request):
+    if request.method == 'POST':
+        access_token = get_paypal_access_token()
+        data = json.loads(request.body)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        payload = {
+            "intent": "CAPTURE",
+            "purchase_units": [{
+                "amount": {
+                    "currency_code": "USD",
+                    "value": "48.88"  # Ajusta según el precio total de los productos
+                }
+            }]
+        }
+        
+        response = requests.post(
+            f"{PAYPAL_API_URL}/v2/checkout/orders",
+            headers=headers,
+            json=payload
+        )
+        
+        order_data = response.json()
+        return JsonResponse(order_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+def create_order_semestral(request):
+    if request.method == 'POST':
+        access_token = get_paypal_access_token()
+        data = json.loads(request.body)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        payload = {
+            "intent": "CAPTURE",
+            "purchase_units": [{
+                "amount": {
+                    "currency_code": "USD",
+                    "value": "97.75"  # Ajusta según el precio total de los productos
+                }
+            }]
+        }
+        
+        response = requests.post(
+            f"{PAYPAL_API_URL}/v2/checkout/orders",
+            headers=headers,
+            json=payload
+        )
+        
+        order_data = response.json()
+        return JsonResponse(order_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
 
 def capture_order(request, order_id):
     if request.method == 'POST':
@@ -1298,17 +1426,7 @@ def capture_order(request, order_id):
         transaction_status = capture_data['purchase_units'][0]['payments']['captures'][0]['status']
         transaction_id = capture_data['purchase_units'][0]['payments']['captures'][0]['id']
 
-        if float(value_coin) > 17:
-            # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
-            registro_pago = PaypalPago.objects.create(
-                fecha_pago=create_time,
-                monto_pago=value_coin,
-                status_pago=transaction_status,
-                folio_pago=transaction_id,
-                tipo_membresia='Anual',
-                fk_User=user  # Asignar el número de intento al registro
-            )
-        else:
+        if float(value_coin) < 17:
             # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
             registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
@@ -1316,6 +1434,36 @@ def capture_order(request, order_id):
                 status_pago=transaction_status,
                 folio_pago=transaction_id,
                 tipo_membresia='Mensual',
+                fk_User=user  # Asignar el número de intento al registro
+            )
+        elif float(value_coin) > 17 and float(value_coin) < 50:
+               registro_pago = PaypalPago.objects.create(
+                fecha_pago=create_time,
+                monto_pago=value_coin,
+                status_pago=transaction_status,
+                folio_pago=transaction_id,
+                tipo_membresia='Trimestral',
+                fk_User=user  # Asignar el número de intento al registro
+            )
+        elif float(value_coin) > 50 and float(value_coin) < 100:
+             # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
+            registro_pago = PaypalPago.objects.create(
+                fecha_pago=create_time,
+                monto_pago=value_coin,
+                status_pago=transaction_status,
+                folio_pago=transaction_id,
+                tipo_membresia='Semestral',
+                fk_User=user  # Asignar el número de intento al registro
+            )
+
+        else:
+            # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
+            registro_pago = PaypalPago.objects.create(
+                fecha_pago=create_time,
+                monto_pago=value_coin,
+                status_pago=transaction_status,
+                folio_pago=transaction_id,
+                tipo_membresia='Anual',
                 fk_User=user  # Asignar el número de intento al registro
             )
 

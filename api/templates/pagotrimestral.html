@@ -1,0 +1,183 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block navegador %}
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}"
+           class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    {% if not es_mayor_a_30_dias %}
+    <li class="nav-item dropdown">
+        <a href=""
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}"
+               class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}"
+               class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}"
+               class="dropdown-item">Tema</a>
+        </div>
+    </li>
+    
+    
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html"
+           class="nav-link dropdown-toggle"
+           data-toggle="dropdown"
+           data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}"
+               class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    {% endif %}
+    
+    <li class="nav-item">
+        <a href="{% url 'pricing' %}"
+           class="nav-link">Pricing</a>
+    </li>
+    
+
+<ul class="nav navbar-nav ml-auto mr-0">
+    <li class="nav-item">
+        <a href=""
+           class="nav-link"
+           data-toggle="tooltip"
+           data-title="Login"
+           data-placement="bottom"
+           data-boundary="window"><i class="material-icons">lock_open</i></a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+             {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </form>
+    </li> 
+</ul>
+{% endblock %}
+{%block appcontenido%}
+
+<div class=" mt-16pt" style="margin-left: 20%;">
+  <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons&enable-funding=venmo,paylater" data-sdk-integration-source="integrationbuilder_sc"></script>
+    <div id="paypal-button-container"></div>
+    <div id="result-message"></div>
+     <script>
+        (function() {
+            // Evita la ejecución múltiple
+            if (window.paypalScriptLoaded) {
+                return;
+            }
+            window.paypalScriptLoaded = true;
+
+            // Función para obtener el token CSRF
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            const csrftoken = getCookie('csrftoken');
+
+            window.paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    layout: 'vertical',
+                },
+                createOrder: async function(data, actions) {
+                    try {
+                        const response = await fetch("{% url 'create_order_trimestral' %}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: JSON.stringify({
+                                cart: [
+                                    {
+                                        id: "YOUR_PRODUCT_ID",
+                                        quantity: "YOUR_PRODUCT_QUANTITY",
+                                    },
+                                ],
+                            }),
+                        });
+
+                        const orderData = await response.json();
+
+                        if (orderData.id) {
+                            return orderData.id;
+                        } else {
+                            const errorDetail = orderData?.details?.[0];
+                            const errorMessage = errorDetail
+                                ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+                                : JSON.stringify(orderData);
+
+                            throw new Error(errorMessage);
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+                    }
+                },
+                onApprove: async function(data, actions) {
+                    try {
+                        const response = await fetch(`/orders/${data.orderID}/capture`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'X-CSRFToken': csrftoken
+                            },
+                        });
+
+                        const orderData = await response.json();
+                        const errorDetail = orderData?.details?.[0];
+
+                        if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+                            return actions.restart();
+                        } else if (errorDetail) {
+                            throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
+                        } else if (!orderData.purchase_units) {
+                            throw new Error(JSON.stringify(orderData));
+                        } else {
+                            const transaction = orderData.purchase_units[0].payments.captures[0] ||
+                                                orderData.purchase_units[0].payments.authorizations[0];
+                            resultMessage(
+                                `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
+                            );
+                            console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+                            window.location.href = '';
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
+                    }
+                },
+            }).render("#paypal-button-container");
+
+            function resultMessage(message) {
+                const container = document.querySelector("#result-message");
+                container.innerHTML = message;
+            }
+        })();
+    </script>
+    </div>
+    {% block js %}
+
+{% endblock %}
+<!-- // END Page Content /////////////////////////////////////////////////-->
+
+{% endblock%}

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos
+from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,9 +51,14 @@ urlpatterns = [
     path('blogmotivado/', blogmotivado, name='blogmotivado'),
     path('paypal/', paypal, name='paypal'),
     path('orders', create_order, name='create_order'),
-    path('orders_anual', create_order_anual, name='create_order_anual'),
+    path('orders', create_order, name='create_order'),
+    path('create_order_trimestral', create_order_trimestral, name='create_order_trimestral'),
+    path('create_order_semestral', create_order_semestral, name='create_order_semestral'),
+    path('create_order_anual', create_order_anual, name='create_order_anual'),
     path('orders/<str:order_id>/capture', capture_order, name='capture_order'),
     path('paypalanual/', paypalanual, name='paypalanual'),
+    path('paypaltrimestral/', paypaltrimestral, name='paypaltrimestral'),
+    path('paypalsemestral/', paypalsemestral, name='paypalsemestral'),
     path('historial_pagos/', historialPagos, name='historial_pagos'),
     
 ]
