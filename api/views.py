@@ -1140,8 +1140,8 @@ def blogmotivado(request):
 
 # URL de la API de PayPal
 PAYPAL_API_URL = "https://api.sandbox.paypal.com"  # Usa el endpoint de sandbox para pruebas
-PAYPAL_CLIENT_ID = "AWzz3HkhsKtu3uYu8mpSPsmG6zboy46fMwNPpCCo3fzZs7CXZd7KJy9U2wImAU3TwbsD3aCWTUgUinMl"  # Reemplaza con tu client ID de PayPal
-PAYPAL_SECRET = "EI5q1PoOQwNekpA5DkhvWwMEqtGXZ2AZfzIcPM8f-wV3z62HpFCVqb0Rf1xZK2UgwN5KL2mQWOOi1Ryl"  # Reemplaza con tu secret de PayPal
+PAYPAL_CLIENT_ID = "AQ775mnIfb4xNzjBsFfuDh67Ubatx_Hu_Ek5wur3MpoBeR8LIeX1UvZqdgcBoChKHgV7RTjD-Sh6PA_b"  # Reemplaza con tu client ID de PayPal
+PAYPAL_SECRET = "EL6vnaSKnNJLvK1mOG19lBMTx7uYXbK-q4yO9SmRr4SvyXydu6AcG3aWDUspi1G28qrPIT7fCVKqnsmF"  # Reemplaza con tu secret de PayPal
 
 def paypal(request):
     template_name = 'pagomensual.html'
@@ -1311,7 +1311,7 @@ def create_order(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "USD",
+                    "currency_code": "MXN",
                     "value": "16.02"  # Ajusta según el precio total de los productos
                 }
             }]
