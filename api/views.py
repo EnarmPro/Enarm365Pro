@@ -960,11 +960,11 @@ def pricing(request):
         except PaypalPago.DoesNotExist:
             # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
             es_mayor_a_30_dias = True
-            ultimo_pago = False  # Ajustar a None si no hay registro
+            ultimo_pago = None  # Ajustar a None si no hay registro
 
     else:
         es_mayor_a_30_dias = True
-        ultimo_pago = False  # Ajustar a None si el usuario no está autenticado
+        ultimo_pago = None  # Ajustar a None si el usuario no está autenticado
 
     context = {
         'es_mayor_a_30_dias': es_mayor_a_30_dias,
