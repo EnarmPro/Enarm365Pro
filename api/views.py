@@ -1341,7 +1341,7 @@ def create_order_anual(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "USD",
-                    "value": "160.72"  # Ajusta según el precio total de los productos
+                    "value": "162.92"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1370,7 +1370,7 @@ def create_order_trimestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "USD",
-                    "value": "48.88"  # Ajusta según el precio total de los productos
+                    "value": "34.16"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1399,7 +1399,7 @@ def create_order_semestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "USD",
-                    "value": "97.75"  # Ajusta según el precio total de los productos
+                    "value": "81.46"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1446,7 +1446,7 @@ def capture_order(request, order_id):
                 tipo_membresia='Mensual',
                 fk_User=user  # Asignar el número de intento al registro
             )
-        elif float(value_coin) > 17 and float(value_coin) < 50:
+        elif float(value_coin) > 17 and float(value_coin) < 40:
                registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
                 monto_pago=value_coin,
@@ -1455,7 +1455,7 @@ def capture_order(request, order_id):
                 tipo_membresia='Trimestral',
                 fk_User=user  # Asignar el número de intento al registro
             )
-        elif float(value_coin) > 50 and float(value_coin) < 100:
+        elif float(value_coin) > 40 and float(value_coin) < 90:
              # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
             registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
