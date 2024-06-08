@@ -69,7 +69,7 @@
     <script>
         paypal.Buttons({
             createOrder: function(data, actions) {
-                return fetch('/create-order', {
+                return fetch("{% url 'create_order'%}", {
                     method: 'post',
                     headers: {
                         'content-type': 'application/json'
