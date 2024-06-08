@@ -148,14 +148,18 @@
                         <p class="text-70 mb-0">Ya tienes una membresia vigente espera a que se termine</p>
                     </div>
                     <p class="d-flex justify-content-center align-items-center m-0">
-                        <span class="h1 m-0 font-weight-normal">{{ultimo_pago.fecha_pago}}</span>
-                        <span class="h4 m-0 font-weight-normal">{{ultimo_pago.tipo_membresia}}</span>
+                        <span class="h3 m-0 font-weight-normal">{{ultimo_pago.fecha_pago}}</span>
+                        
                     </p>
-                    <p class="lh-1 text-muted mb-0"><small>{{ultimo_pago.folio_pago}}</small></p>
+                    <p class="d-flex justify-content-center align-items-center m-0">
+                        <span class="h4 m-0 font-weight-normal">{{ultimo_pago.tipo_membresia}}</span>
+                        
+                    </p>
+                    
+                    <p class="lh-1 text-muted mb-0"><small>Folio: {{ultimo_pago.folio_pago}}</small></p>
                 </div>
                 <div class="card-footer">
-                    <a href="{% url 'paypal' %}"
-                       class="btn btn-primary">Vigente</a>
+                       class="btn btn-primary">Vigente
                 </div>
             </div>
     
