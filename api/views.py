@@ -1140,8 +1140,8 @@ def blogmotivado(request):
 
 # URL de la API de PayPal
 PAYPAL_API_URL = "https://api.sandbox.paypal.com"  # Usa el endpoint de sandbox para pruebas
-PAYPAL_CLIENT_ID = "AQ775mnIfb4xNzjBsFfuDh67Ubatx_Hu_Ek5wur3MpoBeR8LIeX1UvZqdgcBoChKHgV7RTjD-Sh6PA_b"  # Reemplaza con tu client ID de PayPal
-PAYPAL_SECRET = "EL6vnaSKnNJLvK1mOG19lBMTx7uYXbK-q4yO9SmRr4SvyXydu6AcG3aWDUspi1G28qrPIT7fCVKqnsmF"  # Reemplaza con tu secret de PayPal
+PAYPAL_CLIENT_ID = "AR33IQD3wlKl-gUPmmFnIKOt8IOLsMQWIvtEjHah4JPZlmJwbvx416M_fKll6I3DTNrqOlIsRFI7UypU"  # Reemplaza con tu client ID de PayPal
+PAYPAL_SECRET = "EGwE8b-QBAlMt9P0FoyH_I4PVIVEgdnhjTtHFfwL4lZljxGfl3muuv8ZaHx-78SPIO30PwSgefaAhUQF"  # Reemplaza con tu secret de PayPal
 
 def paypal(request):
     template_name = 'pagomensual.html'
