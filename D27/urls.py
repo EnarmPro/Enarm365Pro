@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral
+from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral,PersonasPagos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -60,5 +60,6 @@ urlpatterns = [
     path('paypaltrimestral/', paypaltrimestral, name='paypaltrimestral'),
     path('paypalsemestral/', paypalsemestral, name='paypalsemestral'),
     path('historial_pagos/', historialPagos, name='historial_pagos'),
+    path('PersonasPagos/', PersonasPagos, name='PersonasPagos'),
     
 ]

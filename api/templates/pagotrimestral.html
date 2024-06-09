@@ -63,18 +63,20 @@
 {% endblock %}
 {%block appcontenido%}
 
-<div class=" mt-16pt" style="margin-left: 20%;">
-  <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons&enable-funding=venmo,paylater" data-sdk-integration-source="integrationbuilder_sc"></script>
+
+<div class=" mt-16pt mx-auto" >
+    <h5>Haz tu pago de manera más fácil desde una computadora.</h5>
+    <script src="https://www.paypal.com/sdk/js?client-id=AR33IQD3wlKl-gUPmmFnIKOt8IOLsMQWIvtEjHah4JPZlmJwbvx416M_fKll6I3DTNrqOlIsRFI7UypU&currency=MXN"></script>
     <div id="paypal-button-container"></div>
     <div id="result-message"></div>
-     <script>
+    <script>
         (function() {
             // Evita la ejecución múltiple
             if (window.paypalScriptLoaded) {
                 return;
             }
             window.paypalScriptLoaded = true;
-
+    
             // Función para obtener el token CSRF
             function getCookie(name) {
                 let cookieValue = null;
@@ -90,9 +92,9 @@
                 }
                 return cookieValue;
             }
-
+    
             const csrftoken = getCookie('csrftoken');
-
+    
             window.paypal.Buttons({
                 style: {
                     shape: 'rect',
@@ -107,29 +109,26 @@
                                 'X-CSRFToken': csrftoken
                             },
                             body: JSON.stringify({
-                                cart: [
-                                    {
-                                        id: "YOUR_PRODUCT_ID",
-                                        quantity: "YOUR_PRODUCT_QUANTITY",
-                                    },
-                                ],
+                                cost: "00.00"  // Suponiendo que el costo es 10.00, reemplaza con el valor correcto
                             }),
                         });
-
-                        const orderData = await response.json();
-
-                        if (orderData.id) {
-                            return orderData.id;
+    
+                        const responseData = await response.json();
+    
+                        console.log('Response Data:', responseData);
+    
+                        if (responseData.id) {
+                            return responseData.id;
                         } else {
-                            const errorDetail = orderData?.details?.[0];
+                            const errorDetail = responseData?.details?.[0];
                             const errorMessage = errorDetail
-                                ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                                : JSON.stringify(orderData);
-
+                                ? `${errorDetail.issue} ${errorDetail.description} (${responseData.debug_id})`
+                                : JSON.stringify(responseData);
+    
                             throw new Error(errorMessage);
                         }
                     } catch (error) {
-                        console.error(error);
+                        console.error('Error in createOrder:', error);
                         resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
                     }
                 },
@@ -142,38 +141,40 @@
                                 'X-CSRFToken': csrftoken
                             },
                         });
-
-                        const orderData = await response.json();
-                        const errorDetail = orderData?.details?.[0];
-
+    
+                        const responseData = await response.json();
+                        const errorDetail = responseData?.details?.[0];
+    
                         if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                             return actions.restart();
                         } else if (errorDetail) {
-                            throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-                        } else if (!orderData.purchase_units) {
-                            throw new Error(JSON.stringify(orderData));
+                            throw new Error(`${errorDetail.description} (${responseData.debug_id})`);
+                        } else if (!responseData.purchase_units) {
+                            throw new Error(JSON.stringify(responseData));
                         } else {
-                            const transaction = orderData.purchase_units[0].payments.captures[0] ||
-                                                orderData.purchase_units[0].payments.authorizations[0];
+                            const transaction = responseData.purchase_units[0].payments.captures[0] ||
+                                                responseData.purchase_units[0].payments.authorizations[0];
                             resultMessage(
                                 `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
                             );
-                            console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+                            console.log("Capture result", responseData, JSON.stringify(responseData, null, 2));
                             window.location.href = '/';
                         }
                     } catch (error) {
-                        console.error(error);
+                        console.error('Error in onApprove:', error);
                         resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
                     }
                 },
             }).render("#paypal-button-container");
-
+    
             function resultMessage(message) {
                 const container = document.querySelector("#result-message");
                 container.innerHTML = message;
             }
         })();
     </script>
+    
+    
     </div>
     {% block js %}
 

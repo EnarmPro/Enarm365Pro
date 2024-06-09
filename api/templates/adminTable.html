@@ -61,6 +61,7 @@
     </li> 
 </ul>
 
+
     {% endblock %}
     {%block appcontenido%}
 
@@ -71,7 +72,7 @@
     <div class="page-section">
         <div class="container page__container">
             <div class="page-headline text-center">
-                <h2>Historial de Pagos</h2>
+                <h2>Usuarios Generales</h2>
             </div>
         </div>
     </div>
@@ -80,41 +81,61 @@
             <div class="col-md-8 col-lg-10">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="text-underline">Pagos</h2>
-                        <table id="topicsTable">
+                        <!-- Usuarios con pago -->
+
+                        <h2>Miembros con membresia</h2>
+                        <table>
                             <thead>
                                 <tr>
-                                    <th># Pago</th>
-                                    <th>Fecha pago</th>
-                                    <th># Folio</th>
-                                    <th>Monto (MXN)</th>
+                                    <th>Nombre de usuario</th>
+                                    <th>Email</th>
                                     <th>Tipo de membresía</th>
-
-
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for pagos in historial_pagos %}
+                                {% for usuario, pagos in pagos_por_usuario.items %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ pagos.fecha_pago }}</td>
-                                    <td>{{ pagos.folio_pago }}</td>
-                                    <td>${{ pagos.monto_pago }}</td>
-                                    <td>{{ pagos.tipo_membresia }}</td>
+                                    <td rowspan="{{ pagos|length }}">{{ usuario.username }}</td>
+                                    <td rowspan="{{ pagos|length }}">{{ usuario.email }}</td>
+                                    {% for pago in pagos %}
+                                    <td>{{ pago.tipo_membresia }}</td>
+                                    {% endfor %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        <h2>Miembros gratuitos</h2>
+                        <!-- Usuarios sin pago -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre de usuario</th>
+                                    <th>Email</th>
+                                    <th>Tipo de membresía</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for usuario in usuarios_sin_pago %}
+                                <tr>
+                                    <td>{{ usuario.username }}</td>
+                                    <td>{{ usuario.email }}</td>
+                                    <td>No tiene pago</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
-    
-   
-    
+
+
+
+
+
     <!-- Termina Feedback -->
 
     {% block js %}

@@ -100,7 +100,8 @@ def index(request):
         'contadorEnarm':contadorEnarm,
         'comentarioUser': comentarioUser,
         'es_mayor_a_30_dias':es_mayor_a_30_dias,
-        'revisionIntento':revisionIntento
+        'revisionIntento':revisionIntento,
+        
     }
 
     return render(request, template_name, context)
@@ -1139,9 +1140,20 @@ def blogmotivado(request):
 # -------------------Paypal--------------------
 
 # URL de la API de PayPal
-PAYPAL_API_URL = "https://api.sandbox.paypal.com"  # Usa el endpoint de sandbox para pruebas
-PAYPAL_CLIENT_ID = "AR33IQD3wlKl-gUPmmFnIKOt8IOLsMQWIvtEjHah4JPZlmJwbvx416M_fKll6I3DTNrqOlIsRFI7UypU"  # Reemplaza con tu client ID de PayPal
-PAYPAL_SECRET = "EGwE8b-QBAlMt9P0FoyH_I4PVIVEgdnhjTtHFfwL4lZljxGfl3muuv8ZaHx-78SPIO30PwSgefaAhUQF"  # Reemplaza con tu secret de PayPal
+PAYPAL_API_URL = "https://api.paypal.com"  # Utiliza el endpoint de producción
+PAYPAL_CLIENT_ID = "AQ775mnIfb4xNzjBsFfuDh67Ubatx_Hu_Ek5wur3MpoBeR8LIeX1UvZqdgcBoChKHgV7RTjD-Sh6PA_b"  # Reemplaza con tu client ID de PayPal
+PAYPAL_SECRET = "EL6vnaSKnNJLvK1mOG19lBMTx7uYXbK-q4yO9SmRr4SvyXydu6AcG3aWDUspi1G28qrPIT7fCVKqnsmF"  # Reemplaza con tu secret de PayPal
+
+def get_paypal_access_token():
+    response = requests.post(
+        f"{PAYPAL_API_URL}/v1/oauth2/token",
+        headers={"Accept": "application/json", "Accept-Language": "en_US"},
+        data={"grant_type": "client_credentials"},
+        auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET),
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
+
 
 def paypal(request):
     template_name = 'pagomensual.html'
@@ -1287,15 +1299,6 @@ def paypalanual(request):
 
     return render(request,template_name,context)
 
-def get_paypal_access_token():
-    response = requests.post(
-        f"{PAYPAL_API_URL}/v1/oauth2/token",
-        headers={"Accept": "application/json", "Accept-Language": "en_US"},
-        data={"grant_type": "client_credentials"},
-        auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET),
-    )
-    response.raise_for_status()
-    return response.json()["access_token"]
 
 
 def create_order(request):
@@ -1312,7 +1315,7 @@ def create_order(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "16.02"  # Ajusta según el precio total de los productos
+                    "value": "299.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1340,8 +1343,8 @@ def create_order_anual(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "USD",
-                    "value": "162.92"  # Ajusta según el precio total de los productos
+                    "currency_code": "MXN",
+                    "value": "629.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1369,8 +1372,8 @@ def create_order_trimestral(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "USD",
-                    "value": "34.16"  # Ajusta según el precio total de los productos
+                    "currency_code": "MXN",
+                    "value": "1500.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1398,8 +1401,8 @@ def create_order_semestral(request):
             "intent": "CAPTURE",
             "purchase_units": [{
                 "amount": {
-                    "currency_code": "USD",
-                    "value": "81.46"  # Ajusta según el precio total de los productos
+                    "currency_code": "MXN",
+                    "value": "3000.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1436,7 +1439,7 @@ def capture_order(request, order_id):
         transaction_status = capture_data['purchase_units'][0]['payments']['captures'][0]['status']
         transaction_id = capture_data['purchase_units'][0]['payments']['captures'][0]['id']
 
-        if float(value_coin) < 17:
+        if float(value_coin) < 310:
             # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
             registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
@@ -1446,7 +1449,7 @@ def capture_order(request, order_id):
                 tipo_membresia='Mensual',
                 fk_User=user  # Asignar el número de intento al registro
             )
-        elif float(value_coin) > 17 and float(value_coin) < 40:
+        elif float(value_coin) > 310 and float(value_coin) < 700:
                registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
                 monto_pago=value_coin,
@@ -1455,7 +1458,7 @@ def capture_order(request, order_id):
                 tipo_membresia='Trimestral',
                 fk_User=user  # Asignar el número de intento al registro
             )
-        elif float(value_coin) > 40 and float(value_coin) < 90:
+        elif float(value_coin) > 700 and float(value_coin) < 1600:
              # Crear una instancia de RegistroRespuestaPreguntas y guardarla en la base de datos
             registro_pago = PaypalPago.objects.create(
                 fecha_pago=create_time,
@@ -1494,4 +1497,55 @@ def historialPagos(request):
     }
 
     return render(request,template_name,context)
+
+def PersonasPagos(request):
+    template_name = 'adminTable.html'
+    # Obtener todos los usuarios con pagos y sin pagos
+    usuarios_con_pago = PaypalPago.objects.values_list('fk_User', flat=True).distinct()
+    usuarios_con_pago = User.objects.filter(pk__in=usuarios_con_pago)
+    usuarios_sin_pago = User.objects.exclude(pk__in=usuarios_con_pago)
+
+    # Obtener los últimos pagos asociados a los usuarios con pago
+    pagos_por_usuario = {}
+    for usuario in usuarios_con_pago:
+        ultimo_pago = PaypalPago.objects.filter(fk_User=usuario).aggregate(ultimo_pago=Max('fecha_pago'))
+        if ultimo_pago['ultimo_pago']:
+            pagos_por_usuario[usuario] = PaypalPago.objects.filter(fk_User=usuario, fecha_pago=ultimo_pago['ultimo_pago'])
+    
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+
+    
+    context = {
+        'usuarios_con_pago': usuarios_con_pago,
+        'usuarios_sin_pago': usuarios_sin_pago,
+        'pagos_por_usuario': pagos_por_usuario,
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request, template_name, context)
+
 
