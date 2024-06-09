@@ -1344,7 +1344,7 @@ def create_order_anual(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "629.0"  # Ajusta según el precio total de los productos
+                    "value": "3000.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1373,7 +1373,7 @@ def create_order_trimestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "1500.0"  # Ajusta según el precio total de los productos
+                    "value": "629.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1402,7 +1402,7 @@ def create_order_semestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "3000.0"  # Ajusta según el precio total de los productos
+                    "value": "1500.0"  # Ajusta según el precio total de los productos
                 }
             }]
         }
