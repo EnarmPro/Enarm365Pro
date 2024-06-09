@@ -1548,4 +1548,25 @@ def PersonasPagos(request):
 
     return render(request, template_name, context)
 
+def eliminar_item(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        item_type = request.POST.get('item_type')
+        item_id = request.POST.get('item_id')
+        if item_type == 'topic':
+            item = get_object_or_404(blogTema, idBlog=item_id)
+        elif item_type == 'comment':
+            item = get_object_or_404(blogComentario, idBlogComentario=item_id)
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid item type'}, status=400)
+        
+        item.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
 
+def eliminar_comentario(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        id_comentario = request.POST.get('id_comentario')
+        comentario = get_object_or_404(blogComentario, idBlogComentario=id_comentario)
+        comentario.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)

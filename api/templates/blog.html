@@ -4,62 +4,47 @@
 {% block navegador %}
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
     <li class="nav-item  active">
-        <a href="{% url 'index' %}"
-           class="nav-link">Home</a> <!-- Home Up -->
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
     </li>
     {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
-        <a href=""
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Simuladores</a>
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
         <div class="dropdown-menu">
-            <a href="{% url 'simulator_free' %}"
-               class="dropdown-item">Gratuito</a>
-            <a href="{% url 'mostrar_enarm' %}"
-               class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
-            <a href="{% url 'mostrar_temas' %}"
-               class="dropdown-item">Tema</a>
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span>
+                <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
         </div>
     </li>
-    
-    
+
+
     <li class="nav-item dropdown">
-        <a href="estadisticas.html"
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Estadisticas</a>
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
         <div class="dropdown-menu">
-            <a href="{% url 'resultados' %}"
-               class="dropdown-item">Resultados</a>
-            <a href="{% url 'dashboard' %}"
-               class="dropdown-item">Dashboard</a>
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
         </div>
     </li>
     {% endif %}
-    
-    <li class="nav-item">
-        <a href="{% url 'pricing' %}"
-           class="nav-link">Pricing</a>
-    </li>
-    
 
-<ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
-        <a href=""
-           class="nav-link"
-           data-toggle="tooltip"
-           data-title="Login"
-           data-placement="bottom"
-           data-boundary="window"><i class="material-icons">lock_open</i></a>
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
     </li>
-    <li class="nav-item">
-        <form method="post" action="{% url 'logout' %}">
-             {% csrf_token %}
-        <button type="submit" class="btn btn-outline-dark">Logout</button>
-        </form>
-    </li> 
-</ul>
+
+
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
     {% endblock %}
     {%block appcontenido%}
 
@@ -72,10 +57,12 @@
             <div class="page-headline text-center">
                 <h2>Foro de Preguntas y Respuestas</h2>
             </div>
+            {% if user.is_superuser %}
             <div class="text-center mb-16pt">
                 <button onclick="mostrarFeedback()" class="btn btn-primary">Abrir tema de conversación</button>
                 <button onclick="ocultarFeedback()" class="btn btn-primary">Ocultar Registro</button>
             </div>
+            {% endif %}
             <div class="container " id="feedbackSection" style="display: none;">
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-10">
@@ -101,47 +88,59 @@
             </div>
         </div>
     </div>
-    <div class="container " id="">
+    <div class="container" id="">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-10">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="text-underline">Temas</h2>
-                        <table id="topicsTable">
-                            <thead>
-                                <tr>
-                                    <th>Título</th>
-                                    <th>Foro creado por</th>
-                                    <th>Ir al foro</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for topic in topics %}
-                                <tr>
-                                    <td>{{ topic.titleTopic }}</td>
-                                    <td>{{ topic.fk_User.username }}</td>
-                                    <td><a href="{% url 'blogcomentarios'%}?id_tema={{topic.idBlog}}">Ver Detalles</a></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="topicsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Foro creado por</th>
+                                        <th>Ir al foro</th>
+                                        <th>Eliminar foro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for topic in topics %}
+                                    <tr id="topic-{{ topic.idBlog }}">
+                                        <td>{{ topic.titleTopic }}</td>
+                                        <td>{{ topic.fk_User.username }}</td>
+                                        <td><a href="{% url 'blogcomentarios' %}?id_tema={{topic.idBlog}}">Ver Detalles</a></td>
+                                        {% if user.is_superuser %}
+                                    <td>
+                                        <form class="delete-item-form" method="post" action="{% url 'eliminar_item' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="item_type" value="topic">
+                                            <input type="hidden" name="item_id" value="{{ topic.idBlog }}">
+                                            <button type="submit" class="btn btn-accent delete-item-btn">Eliminar</button>
+                                        </form>
+                                    </td>
+                                    {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
-    
-   
-    
+
     <!-- Termina Feedback -->
 
     {% block js %}
 
     <script src="{% static 'js/registrar_temas.js' %}"></script>
     <script src="{% static 'js/mostrar_comentarios.js' %}"></script>
-
+    <script src="{% static 'js/temas_comentarios_eliminar.js' %}"></script>
+    
+    
+    
     {% endblock %}
     <!-- // END Page Content /////////////////////////////////////////////////-->
 

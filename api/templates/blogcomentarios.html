@@ -130,14 +130,22 @@
                         </div>
                         <div class="media-body media-middle">
                             <a href="" class="card-title">{{comentario.fk_User.username}}</a>
+                            {% if user.is_superuser %}
+                            <div class="">
+                                <form class="delete-comment-btn" action="{% url 'eliminar_comentario' %}" method="post">
+                                    {% csrf_token %}
+                                <button class="avatar btn-accent rounded-circle avatar-sm">
+                                    <input type="hidden" name="id_comentario" value="{{comentario.idBlogComentario}}">
+                                    <span class=" rounded-circle material-icons">close</span>
+                                </button>
+                                </form>
+                            </div>
+                            {% endif %}
                             
                         </div>
                     </div>
-
                 </div>
-
                 {% endfor %}
-
             </div>
         </div>
     </div>
@@ -145,7 +153,6 @@
     
     
     
-   
     
     <!-- Termina Feedback -->
 
@@ -153,7 +160,8 @@
 
     <script src="{% static 'js/registrar_comentarios_temas.js' %}"></script>
     <script src="{% static 'js/mostrar_comentarios.js' %}"></script>
-
+    <script src="{% static 'js/eliminar_comentarios.js' %}"></script>
+    
     {% endblock %}
     <!-- // END Page Content /////////////////////////////////////////////////-->
 

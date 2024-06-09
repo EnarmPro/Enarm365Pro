@@ -4,62 +4,47 @@
 {% block navegador %}
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
     <li class="nav-item  active">
-        <a href="{% url 'index' %}"
-           class="nav-link">Home</a> <!-- Home Up -->
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
     </li>
     {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
-        <a href=""
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Simuladores</a>
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
         <div class="dropdown-menu">
-            <a href="{% url 'simulator_free' %}"
-               class="dropdown-item">Gratuito</a>
-            <a href="{% url 'mostrar_enarm' %}"
-               class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
-            <a href="{% url 'mostrar_temas' %}"
-               class="dropdown-item">Tema</a>
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span>
+                <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
         </div>
     </li>
-    
-    
+
+
     <li class="nav-item dropdown">
-        <a href="estadisticas.html"
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Estadisticas</a>
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
         <div class="dropdown-menu">
-            <a href="{% url 'resultados' %}"
-               class="dropdown-item">Resultados</a>
-            <a href="{% url 'dashboard' %}"
-               class="dropdown-item">Dashboard</a>
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
         </div>
     </li>
     {% endif %}
-    
-    <li class="nav-item">
-        <a href="{% url 'pricing' %}"
-           class="nav-link">Pricing</a>
-    </li>
-    
 
-<ul class="nav navbar-nav ml-auto mr-0">
     <li class="nav-item">
-        <a href=""
-           class="nav-link"
-           data-toggle="tooltip"
-           data-title="Login"
-           data-placement="bottom"
-           data-boundary="window"><i class="material-icons">lock_open</i></a>
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
     </li>
-    <li class="nav-item">
-        <form method="post" action="{% url 'logout' %}">
-             {% csrf_token %}
-        <button type="submit" class="btn btn-outline-dark">Logout</button>
-        </form>
-    </li> 
-</ul>
+
+
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
 
 
     {% endblock %}
@@ -84,48 +69,49 @@
                         <!-- Usuarios con pago -->
 
                         <h2>Miembros con membresia</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nombre de usuario</th>
-                                    <th>Email</th>
-                                    <th>Tipo de membresía</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for usuario, pagos in pagos_por_usuario.items %}
-                                <tr>
-                                    <td rowspan="{{ pagos|length }}">{{ usuario.username }}</td>
-                                    <td rowspan="{{ pagos|length }}">{{ usuario.email }}</td>
-                                    {% for pago in pagos %}
-                                    <td>{{ pago.tipo_membresia }}</td>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre de usuario</th>
+                                        <th>Email</th>
+                                        <th>Tipo de membresía</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for usuario, pagos in pagos_por_usuario.items %}
+                                    <tr>
+                                        <td rowspan="{{ pagos|length }}">{{ usuario.username }}</td>
+                                        <td rowspan="{{ pagos|length }}">{{ usuario.email }}</td>
+                                        {% for pago in pagos %}
+                                        <td>{{ pago.tipo_membresia }}</td>
+                                        {% endfor %}
+                                    </tr>
                                     {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <h2>Miembros gratuitos</h2>
-                        <!-- Usuarios sin pago -->
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nombre de usuario</th>
-                                    <th>Email</th>
-                                    <th>Tipo de membresía</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for usuario in usuarios_sin_pago %}
-                                <tr>
-                                    <td>{{ usuario.username }}</td>
-                                    <td>{{ usuario.email }}</td>
-                                    <td>No tiene pago</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                            <h2>Miembros gratuitos</h2>
+                            <!-- Usuarios sin pago -->
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre de usuario</th>
+                                        <th>Email</th>
+                                        <th>Tipo de membresía</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for usuario in usuarios_sin_pago %}
+                                    <tr>
+                                        <td>{{ usuario.username }}</td>
+                                        <td>{{ usuario.email }}</td>
+                                        <td>No tiene pago</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
 
-
+                        </div>
                     </div>
                 </div>
             </div>
