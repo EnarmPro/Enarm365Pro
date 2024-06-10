@@ -1,0 +1,386 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block head %}
+<!-- CSS de DataTables -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+<!-- JavaScript de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JavaScript de DataTables -->
+<script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+{% endblock %}
+{% block navegador %}
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    {% if not es_mayor_a_30_dias %}
+    <li class="nav-item dropdown">
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span>
+                <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
+        </div>
+    </li>
+
+
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    {% endif %}
+
+    <li class="nav-item">
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
+    </li>
+
+
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
+
+
+    {% endblock %}
+    {%block appcontenido%}
+
+
+
+
+    <!-- INICIA Feedback -->
+    <div class="page-section">
+        <div class="container page__container">
+            <div class="page-headline text-center">
+                <h2>Respuestas Registradas</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container " id="">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Usuarios con pago -->
+                        <div class="mb-24pt">
+                            <button class="btn btn-success" data-toggle="modal" data-target="#agregarRespuestaModal">
+                                <span class="material-icons">add</span> Agregar Respuesta</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="respuestasTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Respuesta correcta</th>
+                                        <th>Pregunta</th>
+                                        <th>Categoría</th>
+                                        <th>Editar</th>
+                                        <th>Eliminar</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for respuesta in todas_respuestas %}
+                                    <tr>
+                                        <td class="text-center">{{respuesta.idRespuestas}}</td>
+                                        <td class="text-justify">{{respuesta.nombreRespuestas}}</td>
+                                        <td class="text-justify">{{respuesta.fkPregunta.nombrePregunta}}</td>
+                                        <td class="text-justify">{{respuesta.fkCategorias.descripcionCategoria}}</td>
+                                        
+                                        <form action="" method="post" class="edit_respuestas">
+                                            <input type="hidden" name="id_respuesta" value="{{ respuesta.idRespuestas }}">
+                                            <td class="text-justify">
+                                                <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editarRespuestaModal" data-id="{{ respuesta.idRespuestas }}">
+                                                    <span class="material-icons">edit</span>
+                                                </button>
+                                            </td>
+                                        </form>
+                                        
+                                        
+                                        <form class="eliminar_respuesta" action="{% url 'eliminar_respuesta' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_respuesta" value="{{ respuesta.idRespuestas }}">
+                                            <td class="text-justify"><button class="btn btn-accent"><span class="material-icons">close</span></button></td>  
+                                        </form>
+                                    </tr>
+                                    
+                                    {% endfor %}
+                                       <!-- Modal para Editar Pregunta -->
+<div class="modal" id="editarRespuestaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false" style="position: relative;">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Pregunta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editarRespuestaForm" method="post" action="{% url 'actualizar_respuesta' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit-idRespuestas" name="idRespuesta">
+                    <div class="form-group">
+                        <label for="edit-nombreRespuesta">Descripción de la pregunta:</label>
+                        <textarea class="form-control" id="edit-nombreRespuesta" name="nombreRespuesta" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fkPregunta">Selecciona la pregunta:</label>
+                        <select class="form-control" id="edit-fkPregunta" name="fkPregunta" required>
+                            <option value="" selected disabled>Selecciona una opción</option>
+                            {% for preguntas in todas_preguntas %}
+                            <option value="{{ preguntas.idPregunta }}">{{ preguntas.idPregunta }} - {{ preguntas.nombrePregunta }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fkCategorias">Selecciona la Categoría:</label>
+                        <select class="form-control" id="edit-fkCategorias" name="fkCategorias" required>
+                            <option value="" selected disabled>Selecciona una opción</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.idCategoria }}">{{ categoria.descripcionCategoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="agregarRespuestaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Respuesta Correctas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'insertarPregunta' %}" id="agregarRespuestaForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nombrePregunta">Descripción de la respuesta:</label>
+                            <textarea class="form-control" id="nombreRespuesta" name="nombreRespuesta" rows="3"
+                                required></textarea>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="fkTemarios">Selecciona la pregunta:</label>
+                            <select class="form-control" id="fkPregunta" name="fkPregunta" required>
+                                <option value="" selected disabled>Selecciona una opción</option>
+                                {% for preguntas in todas_preguntas %}
+                                <option value="{{ preguntas.idPregunta }}" >{{ preguntas.idPregunta }} - {{ preguntas.nombrePregunta }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fkCategorias">Selecciona la Categoría:</label>
+                            <select class="form-control" id="fkCategorias" name="fkCategorias" required>
+                                <option value="" selected disabled>Selecciona una opción</option>
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.idCategoria }}">{{ categoria.descripcionCategoria }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear Pregunta</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <!-- Agregar botón para guardar la pregunta si es necesario -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <!-- Termina Feedback -->
+
+    {% block js %}
+    <script>
+        // Verificar si el script ya se ha ejecutado
+        if (typeof window.formScriptExecuted === 'undefined') {
+            window.formScriptExecuted = true;  // Marcar el script como ejecutado
+
+            $(document).ready(function () {
+                // Inicializa DataTable
+                let table = new DataTable('#respuestasTable');
+
+                // Bandera para evitar múltiples envíos
+                let formSubmitted = false;
+
+                $('#agregarRespuestaForm').on('submit', function (event) {
+                    event.preventDefault();  // Evita el envío tradicional del formulario
+
+                    if (formSubmitted) {
+                        return;  // Salir si el formulario ya se ha enviado
+                    }
+
+                    formSubmitted = true;  // Establece la bandera a true
+
+                    $.ajax({
+                        url: $(this).attr('action'),  // Obtiene la URL del atributo action del formulario
+                        type: 'POST',
+                        data: $(this).serialize(),  // Serializa los datos del formulario
+                        success: function (response) {
+                            // Aquí puedes manejar lo que sucede después de una inserción exitosa
+                            alert('Respuesta agregada exitosamente');
+                            
+                            // Aquí podrías agregar código para actualizar la lista de preguntas sin recargar la página
+                            window.location.href = '';  // Recarga la página para actualizar la tabla (opcional)
+                        },
+                        error: function (xhr, errmsg, err) {
+                            // Aquí puedes manejar los errores
+                            console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                        },
+                        complete: function () {
+                            formSubmitted = false;  // Restablece la bandera una vez que la solicitud ha terminado
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+   <script>
+    $(document).ready(function() {
+        // Utiliza delegación de eventos para manejar múltiples formularios
+        $(document).on('submit', '.eliminar_respuesta', function(event) {
+            event.preventDefault();  // Evita el envío tradicional del formulario
+
+            let form = $(this);
+            let isSubmitting = form.data('isSubmitting');  // Obtiene la bandera del formulario
+
+            if (isSubmitting) {
+                return;  // Salir si el formulario ya se ha enviado
+            }
+
+            if (!confirm('¿Estás seguro de que deseas eliminar esta respuesta?')) {
+                return;  // Si el usuario cancela la confirmación, salir
+            }
+
+            form.data('isSubmitting', true);  // Establece la bandera a true
+
+            $.ajax({
+                url: form.attr('action'),  // Obtiene la URL del atributo action del formulario
+                type: 'POST',
+                data: form.serialize(),  // Serializa los datos del formulario
+                success: function(response) {
+                    // Aquí puedes manejar lo que sucede después de una eliminación exitosa
+                    alert('Respuesta eliminada con exito por favor espera que se actualice la plataforma.');
+                    window.location.href = '';
+                },
+                error: function(xhr, errmsg, err) {
+                    // Aquí puedes manejar los errores
+                    alert('Error al eliminar la respuesta.');
+                    console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                },
+                complete: function() {
+                    form.data('isSubmitting', false);  // Restablece la bandera una vez que la solicitud ha terminado
+                }
+            });
+        });
+    });
+</script>
+<script>
+    // Variable global para verificar si el script ya se ha ejecutado
+    let scriptEjecutado = false;
+
+    $(document).ready(function() {
+        // Verifica si el script ya se ha ejecutado antes de ejecutar el código
+        if (!scriptEjecutado) {
+            // Inicializa DataTable
+            let table = new DataTable('#respuestasTable');
+
+            // Llenar el formulario de edición con los datos de la pregunta seleccionada
+            $(document).on('click', '.edit-btn', function() {
+                let idRespuesta = $(this).data('id');
+
+                $.ajax({
+                    url: "{% url 'obtener_respuesta' %}",
+                    type: 'GET',
+                    data: {'id_respuesta': idRespuesta},
+                    success: function(data) {
+                        // Llenar los campos del formulario con los datos obtenidos
+                        $('#edit-idRespuestas').val(data.idRespuestas);
+                        $('#edit-nombreRespuesta').val(data.nombreRespuestas);
+                        $('#edit-fkPregunta').val(data.fkPregunta);
+                        $('#edit-fkCategorias').val(data.fkCategorias);
+                        $('#editarRespuestaModal').modal('show'); // Mostrar el modal
+                    },
+                    error: function(xhr, errmsg, err) {
+                        alert('Error al obtener los datos de la pregunta.');
+                        console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                    }
+                });
+            });
+
+            // Enviar datos editados al servidor
+            $(document).on('submit', '#editarRespuestaForm', function(event) {
+                event.preventDefault();  // Evita el envío tradicional del formulario
+
+                $.ajax({
+                    url: $(this).attr('action'),  // Obtiene la URL del atributo action del formulario
+                    type: 'POST',
+                    data: $(this).serialize(),  // Serializa los datos del formulario
+                    success: function(response) {
+                        // Aquí puedes manejar lo que sucede después de una actualización exitosa
+                        alert('Respuesta actualizada exitosamente. Por favor espera a que se actualice la página');
+                        window.location.href = '';  // Recarga la página para actualizar la tabla (opcional)
+                    },
+                    error: function(xhr, errmsg, err) {
+                        // Aquí puedes manejar los errores
+                        alert('Error al actualizar la pregunta.');
+                        console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                    }
+                });
+            });
+
+            // Establece la variable scriptEjecutado en true para indicar que el script ya se ejecutó
+            scriptEjecutado = true;
+        }
+    });
+</script>
+
+
+
+    
+
+
+    {% endblock %}
+    <!-- // END Page Content /////////////////////////////////////////////////-->
+
+    {% endblock%}

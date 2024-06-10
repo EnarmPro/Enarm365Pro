@@ -1,470 +1,462 @@
 {% load static %}
 {% if user.is_authenticated %}
 <!DOCTYPE html>
-<html lang="en"
-      dir="ltr">
+<html lang="en" dir="ltr">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible"
-              content="IE=edge">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{%block titleapp%} ENARM 365 {% endblock%}</title>
-        <meta content="ENARM365 Mobile App" name="Todos los días contigo" />
-        <meta content="ENARM365 App" name="Lygnum" />
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{%block titleapp%} ENARM 365 {% endblock%}</title>
+    <meta content="ENARM365 Mobile App" name="Todos los días contigo" />
+    <meta content="ENARM365 App" name="Lygnum" />
 
-         <!-- Flavicons -->
-        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/LogoGeneralSinFondo.png'%}">
-        <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/LogoGeneralSinFondo.png'%}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/LogoGeneralSinFondo.png'%}">
-        <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/LogoGeneralSinFondo.png'%}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/LogoGeneralSinFondo.png'%}">
-        
+    <!-- Flavicons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/LogoGeneralSinFondo.png'%}">
+
+    
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+        rel="stylesheet">
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
-              rel="stylesheet">
+    <!-- Preloader -->
+    <link type="text/css" href="{% static 'css/spinkit.css'%}" rel="stylesheet">
 
-        <!-- Preloader -->
-        <link type="text/css"
-              href="{% static 'css/spinkit.css'%}"
-              rel="stylesheet">
+    <!-- Perfect Scrollbar Igual y se quita-->
+    <link type="text/css" href="{% static 'css/perfect-scrollbar.css'%}" rel="stylesheet">
 
-        <!-- Perfect Scrollbar Igual y se quita-->
-        <link type="text/css"
-              href="{% static 'css/perfect-scrollbar.css'%}"
-              rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="{% static 'css/material-icons.css'%}" rel="stylesheet">
 
-        <!-- Material Design Icons -->
-        <link type="text/css"
-              href="{% static 'css/material-icons.css'%}"
-              rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="{% static 'css/fontawesome.css'%}" rel="stylesheet">
 
-        <!-- Font Awesome Icons -->
-        <link type="text/css"
-              href="{% static 'css/fontawesome.css'%}"
-              rel="stylesheet">
+    <!-- Preloader -->
+    <link type="text/css" href="{% static 'css/preloader.css'%}" rel="stylesheet">
 
-        <!-- Preloader -->
-        <link type="text/css"
-              href="{% static 'css/preloader.css'%}"
-              rel="stylesheet">
+    <!-- App CSS -->
+    <link type="text/css" href="{% static 'css/app.css'%}" rel="stylesheet">
 
-        <!-- App CSS -->
-        <link type="text/css"
-              href="{% static 'css/app.css'%}"
-              rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+</head>
 
-    </head>
-
-    <body class="layout-app ">
-         <!-- Preloader Layout -->
-        <div class="preloader">
-            <div class="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
+<body class="layout-app ">
+    <!-- Preloader Layout -->
+    <div class="preloader">
+        <div class="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
         </div>
+    </div>
 
-        <!-- Drawer Layout -->
+    <!-- Drawer Layout -->
 
-        <div class="mdk-drawer-layout js-mdk-drawer-layout"
-             data-push
-             data-responsive-width="992px">
-            <div class="mdk-drawer-layout__content page-content">
+    <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px">
+        <div class="mdk-drawer-layout__content page-content">
 
-                <!-- Header -->
+            <!-- Header -->
 
-                <div class="navbar navbar-expand navbar-light border-bottom-2"
-                     id="default-navbar"
-                     data-primary>
+            <div class="navbar navbar-expand navbar-light border-bottom-2" id="default-navbar" data-primary>
 
-                    <!-- Navbar toggler -->
-                    <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
-                            type="button"
-                            data-toggle="sidebar">
-                        <span class="material-icons">short_text</span>
-                    </button>
+                <!-- Navbar toggler -->
+                <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0" type="button"
+                    data-toggle="sidebar">
+                    <span class="material-icons">short_text</span>
+                </button>
 
-                    <!-- Navbar Brand -->
-                    <a href=""
-                       class="navbar-brand mr-16pt d-lg-none">
-                        <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
-                            <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
-                                     alt="logo"
-                                     class="img-fluid" />
-                            </span>
-
+                <!-- Navbar Brand -->
+                <a href="" class="navbar-brand mr-16pt d-lg-none">
+                    <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+                        <span class="avatar-title rounded bg-primary"><img
+                                src="{% static 'img/LogoGeneralSinFondo.png'%}" alt="logo" class="img-fluid" />
                         </span>
 
-                        <span class="d-none d-lg-block">ENARM365</span>
-                    </a>
+                    </span>
 
-                        {% block navegador %}
+                    <span class="d-none d-lg-block">ENARM365</span>
+                </a>
 
-                        {% endblock %}
-                    
-                    <!-- Termina Menu Superior-->
-                </div>
-                
-                <!-- // END Header -->
+                {% block navegador %}
 
-            
+                {% endblock %}
 
-                <!-- Page Content /////////////////////////////////////////////////////////-->
-                 {%block appcontenido %}  
-                    
-
-
-
-
-                 {% endblock%}
-                
-                <!-- // END Page Content /////////////////////////////////////////////////-->
-
-                <!-- Footer -->
-
-                <div class="bg-white border-top-2 mt-auto">
-                    <div class="container page__container page-section d-flex flex-column">
-                        <p class="text-70 brand mb-24pt">
-                            <img class="brand-icon"
-                                 src="{%static 'img/LogoGeneralSinFondo.png'%}"
-                                 width="150" 
-                                 alt="ENARM 365"> 
-                        </p>
-                        <p class="measure-lead-max text-70-white small mr-8pt">ENARM 365 es una plataforma interactiva y elegante diseñada específicamente para el aprendizaje y la preparación de certificaciones médicas, ofreciendo una amplia gama de funcionalidades como cuestionarios personalizados, lecciones en video, paneles de control para estudiantes, gestión de currículo, seguimiento de progreso, e informes detallados,</p>
-                        <p class="mb-8pt d-flex">
-                            <a href=""
-                               class="text-70-white text-underline mr-8pt small">Terminos y Condiciones</a>
-                            <a href=""
-                               class="text-70-white text-underline small">Privacy policy</a>
-                        </p>
-                        <p class="text-70-white small mt-n1 mb-0">Made with hearth by <a href="lygnum.com.mx">Lygnum</a> @2024 &copy; All rights reserved.</p>
-                    </div>
-                </div>
-
-                <!-- // END Footer -->
-
+                <!-- Termina Menu Superior-->
             </div>
 
-            <!-- // END drawer-layout__content -->
+            <!-- // END Header -->
 
-            <!-- Drawer -->
 
-            <div class="mdk-drawer js-mdk-drawer"
-                 id="default-drawer">
-                <div class="mdk-drawer__content">
-                    <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
-                         data-perfect-scrollbar>
 
-                        <!-- Sidebar Content -->
+            <!-- Page Content /////////////////////////////////////////////////////////-->
+            {%block appcontenido %}
 
-                   <div class="d-flex align-items-center navbar-height">
-                    <div
-                          class="search-form search-form--black mx-16pt pr-0 pl-16pt">
-                        <input type="text"
-                               class="form-control pl-0"
-                               placeholder="Search">
-                        <button class="btn"
-                                type=""><i class="material-icons">search</i></button>
-                    </div>
-                </div>
-                {% if not es_mayor_a_30_dias %}
-                <a href="{% url 'mostrar_enarm' %}"class="sidebar-brand ">
-                    <span class="avatar avatar-xl sidebar-brand-icon h-auto">
-                        <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
-                         class="img-fluid"alt="logo" /></span>
-                    </span>
 
-                    <span>ENARM365</span>
-                </a>
-                {% else %}
-                <a href=""class="sidebar-brand ">
-                    <span class="avatar avatar-xl sidebar-brand-icon h-auto">
-                        <span class="avatar-title rounded bg-primary"><img src="{% static 'img/LogoGeneralSinFondo.png'%}"
-                         class="img-fluid"alt="logo" /></span>
-                    </span>
 
-                    <span>ENARM365</span>
-                </a>
-                {% endif %}
 
-                <div class="sidebar-heading">Estudiante</div>
-                <ul class="sidebar-menu">
 
-                    <li class="sidebar-menu-item active">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'index' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
-                            <span class="sidebar-menu-text">Home</span>
-                        </a>
-                    </li>
-                    {% if not es_mayor_a_30_dias %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'mostrar_temas' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
-                            <span class="sidebar-menu-text">Simuladores <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                           >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
-                            <span class="sidebar-menu-text">Simuladores <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if not es_mayor_a_30_dias %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'resultados' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
-                            <span class="sidebar-menu-text">Estadisticas <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                        >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
-                            <span class="sidebar-menu-text">Estadisticas <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if not es_mayor_a_30_dias %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'foro_comentarios' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
-                            <span class="sidebar-menu-text">Comentarios <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                           >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
-                            <span class="sidebar-menu-text">Comentarios <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if not es_mayor_a_30_dias %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'blog' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
-                            <span class="sidebar-menu-text">Foro Q&A <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                           >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
-                            <span class="sidebar-menu-text">Foro Q&A <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if user.is_superuser %}  
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{% url 'PersonasPagos' %}" >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
-                            <span class="sidebar-menu-text">Revisión de Usuarios</span>
-                        </a>
-                    </li>
-                {% endif %}
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'logout' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">close</span>
-                            <span class="sidebar-menu-text">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-                {% if not es_mayor_a_30_dias %}
-                <div class="sidebar-heading">Dashboard</div>
-                <ul class="sidebar-menu">
+            {% endblock%}
 
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'dashboard' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
-                            <span class="sidebar-menu-text">Dashboard <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           href="{% url 'resultados' %}">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
-                            <span class="sidebar-menu-text">Resultados <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-            
+            <!-- // END Page Content /////////////////////////////////////////////////-->
 
-                </ul>
-                {% else %}
-                <div class="sidebar-heading">Dashboard</div>
-                <ul class="sidebar-menu">
+            <!-- Footer -->
 
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                           >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
-                            <span class="sidebar-menu-text">Dashboard <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button pago"
-                           >
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
-                            <span class="sidebar-menu-text">Resultados <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
-                        </a>
-                    </li>
-            
-
-                </ul>
-                {% endif %}
-
-                {% if not es_mayor_a_30_dias %}
-                <div class="sidebar-heading">Centro de Conexion</div>
-                
-
-                  
-                <ul class="sidebar-menu">
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button"
-                           data-toggle="collapse"
-                           href="#account_menu">
-                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
-                            Cuenta
-                            <span class="ml-auto sidebar-menu-toggle-icon"></span>
-                        </a>
-                        <ul class="sidebar-submenu collapse sm-indent"
-                            id="account_menu">
-                            
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                href="{% url 'pricing' %}">
-                                    <span class="sidebar-menu-text">Pricing</span>
-                                </a>
-                            </li>
-                          
-                            
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="{% url 'historial_pagos' %}">
-                                    <span class="sidebar-menu-text">Payment</span>
-                                </a>
-                            </li>
-                            
-                            <li class="sidebar-menu-item">
-                                <a class="sidebar-menu-button"
-                                   href="{% url 'actualizar_datos' %}">
-                                    <span class="sidebar-menu-text">Edit Account</span>
-                                </a>
-                            </li>
-                            
-                            
-                   
-                </ul>
-                {% endif %}
-                
-                
-                <!-- // END Sidebar Content -->
-
-                    </div>
+            <div class="bg-white border-top-2 mt-auto">
+                <div class="container page__container page-section d-flex flex-column">
+                    <p class="text-70 brand mb-24pt">
+                        <img class="brand-icon" src="{%static 'img/LogoGeneralSinFondo.png'%}" width="150"
+                            alt="ENARM 365">
+                    </p>
+                    <p class="measure-lead-max text-70-white small mr-8pt">ENARM 365 es una plataforma interactiva y
+                        elegante diseñada específicamente para el aprendizaje y la preparación de certificaciones
+                        médicas, ofreciendo una amplia gama de funcionalidades como cuestionarios personalizados,
+                        lecciones en video, paneles de control para estudiantes, gestión de currículo, seguimiento de
+                        progreso, e informes detallados,</p>
+                    <p class="mb-8pt d-flex">
+                        <a href="" class="text-70-white text-underline mr-8pt small">Terminos y Condiciones</a>
+                        <a href="" class="text-70-white text-underline small">Privacy policy</a>
+                    </p>
+                    <p class="text-70-white small mt-n1 mb-0">Made with hearth by <a href="lygnum.com.mx">Lygnum</a>
+                        @2024 &copy; All rights reserved.</p>
                 </div>
             </div>
 
-            <!-- // END Drawer -->
+            <!-- // END Footer -->
 
         </div>
 
-        <!-- // END Drawer Layout -->
+        <!-- // END drawer-layout__content -->
 
-        <!-- jQuery -->
-        <script src="{%static 'js/jquery.min.js'%}"></script>
+        <!-- Drawer -->
 
-        <!-- Bootstrap -->
-        <script src="{%static 'js/popper.min.js'%}"></script>
-        <script src="{%static 'js/bootstrap.min.js'%}"></script>
+        <div class="mdk-drawer js-mdk-drawer" id="default-drawer">
+            <div class="mdk-drawer__content">
+                <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left" data-perfect-scrollbar>
 
-        <!-- Perfect Scrollbar -->
-        <script src="{%static 'js/perfect-scrollbar.min.js'%}"></script>
+                    <!-- Sidebar Content -->
 
-        <!-- DOM Factory -->
-        <script src="{%static 'js/dom-factory.js'%}"></script>
+                    <div class="d-flex align-items-center navbar-height">
+                        <div class="search-form search-form--black mx-16pt pr-0 pl-16pt">
+                            <input type="text" class="form-control pl-0" placeholder="Search">
+                            <button class="btn" type=""><i class="material-icons">search</i></button>
+                        </div>
+                    </div>
+                    {% if not es_mayor_a_30_dias %}
+                    <a href="{% url 'mostrar_enarm' %}" class="sidebar-brand ">
+                        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+                            <span class="avatar-title rounded bg-primary"><img
+                                    src="{% static 'img/LogoGeneralSinFondo.png'%}" class="img-fluid"
+                                    alt="logo" /></span>
+                        </span>
 
-        <!-- MDK -->
-        <script src="{%static 'js/material-design-kit.js'%}"></script>
+                        <span>ENARM365</span>
+                    </a>
+                    {% else %}
+                    <a href="" class="sidebar-brand ">
+                        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+                            <span class="avatar-title rounded bg-primary"><img
+                                    src="{% static 'img/LogoGeneralSinFondo.png'%}" class="img-fluid"
+                                    alt="logo" /></span>
+                        </span>
 
-        <!-- App JS -->
-        <script src="{%static 'js/app.js'%}"></script>
+                        <span>ENARM365</span>
+                    </a>
+                    {% endif %}
 
-        <!-- Preloader -->
-        <script src="{%static 'js/preloader.js'%}"></script>
-        <script src="{%static 'js/copy_paste.js'%}"></script>
+                    <div class="sidebar-heading">Estudiante</div>
+                    <ul class="sidebar-menu">
 
-        <script>
-            // Función para mostrar la alerta
-            function mostrarAlerta(event) {
-                // Evita que el enlace se siga
-                event.preventDefault();
-                // Muestra la alerta
-                alert('Necesita pagar para acceder a este contenido.');
-            }
-    
-            // Asigna la función mostrarAlerta a los enlaces con la clase 'pago'
-            function asignarEvento() {
-                // Selecciona todos los enlaces con la clase 'pago'
-                var enlaces = document.querySelectorAll('a.pago');
-                // Asigna el evento click a cada enlace
-                enlaces.forEach(function(enlace) {
-                    enlace.addEventListener('click', mostrarAlerta);
-                });
-            }
-    
-            // Espera a que el DOM esté completamente cargado
-            document.addEventListener('DOMContentLoaded', asignarEvento);
-        </script>
+                        <li class="sidebar-menu-item active">
+                            <a class="sidebar-menu-button" href="{% url 'index' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                                <span class="sidebar-menu-text">Home</span>
+                            </a>
+                        </li>
+                        {% if not es_mayor_a_30_dias %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'mostrar_temas' %}">
+                                <span
+                                    class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
+                                <span class="sidebar-menu-text">Simuladores <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span
+                                    class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
+                                <span class="sidebar-menu-text">Simuladores <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if not es_mayor_a_30_dias %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'resultados' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
+                                <span class="sidebar-menu-text">Estadisticas <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">style</span>
+                                <span class="sidebar-menu-text">Estadisticas <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if not es_mayor_a_30_dias %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'foro_comentarios' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
+                                <span class="sidebar-menu-text">Comentarios <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">comment</span>
+                                <span class="sidebar-menu-text">Comentarios <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if not es_mayor_a_30_dias %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'blog' %}">
+                                <span
+                                    class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
+                                <span class="sidebar-menu-text">Foro Q&A <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span
+                                    class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
+                                <span class="sidebar-menu-text">Foro Q&A <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'PersonasPagos' %}">
 
-        {% block js%}
-        {% endblock %}
-       
+                                <span class="sidebar-menu-text">Revisión de Usuarios <span
+                                        class="badge badge-notifications badge-primary text-uppercase ml-auto">Adm</span></span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'revisionPreguntas' %}">
 
-    </body>
+                                <span class="sidebar-menu-text">Revisión de Preguntas <span
+                                        class="badge badge-notifications badge-primary text-uppercase ml-auto">Adm</span></span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'revisionRespuestas' %}">
+
+                                <span class="sidebar-menu-text">Revisión de Respuestas <span
+                                        class="badge badge-notifications badge-primary text-uppercase ml-auto">Adm</span></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'logout' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">close</span>
+                                <span class="sidebar-menu-text">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                    {% if not es_mayor_a_30_dias %}
+                    <div class="sidebar-heading">Dashboard</div>
+                    <ul class="sidebar-menu">
+
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'dashboard' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                                <span class="sidebar-menu-text">Dashboard <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'resultados' %}">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
+                                <span class="sidebar-menu-text">Resultados <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                    {% else %}
+                    <div class="sidebar-heading">Dashboard</div>
+                    <ul class="sidebar-menu">
+
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                                <span class="sidebar-menu-text">Dashboard <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button pago">
+                                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">pie_chart</span>
+                                <span class="sidebar-menu-text">Resultados <span
+                                        class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                    {% endif %}
+
+                    {% if not es_mayor_a_30_dias %}
+                    <div class="sidebar-heading">Centro de Conexion</div>
+
+
+
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" data-toggle="collapse" href="#account_menu">
+                                <span
+                                    class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
+                                Cuenta
+                                <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                            </a>
+                            <ul class="sidebar-submenu collapse sm-indent" id="account_menu">
+
+                                <li class="sidebar-menu-item">
+                                    <a class="sidebar-menu-button" href="{% url 'pricing' %}">
+                                        <span class="sidebar-menu-text">Pricing</span>
+                                    </a>
+                                </li>
+
+
+                                <li class="sidebar-menu-item">
+                                    <a class="sidebar-menu-button" href="{% url 'historial_pagos' %}">
+                                        <span class="sidebar-menu-text">Payment</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-menu-item">
+                                    <a class="sidebar-menu-button" href="{% url 'actualizar_datos' %}">
+                                        <span class="sidebar-menu-text">Edit Account</span>
+                                    </a>
+                                </li>
+
+
+
+                            </ul>
+                            {% endif %}
+
+
+                            <!-- // END Sidebar Content -->
+
+                </div>
+            </div>
+        </div>
+
+        <!-- // END Drawer -->
+
+    </div>
+
+    <!-- // END Drawer Layout -->
+
+    <!-- jQuery -->
+    <script src="{%static 'js/jquery.min.js'%}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{%static 'js/popper.min.js'%}"></script>
+    <script src="{%static 'js/bootstrap.min.js'%}"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="{%static 'js/perfect-scrollbar.min.js'%}"></script>
+
+    <!-- DOM Factory -->
+    <script src="{%static 'js/dom-factory.js'%}"></script>
+
+    <!-- MDK -->
+    <script src="{%static 'js/material-design-kit.js'%}"></script>
+
+    <!-- App JS -->
+    <script src="{%static 'js/app.js'%}"></script>
+
+    <!-- Preloader -->
+    <script src="{%static 'js/preloader.js'%}"></script>
+    <script src="{%static 'js/copy_paste.js'%}"></script>
+
+    <script>
+        // Función para mostrar la alerta
+        function mostrarAlerta(event) {
+            // Evita que el enlace se siga
+            event.preventDefault();
+            // Muestra la alerta
+            alert('Necesita pagar para acceder a este contenido.');
+        }
+
+        // Asigna la función mostrarAlerta a los enlaces con la clase 'pago'
+        function asignarEvento() {
+            // Selecciona todos los enlaces con la clase 'pago'
+            var enlaces = document.querySelectorAll('a.pago');
+            // Asigna el evento click a cada enlace
+            enlaces.forEach(function (enlace) {
+                enlace.addEventListener('click', mostrarAlerta);
+            });
+        }
+
+        // Espera a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', asignarEvento);
+    </script>
+
+    {% block js%}
+    {% endblock %}
+
+
+</body>
 
 </html>
 {% else %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>{% block title %}ENARM 365{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="" />
-  <link rel="icon" href="favicon.png">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+    <meta charset="UTF-8" />
+    <title>{% block title %}ENARM 365{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
 </head>
+
 <body class="custom-background">
-  <div class="overlay">
-    <form class="login_form">
-      <p class="text_login">Welcome, new user. Please:</p>
-      <p class="text_login"><a href="{% url 'login' %}">Login</a></p>
-      <p class="text_login"><a href="{% url 'register' %}">Register</a></p>
-    </form>
-  </div>
+    <div class="overlay">
+        <form class="login_form">
+            <p class="text_login">Welcome, new user. Please:</p>
+            <p class="text_login"><a href="{% url 'login' %}">Login</a></p>
+            <p class="text_login"><a href="{% url 'register' %}">Register</a></p>
+        </form>
+    </div>
 </body>
+
 </html>
- 
+
 {% endif %}

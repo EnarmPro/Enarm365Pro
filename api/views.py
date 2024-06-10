@@ -1570,3 +1570,185 @@ def eliminar_comentario(request):
         comentario.delete()
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
+
+
+#---------------Portal de Administrador-------------
+
+def revisionPreguntas(request):
+    template_name = 'adminTablePregunta.html'
+    todas_preguntas = Preguntas.objects.all()
+    categorias = Categorias.objects.all()
+    temarios = Temarios.objects.all()
+    context = {
+        'todas_preguntas':todas_preguntas,
+        'categorias':categorias,
+        'temarios':temarios
+
+    }
+    return render(request,template_name,context)
+
+def insertarPregunta(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        nombrePreguntas = request.POST.get('nombrePregunta')
+        respuesta_incorrecta_uno_ = request.POST.get('respuesta_incorrecta_uno')
+        respuesta_incorrecta_dos_ = request.POST.get('respuesta_incorrecta_dos')
+        respuesta_incorrecta_tres_ = request.POST.get('respuesta_incorrecta_tres')
+        nivelPregunta_ = request.POST.get('nivelPregunta')
+        justificacionPregunta_ = request.POST.get('justificacionPregunta')
+        fkTemarios_ = request.POST.get('fkTemarios')
+        fkCategorias_ = request.POST.get('fkCategorias')
+
+        # instancias de llaves foraneas
+        instancia_categorias = Categorias.objects.get(idCategoria=fkCategorias_)
+        instancia_temarios = Temarios.objects.get(idTemarios=fkTemarios_)
+
+        insertar_pregunta = Preguntas.objects.create(
+            nombrePregunta = nombrePreguntas,
+            respuesta_incorrecta_uno = respuesta_incorrecta_uno_,
+            respuesta_incorrecta_dos = respuesta_incorrecta_dos_,
+            respuesta_incorrecta_tres = respuesta_incorrecta_tres_,
+            nivelPregunta = nivelPregunta_,
+            justificacionPregunta = justificacionPregunta_,
+            fkTemarios = instancia_temarios,
+            fkCategorias = instancia_categorias
+        )
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+def eliminar_pregunta(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        id_pregunta = request.POST.get('id_pregunta')
+        
+        # Eliminar la pregunta
+        pregunta = get_object_or_404(Preguntas, pk=id_pregunta)
+        pregunta.delete()
+        
+        # Eliminar las respuestas asociadas a la pregunta
+        Respuestas.objects.filter(fkPregunta=id_pregunta).delete()
+
+        return JsonResponse({'message': 'Pregunta eliminada exitosamente'})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def obtener_pregunta(request):
+    if request.method == 'GET':
+        id_pregunta = request.GET.get('id_pregunta')
+        pregunta = get_object_or_404(Preguntas, pk=id_pregunta)
+        
+        data = {
+            'idPregunta': pregunta.idPregunta,
+            'nombrePregunta': pregunta.nombrePregunta,
+            'respuesta_incorrecta_uno': pregunta.respuesta_incorrecta_uno,
+            'respuesta_incorrecta_dos': pregunta.respuesta_incorrecta_dos,
+            'respuesta_incorrecta_tres': pregunta.respuesta_incorrecta_tres,
+            'nivelPregunta': pregunta.nivelPregunta,
+            'justificacionPregunta': pregunta.justificacionPregunta,
+            'fkTemarios': pregunta.fkTemarios.idTemarios,
+            'fkCategorias': pregunta.fkCategorias.idCategoria
+        }
+        
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def editar_pregunta(request):
+    if request.method == 'POST':
+        id_pregunta = request.POST.get('idPregunta')
+        pregunta = get_object_or_404(Preguntas, pk=id_pregunta)
+
+        # Actualiza los campos de la pregunta con los datos del formulario
+        pregunta.nombrePregunta = request.POST.get('nombrePregunta')
+        pregunta.respuesta_incorrecta_uno = request.POST.get('respuesta_incorrecta_uno')
+        pregunta.respuesta_incorrecta_dos = request.POST.get('respuesta_incorrecta_dos')
+        pregunta.respuesta_incorrecta_tres = request.POST.get('respuesta_incorrecta_tres')
+        pregunta.nivelPregunta = request.POST.get('nivelPregunta')
+        pregunta.justificacionPregunta = request.POST.get('justificacionPregunta')
+        pregunta.fkTemarios_id = request.POST.get('fkTemarios')
+        pregunta.fkCategorias_id = request.POST.get('fkCategorias')
+
+        # Guarda los cambios en la base de datos
+        pregunta.save()
+
+        return JsonResponse({'message': 'Pregunta actualizada exitosamente'})
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def revisionRespuestas(request):
+    template_name = 'adminTableRespuestas.html'
+    todas_respuestas = Respuestas.objects.all()
+    todas_preguntas = Preguntas.objects.all()
+    categorias = Categorias.objects.all()
+   
+    context = {
+        'todas_respuestas':todas_respuestas,
+        'categorias':categorias,
+        'todas_preguntas':todas_preguntas
+       
+
+    }
+    return render(request,template_name,context)
+
+def insertarPregunta(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        nombreRespuestas_ = request.POST.get('nombreRespuesta')
+        fkPregunta_ = request.POST.get('fkPregunta')
+        fkCategorias_ = request.POST.get('fkCategorias')
+
+        # instancias de llaves foraneas
+        instancia_categorias = Categorias.objects.get(idCategoria=fkCategorias_)
+        instancia_pregunta = Preguntas.objects.get(idPregunta=fkPregunta_)
+
+        insertar_respuesta = Respuestas.objects.create(
+            nombreRespuestas = nombreRespuestas_,
+            fkPregunta = instancia_pregunta,
+            fkCategorias = instancia_categorias
+        )
+
+
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+def eliminar_respuesta(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        id_respuesta = request.POST.get('id_respuesta')
+        
+        # Eliminar la pregunta
+        respuesta = get_object_or_404(Respuestas, pk=id_respuesta)
+        respuesta.delete()
+        
+
+        return JsonResponse({'message': 'Respuesta eliminada exitosamente'})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def obtener_respuesta(request):
+    if request.method == 'GET' and request.user.is_superuser:
+        id_respuesta = request.GET.get('id_respuesta')
+        respuesta = get_object_or_404(Respuestas, pk=id_respuesta)
+        
+        data = {
+            'idRespuestas': respuesta.idRespuestas,
+            'nombreRespuestas': respuesta.nombreRespuestas,
+            'fkPregunta': respuesta.fkPregunta.idPregunta,
+            'fkCategorias': respuesta.fkCategorias.idCategoria
+        }
+        
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def actualizar_respuesta(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        id_respuesta = request.POST.get('idRespuesta')
+        respuesta = get_object_or_404(Respuestas, pk=id_respuesta)
+        
+        respuesta.nombreRespuestas = request.POST.get('nombreRespuesta')
+        # Obtener los objetos relacionados
+        respuesta.fkPregunta_id = request.POST.get('fkPregunta')
+        respuesta.fkCategorias_id = request.POST.get('fkCategorias')
+        respuesta.save()
+        
+        return JsonResponse({'message': 'Respuesta actualizada exitosamente'})
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+def error_404(request):
+    return render(request, '404.html', status=404)

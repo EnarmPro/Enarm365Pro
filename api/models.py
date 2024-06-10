@@ -18,6 +18,9 @@ class Temarios(models.Model):
 class Preguntas(models.Model):
     idPregunta = models.AutoField(primary_key=True)
     nombrePregunta = models.TextField()
+    respuesta_incorrecta_uno = models.TextField(default='')
+    respuesta_incorrecta_dos = models.TextField(default='')
+    respuesta_incorrecta_tres = models.TextField(default='')
     nivelPregunta = models.CharField(max_length=300,default='Baja')
     justificacionPregunta = models.TextField(default='')
     fkTemarios = models.ForeignKey(Temarios,on_delete=models.CASCADE,default=1) 
