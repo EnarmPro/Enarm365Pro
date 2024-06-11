@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import datetime
 
 class Categorias(models.Model):
     idCategoria = models.AutoField(primary_key=True)
@@ -97,3 +98,18 @@ class PaypalPago(models.Model):
     fk_User = models.ForeignKey(User,on_delete=models.CASCADE)
     class Meta:
         db_table = 'PaypalPago'
+
+class PanelInformation(models.Model):
+    idPanel = models.AutoField(primary_key=True)
+    titlePanel = models.TextField()
+    fechaPanel = models.DateField(default=datetime.date.today)
+    texto_uno = models.TextField()
+    tituloPanel_dos = models.TextField()
+    texto_dos = models.TextField()
+    tituloPanel_tres = models.TextField()
+    texto_tres = models.TextField()
+    texto_referencia = models.TextField(default='')
+    tipoBlog = models.TextField(default='')
+
+    class Meta:
+        db_table = 'PanelInformation'

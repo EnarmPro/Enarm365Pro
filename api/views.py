@@ -5,7 +5,7 @@ from django import forms
 from django.db.models import Q,Count
 from collections import defaultdict
 from django.shortcuts import redirect, render
-from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario, PaypalPago
+from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario, PaypalPago, PanelInformation
 from django.http import JsonResponse
 from django.db.models import Max
 from django.core.exceptions import ObjectDoesNotExist
@@ -1060,8 +1060,11 @@ def blogansiedad(request):
     else:
         es_mayor_a_30_dias = True
 
+    information = PanelInformation.objects.get(tipoBlog='blog1')
+
     context = {
-        'es_mayor_a_30_dias':es_mayor_a_30_dias
+        'es_mayor_a_30_dias':es_mayor_a_30_dias,
+        'information':information
     }
     return render(request,template_name,context)
 
