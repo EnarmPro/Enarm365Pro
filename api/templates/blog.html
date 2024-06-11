@@ -101,7 +101,9 @@
                                         <th>Título</th>
                                         <th>Foro creado por</th>
                                         <th>Ir al foro</th>
+                                        {% if user.is_superuser %}
                                         <th>Eliminar foro</th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
