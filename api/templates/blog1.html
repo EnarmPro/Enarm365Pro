@@ -4,184 +4,234 @@
 {% block navegador %}
 <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
     <li class="nav-item  active">
-        <a href="{% url 'index' %}"
-           class="nav-link">Home</a> <!-- Home Up -->
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
     </li>
     {% if not es_mayor_a_30_dias %}
     <li class="nav-item dropdown">
-        <a href=""
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Simuladores</a>
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
         <div class="dropdown-menu">
-            <a href="{% url 'simulator_free' %}"
-               class="dropdown-item">Gratuito</a>
-            <a href="{% url 'mostrar_enarm' %}"
-               class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
-            <a href="{% url 'mostrar_temas' %}"
-               class="dropdown-item">Tema</a>
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span>
+                <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
         </div>
     </li>
-    
-    
+
+
     <li class="nav-item dropdown">
-        <a href="estadisticas.html"
-           class="nav-link dropdown-toggle"
-           data-toggle="dropdown"
-           data-caret="false">Estadisticas</a>
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
         <div class="dropdown-menu">
-            <a href="{% url 'resultados' %}"
-               class="dropdown-item">Resultados</a>
-            <a href="{% url 'dashboard' %}"
-               class="dropdown-item">Dashboard</a>
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
         </div>
     </li>
     {% endif %}
-    
+
     <li class="nav-item">
-        <a href="{% url 'pricing' %}"
-           class="nav-link">Pricing</a>
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
     </li>
-    
 
-<ul class="nav navbar-nav ml-auto mr-0">
-    <li class="nav-item">
-        <a href=""
-           class="nav-link"
-           data-toggle="tooltip"
-           data-title="Login"
-           data-placement="bottom"
-           data-boundary="window"><i class="material-icons">lock_open</i></a>
-    </li>
-    <li class="nav-item">
-        <form method="post" action="{% url 'logout' %}">
-             {% csrf_token %}
-        <button type="submit" class="btn btn-outline-dark">Logout</button>
-        </form>
-    </li> 
-</ul>
-{% endblock %}
-{%block appcontenido%}
 
-<!-- Page Pricing //////////////////////////-->
-<div class="page-section bg-body border-bottom-2">
-    <div class="container page__container">
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
+    {% endblock %}
+    {%block appcontenido%}
 
-        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start flex mb-16pt text-center text-md-left">
-            <div class="avatar overlay overlay--primary mb-16pt mb-md-0 mr-md-16pt">
-                <img src="{% static 'img/fondos/LoginBackground.webp' %}"
-                     class="avatar-img rounded"
-                     alt="lesson">
-                <div class="overlay__content"></div>
-            </div>
-            <div class="flex">
-                <h1 class="h2 measure-lead-max mb-16pt">{{information.titlePanel}}</h1>
-                <div class="d-flex align-items-center">
-                    <a href="teacher-profile.html"
-                       class="avatar avatar-sm mr-12pt">
-                        <img src="{% static 'img/Unatinta.png' %}"
-                             alt="author"
-                             class="avatar-img rounded-circle">
-                    </a>
-                    <div class="mr-16pt">
-                        <a href="teacher-profile.html"
-                           class="card-title">Lygnum</a>
-                        <div class="d-flex align-items-center">
-                            <small class="text-50 mr-2">{{information.fechaPanel}}</small>
-                            <small class="text-50 mr-2">2 minutos de lectura</small>
-                            <a href=""
-                               class="text-50"><small>Liked</small></a>
-                        </div>
-                    </div>
-                    <div>
-                        <a href=""
-                           class="text-50 d-flex align-items-center text-decoration-0"><i class="material-icons icon--left">favorite_border</i> 3</a>
-                    </div>
-                </div>
+    <!-- Page Pricing //////////////////////////-->
+    <div class="page-section bg-body border-bottom-2">
+        <div class="container page__container">
 
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="page-section border-bottom-2">
-    <div class="container page__container">
-
-        <div class="mb-24pt">
-            <a href=""
-               class="chip chip-outline-secondary">Enarm 365</a>
-            <a href=""
-               class="chip chip-outline-secondary">certificaciones</a>
-        </div>
-
-        <div class="d-flex flex-column flex-md-row align-items-md-center mb-16pt">
-            <div class="mb-16pt mb-md-0 mr-md-16pt">
-                <div class="rounded p-relative o-hidden overlay overlay--primary">
-                    <img class="rounded" width="200" height="180"
-                         src="../static/img/Unatinta.png"
-                         alt="image">
+            <div
+                class="d-flex flex-column flex-md-row align-items-center align-items-md-start flex mb-16pt text-center text-md-left">
+                <div class="avatar overlay overlay--primary mb-16pt mb-md-0 mr-md-16pt">
+                    <img src="{% static 'img/fondos/LoginBackground.webp' %}" class="avatar-img rounded" alt="lesson">
                     <div class="overlay__content"></div>
                 </div>
-            </div>
-            <div class="flex">
-                <p class="lead measure-paragraph-max text-justify">{{information.texto_uno}}</p>
-            </div>
-        </div>
+                <div class="flex">
+                    {% if user.is_superuser %}
+                    <form action="{% url 'modificarBlogInformativo' %}" id="modificarBlogForm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="tipo" value="blog1">
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <textarea name="titlePanel" id="" class="h2 measure-lead-max mb-16pt"
+                        style="width: 100%;">{{information.titlePanel}}</textarea>
+                    {% else %}
+                    <h1 class="h2 measure-lead-max mb-16pt">{{information.titlePanel}}</h1>
+                    {% endif %}
 
-        <blockquote class="blockquote blockquote--reverse pl-0">
-            <p class="text-50">{{information.tituloPanel_dos}}</p>
-           
-        </blockquote>
+                    <div class="d-flex align-items-center">
+                        <a href="teacher-profile.html" class="avatar avatar-sm mr-12pt">
+                            <img src="{% static 'img/Unatinta.png' %}" alt="author" class="avatar-img rounded-circle">
+                        </a>
+                        <div class="mr-16pt">
+                            <a href="teacher-profile.html" class="card-title">Lygnum</a>
+                            <div class="d-flex align-items-center">
+                                <small class="text-50 mr-2">{{information.fechaPanel}}</small>
+                                <small class="text-50 mr-2">2 minutos de lectura</small>
+                                <a href="" class="text-50"><small>Liked</small></a>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="" class="text-50 d-flex align-items-center text-decoration-0"><i
+                                    class="material-icons icon--left">favorite_border</i> 3</a>
+                        </div>
+                    </div>
 
-        <p class="text-50 measure-paragraph-max mb-24pt text-justify">{{information.texto_dos}}</p>
-
-        <h4>{{information.tituloPanel_tres}}</h4>
-
-        <div class="d-flex flex-column flex-md-row mb-32pt">
-            <div class="flex mb-16pt mb-md-0 mr-md-16pt">
-                <p class="lead text-70 measure-paragraph-max text-justify">{{information.texto_tres}}</p>
-
-                <blockquote class="blockquote">
-                    <p class="text-50">{{information.texto_referencia}}</p>
-                    
-                </blockquote>
-            </div>
-            <div>
-                
-            </div>
-        </div>
-
-        <div class="measure-lead-max">
-
-            <div class="mb-8pt">
-                <div class="page-separator">
-                    <div class="page-separator__text">Enarm 365</div>
                 </div>
-
-                <div class="media align-items-center mb-16pt">
-                    <span class="media-left mr-16pt">
-                        <img src="../static/img/HorizontalUnaTinta.png" width="200" height="180"
-                             alt="avatar"
-                             class="rounded-circle">
-                    </span>
-                </div>
-                
-
-                
             </div>
+
         </div>
     </div>
-          </div>
 
-<!-- Page Pricing //////////////////////////-->
-{% block js %}
+    <div class="page-section border-bottom-2">
+        <div class="container page__container">
 
-<!-- Incluir SweetAlert JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+            <div class="mb-24pt">
+                <a href="" class="chip chip-outline-secondary">Enarm 365</a>
+                <a href="" class="chip chip-outline-secondary">certificaciones</a>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row align-items-md-center mb-16pt">
+                <div class="mb-16pt mb-md-0 mr-md-16pt">
+                    <div class="rounded p-relative o-hidden overlay overlay--primary">
+                        <img class="rounded" width="200" height="180" src="../static/img/Unatinta.png" alt="image">
+                        <div class="overlay__content"></div>
+                    </div>
+                </div>
+                <div class="flex">
+                    {% if user.is_superuser %}
+                    <textarea name="texto_uno" id="" class="lead measure-paragraph-max text-justify"
+                        style="width: 100%; height: 200px;">{{information.texto_uno}}</textarea>
+                    {% else %}
+                    <p class="lead measure-paragraph-max text-justify">{{information.texto_uno}}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <blockquote class="blockquote blockquote--reverse pl-0">
+                {% if user.is_superuser %}
+
+                <textarea name="tituloPanel_dos" id="" style="width: 100%;">{{information.tituloPanel_dos}}</textarea>
+                {% else %}
+
+                <p class="text-50">{{information.tituloPanel_dos}}</p>
+                {% endif %}
+
+            </blockquote>
+            {% if user.is_superuser %}
+            <textarea name="texto_dos" id="" class=" mb-24pt text-justify"
+                style="width: 50%; height: 200px;">{{information.texto_dos}}</textarea>
+            {% else %}
+            <p class="text-50 measure-paragraph-max mb-24pt text-justify">{{information.texto_dos}}</p>
+            {% endif %}
+
+            {% if user.is_superuser %}
+            <h4><textarea name="tituloPanel_tres" id="" style="width: 100%;">{{information.tituloPanel_tres}}</textarea></h4>
+            {% else %}
+            <h4>{{information.tituloPanel_tres}}</h4>
+            {% endif %}
 
 
-{% endblock %}
-<!-- // END Page Content /////////////////////////////////////////////////-->
+            <div class="d-flex flex-column flex-md-row mb-32pt">
+                <div class="flex mb-16pt mb-md-0 mr-md-16pt">
+                    {% if user.is_superuser %}
+                    <textarea name="texto_tres" id="" class="lead text-70 measure-paragraph-max text-justify"
+                        style="width: 50%; height: 200px;">{{information.texto_tres}}</textarea>
+                    {% else %}
+                    <p class="lead text-70 measure-paragraph-max text-justify">{{information.texto_tres}}</p>
+                    {% endif %}
+                    <blockquote class="blockquote">
+                        {% if user.is_superuser %}
+                        <textarea name="texto_referencia" id="" style="width: 100%;">{{information.texto_referencia}}</textarea>
+                        {% else %}
+                        <p class="text-50">{{information.texto_referencia}}</p>
+                        {% endif %}
+                    </blockquote>
+                </div>
+                <div>
+                    
+                </div>
+                
+            </div>
+            {% if user.is_superuser %}
+            <div class="mt-16pt mb-16pt">
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
 
-{% endblock%}
+            </form>
+            {% endif %}
+            <div class="measure-lead-max">
+
+                <div class="mb-8pt">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Enarm 365</div>
+                    </div>
+
+                    <div class="media align-items-center mb-16pt">
+                        <span class="media-left mr-16pt">
+                            <img src="../static/img/HorizontalUnaTinta.png" width="200" height="180" alt="avatar"
+                                class="rounded-circle">
+                        </span>
+                    </div>
+
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+
+
+
+    {% block js %}
+    <!-- Incluir SweetAlert JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('modificarBlogForm');
+    
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    swal("Éxito", data.message, "success");
+                    
+                } else if (data.error) {
+                    swal("Error", data.error, "error");
+                }
+            })
+            .catch(error => {
+                swal("Error", "Hubo un problema al actualizar el blog. Por favor, inténtelo de nuevo.", "error");
+            });
+        });
+    });
+    </script>
+    {% endblock %}
+    
+
+
+    {% endblock%}

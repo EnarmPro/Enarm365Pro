@@ -19,6 +19,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
+import datetime
 
 
 class RegistrationForm(UserCreationForm):
@@ -93,7 +94,10 @@ def index(request):
     else:
         es_mayor_a_30_dias = True
         revisionIntento = None
-        
+    
+    information = PanelInformation.objects.filter(tipoBlog='blog1').values().first() 
+    
+
     context = {
         'mostrarTemario':mostrarTemario,
         'contadorTemario':contadorTemario,
@@ -101,6 +105,7 @@ def index(request):
         'comentarioUser': comentarioUser,
         'es_mayor_a_30_dias':es_mayor_a_30_dias,
         'revisionIntento':revisionIntento,
+        'information':information
         
     }
 
@@ -1807,5 +1812,26 @@ def actualizar_respuesta(request):
         
         return JsonResponse({'message': 'Respuesta actualizada exitosamente'})
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def modificarBlogInformativo(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        tipo = request.POST.get('tipo')
+        informationBlog = get_object_or_404(PanelInformation, tipoBlog=tipo)
+        
+        informationBlog.titlePanel = request.POST.get('titlePanel')
+        informationBlog.fechaPanel = datetime.date.today().strftime('%Y-%m-%d') 
+        informationBlog.texto_uno = request.POST.get('texto_uno')
+        informationBlog.tituloPanel_dos = request.POST.get('tituloPanel_dos')
+        informationBlog.texto_dos = request.POST.get('texto_dos')
+        informationBlog.tituloPanel_tres = request.POST.get('tituloPanel_tres')
+        informationBlog.texto_tres = request.POST.get('texto_tres')
+        informationBlog.texto_referencia = request.POST.get('texto_referencia')
+        informationBlog.save()
+        
+        return JsonResponse({'message': 'Se actualizo el blog exitosamente'})
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
 def error_404(request):
     return render(request, '404.html', status=404)

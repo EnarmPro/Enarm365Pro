@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include,re_path
-from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral,PersonasPagos, eliminar_item, eliminar_comentario,revisionPreguntas,insertarPregunta,eliminar_pregunta,obtener_pregunta,editar_pregunta,revisionRespuestas, eliminar_respuesta, obtener_respuesta,actualizar_respuesta,error_404
+from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral,PersonasPagos, eliminar_item, eliminar_comentario,revisionPreguntas,insertarPregunta,eliminar_pregunta,obtener_pregunta,editar_pregunta,revisionRespuestas, eliminar_respuesta, obtener_respuesta,actualizar_respuesta,modificarBlogInformativo,error_404
 
 
 urlpatterns = [
@@ -73,6 +73,7 @@ urlpatterns = [
     path('eliminar_respuesta/', eliminar_respuesta, name='eliminar_respuesta'),
     path('obtener_respuesta/', obtener_respuesta, name='obtener_respuesta'),
     path('actualizar_respuesta/', actualizar_respuesta, name='actualizar_respuesta'),
+    path('modificarBlogInformativo/', modificarBlogInformativo, name='modificarBlogInformativo'),
     re_path(r'^.*/$', error_404),
 ]
 
