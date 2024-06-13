@@ -233,41 +233,7 @@
 
 {% endif %}
 <!-- Page Pricing //////////////////////////-->
-{% block js %}
 
-<!-- Incluir SweetAlert JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-{% if  es_mayor_a_30_dias %}
-<script>
-    
- // Mostrar SweetAlert modal para el pago de la membresía PRO
-swal({
-    text: "¿Ya has cubierto el pago de la membresía PRO?",
-    icon: "info",
-    buttons: ["No", "Sí"],
-})
-.then((response) => {
-    if (response) {
-        swal("¡Excelente!", "Puedes continuar con el uso de la plataforma.", "success");
-    } else {
-        swal({
-            text: "Por favor, realiza el pago de la membresía PRO.",
-            icon: "warning",
-            buttons: ["Cancelar", "Ir a pagar"],
-        })
-        .then((goToPayment) => {
-            if (goToPayment) {
-                // Redirigir al usuario a la página de pago
-                window.location.href = "{% url 'pricing' %}"; // Cambia esto por la URL real de la página de pago
-            }
-        });
-    }
-});
-</script>
-
-{% endif %}
-
-{% endblock %}
 <!-- // END Page Content /////////////////////////////////////////////////-->
 
 {% endblock%}

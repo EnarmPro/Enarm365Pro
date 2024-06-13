@@ -19,9 +19,6 @@ class Temarios(models.Model):
 class Preguntas(models.Model):
     idPregunta = models.AutoField(primary_key=True)
     nombrePregunta = models.TextField()
-    respuesta_incorrecta_uno = models.TextField(default='')
-    respuesta_incorrecta_dos = models.TextField(default='')
-    respuesta_incorrecta_tres = models.TextField(default='')
     nivelPregunta = models.CharField(max_length=300,default='Baja')
     justificacionPregunta = models.TextField(default='')
     fkTemarios = models.ForeignKey(Temarios,on_delete=models.CASCADE,default=1) 
@@ -32,6 +29,7 @@ class Preguntas(models.Model):
 class Respuestas(models.Model):
     idRespuestas = models.AutoField(primary_key=True)
     nombreRespuestas = models.TextField()
+    statusRespuestas = models.TextField(default='Correcto')
     fkPregunta = models.ForeignKey(Preguntas, on_delete=models.CASCADE)
     fkCategorias = models.ForeignKey(Categorias, on_delete=models.CASCADE,default=1)
     class Meta:

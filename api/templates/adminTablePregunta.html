@@ -93,9 +93,6 @@
                                         <th>Nivel Pregunta</th>
                                         <th>Categoría</th>
                                         <th>Temario</th>
-                                        <th>Respuesta Incorrecta 1</th>
-                                        <th>Respuesta Incorrecta 2</th>
-                                        <th>Respuesta Incorrecta 3</th>
                                         <th>Editar</th>
                                         <th>Eliminar</th>
                                     </tr>
@@ -108,9 +105,6 @@
                                         <td class="text-center">{{pregunta.nivelPregunta}}</td>
                                         <td class="text-center">{{pregunta.fkCategorias.descripcionCategoria}}</td>
                                         <td class="text-center">{{pregunta.fkTemarios.nombreTemario}}</td>
-                                        <td class="text-justify">{{pregunta.respuesta_incorrecta_uno}}</td>
-                                        <td class="text-justify">{{pregunta.respuesta_incorrecta_dos}}</td>
-                                        <td class="text-justify">{{pregunta.respuesta_incorrecta_tres}}</td>
                                         <form action="" method="post" class="edit_preguntas">
                                             <input type="hidden" name="id_pregunta" value="{{ pregunta.idPregunta }}">
                                             <td class="text-justify">
@@ -142,18 +136,6 @@
                                                         <div class="form-group">
                                                             <label for="edit-nombrePregunta">Descripción de la pregunta:</label>
                                                             <textarea class="form-control" id="edit-nombrePregunta" name="nombrePregunta" rows="3" required></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="edit-respuesta_incorrecta_uno">Respuesta Incorrecta 1:</label>
-                                                            <textarea class="form-control" id="edit-respuesta_incorrecta_uno" name="respuesta_incorrecta_uno" rows="2" required></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="edit-respuesta_incorrecta_dos">Respuesta Incorrecta 2:</label>
-                                                            <textarea class="form-control" id="edit-respuesta_incorrecta_dos" name="respuesta_incorrecta_dos" rows="2" required></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="edit-respuesta_incorrecta_tres">Respuesta Incorrecta 3:</label>
-                                                            <textarea class="form-control" id="edit-respuesta_incorrecta_tres" name="respuesta_incorrecta_tres" rows="2" required></textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="edit-nivelPregunta">Nivel Pregunta:</label>
@@ -227,21 +209,7 @@
                             <textarea class="form-control" id="nombrePregunta" name="nombrePregunta" rows="3"
                                 required></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="respuesta_incorrecta_uno">Respuesta Incorrecta 1:</label>
-                            <textarea class="form-control" id="respuesta_incorrecta_uno" name="respuesta_incorrecta_uno"
-                                rows="2" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="respuesta_incorrecta_dos">Respuesta Incorrecta 2:</label>
-                            <textarea class="form-control" id="respuesta_incorrecta_dos" name="respuesta_incorrecta_dos"
-                                rows="2" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="respuesta_incorrecta_tres">Respuesta Incorrecta 3:</label>
-                            <textarea class="form-control" id="respuesta_incorrecta_tres"
-                                name="respuesta_incorrecta_tres" rows="2" required></textarea>
-                        </div>
+                       
                         <div class="form-group">
                             <label for="nivelPregunta">Nivel Pregunta:</label>
                             <select class="form-control" id="nivelPregunta" name="nivelPregunta" required>
@@ -398,9 +366,6 @@ $(document).ready(function() {
                     // Llenar los campos del formulario con los datos obtenidos
                     $('#edit-idPregunta').val(data.idPregunta);
                     $('#edit-nombrePregunta').val(data.nombrePregunta);
-                    $('#edit-respuesta_incorrecta_uno').val(data.respuesta_incorrecta_uno);
-                    $('#edit-respuesta_incorrecta_dos').val(data.respuesta_incorrecta_dos);
-                    $('#edit-respuesta_incorrecta_tres').val(data.respuesta_incorrecta_tres);
                     $('#edit-nivelPregunta').val(data.nivelPregunta);
                     $('#edit-justificacionPregunta').val(data.justificacionPregunta);
                     $('#edit-fkTemarios').val(data.fkTemarios);

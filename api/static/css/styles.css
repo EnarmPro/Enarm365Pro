@@ -275,7 +275,9 @@ body.custom-background {
 .text_login a:hover {
   text-decoration: underline;
 }
-
+.card-resultados{
+  width: 400px !important;
+}
 /* Media Queries para responsividad */
 @media (max-width: 600px) {
   .overlay {
@@ -296,6 +298,9 @@ body.custom-background {
   }
   .login{
     width: 80%;
+  }
+  .card-resultados{
+    width: 200px;
   }
 }
 

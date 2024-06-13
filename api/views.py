@@ -174,22 +174,23 @@ def simulador_free(request):
     
 
     # Obtener todas las preguntas gratuitas
-    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:10]
+    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:1]
 
-    # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.filter(fkCategorias=1)
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
     for pregunta in preguntas_gratuitas:
-            # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
-            
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
@@ -707,13 +708,14 @@ def detalle_intento(request, numero_intento, tema):
 
     for intento in intentos:
         pregunta = intento.fkPregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
+        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta, statusRespuestas='Correcto')
         es_correcta = (intento.fkRespuesta == respuesta_correcta)
         
 
         # Actualizar el campo 'es_correcta' del intento
         intento.es_correcta = es_correcta
-
+        justificacion = pregunta.justificacionPregunta
+        intento.justificacion = justificacion
         # Incrementar el contador si la respuesta es correcta
         if es_correcta:
             respuestas_correctas += 1
@@ -723,11 +725,21 @@ def detalle_intento(request, numero_intento, tema):
             justificacion = pregunta.justificacionPregunta
             intento.justificacion = justificacion
 
+        # Calcular el total de intentos
+    total_intentos = intentos.count()
+    
+    # Calcular el porcentaje de respuestas correctas
+    if total_intentos > 0:
+        porcentaje_correctas = (respuestas_correctas / total_intentos) * 100
+    else:
+        porcentaje_correctas = 0
+
     context = {
         'intentos': intentos,
         'numero_intento': numero_intento,
         'tema': tema,
         'respuestas_correctas': respuestas_correctas,  # Pasar el conteo al contexto
+        'porcentaje_correctas':porcentaje_correctas
         
     }
     return render(request, 'Estadisticos/detalles_intento.html', context)
@@ -752,7 +764,7 @@ def dashboard(request):
 
     for intento in intentos:
         pregunta = intento.fkPregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
+        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta, statusRespuestas='Correcto')
         es_correcta = (intento.fkRespuesta == respuesta_correcta)
 
         if es_correcta:
@@ -1674,9 +1686,6 @@ def obtener_pregunta(request):
         data = {
             'idPregunta': pregunta.idPregunta,
             'nombrePregunta': pregunta.nombrePregunta,
-            'respuesta_incorrecta_uno': pregunta.respuesta_incorrecta_uno,
-            'respuesta_incorrecta_dos': pregunta.respuesta_incorrecta_dos,
-            'respuesta_incorrecta_tres': pregunta.respuesta_incorrecta_tres,
             'nivelPregunta': pregunta.nivelPregunta,
             'justificacionPregunta': pregunta.justificacionPregunta,
             'fkTemarios': pregunta.fkTemarios.idTemarios,

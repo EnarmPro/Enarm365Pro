@@ -88,9 +88,10 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Respuesta correcta</th>
+                                        <th>Respuesta</th>
                                         <th>Pregunta</th>
                                         <th>Categoría</th>
+                                        <th>Tipo de Respuesta</th>
                                         <th>Editar</th>
                                         <th>Eliminar</th>
                                         
@@ -103,6 +104,7 @@
                                         <td class="text-justify">{{respuesta.nombreRespuestas}}</td>
                                         <td class="text-justify">{{respuesta.fkPregunta.nombrePregunta}}</td>
                                         <td class="text-justify">{{respuesta.fkCategorias.descripcionCategoria}}</td>
+                                        <td class="text-justify">{{respuesta.statusRespuestas}}</td>
                                         
                                         <form action="" method="post" class="edit_respuestas">
                                             <input type="hidden" name="id_respuesta" value="{{ respuesta.idRespuestas }}">

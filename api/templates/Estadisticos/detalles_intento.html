@@ -70,6 +70,7 @@
             <div class="page-headline text-center">
                 <h2>Resultados Intento : {{numero_intento}} Tema: {{tema}}</h2>
                 <h5 class=" mx-auto">Preguntas correctas : {{respuestas_correctas}}</h5>
+                <h5 class=" mx-auto">Porcentaje de evaluación : {{porcentaje_correctas}}%</h5>
             </div>
 
             <div class="position-relative carousel-card p-0 mx-auto">
@@ -83,15 +84,17 @@
                     <div class="mdk-carousel__content">
 
                         {% for intento in intentos %}
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9 col-sm-4 card-resultados">
 
-                            <div class="card card-feedback card-body">
+                            
+                            <div class="card card-feedback card-body ">
                                 <blockquote class="blockquote mb-0">
                                     <h4 class="text-40 text-justify mb-4">Pregunta: {{ intento.fkPregunta.nombrePregunta }}</h4>
                                     <h5 class="text-40 mb-4">Respuesta seleccionada: <label class="text-underline">{{ intento.fkRespuesta.nombreRespuestas }}</label></h5>
 
                                     {% if intento.es_correcta %}
                                     <h6 class="text-70 mb-4  btn btn-success">Respuesta: Correcta</h6>
+                                    <h5 class=" mb-4 btn btn-primary ">Justificación: {{ intento.justificacion }}</h5>
                                     {% else %}
                                     <p class=" mb-4 btn btn-danger">Respuesta: Incorrecta</p>
                                     <h5 class=" mb-4 btn btn-primary ">Justificación: {{ intento.justificacion }}</h5>
