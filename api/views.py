@@ -96,6 +96,8 @@ def index(request):
         revisionIntento = None
     
     information = PanelInformation.objects.filter(tipoBlog='blog1').values().first() 
+    information2 = PanelInformation.objects.filter(tipoBlog='blog2').values().first() 
+    information3 = PanelInformation.objects.filter(tipoBlog='blog3').values().first() 
     
 
     context = {
@@ -105,7 +107,9 @@ def index(request):
         'comentarioUser': comentarioUser,
         'es_mayor_a_30_dias':es_mayor_a_30_dias,
         'revisionIntento':revisionIntento,
-        'information':information
+        'information':information,
+        'information2':information2,
+        'information3':information3
         
     }
 
@@ -1115,8 +1119,11 @@ def blogestudio(request):
     else:
         es_mayor_a_30_dias = True
 
+    information = PanelInformation.objects.get(tipoBlog='blog2')
+
     context = {
-        'es_mayor_a_30_dias':es_mayor_a_30_dias
+        'es_mayor_a_30_dias':es_mayor_a_30_dias,
+        'information':information
     }
     return render(request,template_name,context)
 
@@ -1152,8 +1159,11 @@ def blogmotivado(request):
     else:
         es_mayor_a_30_dias = True
 
+    information = PanelInformation.objects.get(tipoBlog='blog3')
+
     context = {
-        'es_mayor_a_30_dias':es_mayor_a_30_dias
+        'es_mayor_a_30_dias':es_mayor_a_30_dias,
+        'information':information
     }
     return render(request,template_name,context)
 
