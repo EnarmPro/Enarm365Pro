@@ -1,0 +1,231 @@
+{% extends "templatecontenido.html" %}
+{% load static%}
+{%block titleapp%} ENARM 365 {% endblock%}
+{% block head %}
+<!-- CSS de DataTables -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+<!-- JavaScript de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JavaScript de DataTables -->
+<script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+{% endblock %}
+{% block navegador %}
+<ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+    <li class="nav-item  active">
+        <a href="{% url 'index' %}" class="nav-link">Home</a> <!-- Home Up -->
+    </li>
+    {% if not es_mayor_a_30_dias %}
+    <li class="nav-item dropdown">
+        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" data-caret="false">Simuladores</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'simulator_free' %}" class="dropdown-item">Gratuito</a>
+            <a href="{% url 'mostrar_enarm' %}" class="dropdown-item"><span class="mr-16pt">Enarm 365 Completo</span>
+                <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+            <a href="{% url 'mostrar_temas' %}" class="dropdown-item">Tema</a>
+        </div>
+    </li>
+
+
+    <li class="nav-item dropdown">
+        <a href="estadisticas.html" class="nav-link dropdown-toggle" data-toggle="dropdown"
+            data-caret="false">Estadisticas</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'resultados' %}" class="dropdown-item">Resultados</a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
+        </div>
+    </li>
+    {% endif %}
+
+    <li class="nav-item">
+        <a href="{% url 'pricing' %}" class="nav-link">Pricing</a>
+    </li>
+
+
+    <ul class="nav navbar-nav ml-auto mr-0">
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="tooltip" data-title="Login" data-placement="bottom"
+                data-boundary="window"><i class="material-icons">lock_open</i></a>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </form>
+        </li>
+    </ul>
+
+
+    {% endblock %}
+    {%block appcontenido%}
+
+
+
+
+    <!-- INICIA Feedback -->
+    <div class="page-section">
+        <div class="container page__container">
+            <div class="page-headline text-center">
+                <h2>Informacion de Pagos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container " id="">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table id="respuestasTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Costo</th>
+                                        <th class="text-center">Tipo de Memebresia</th>
+                                        <th class="text-center">Editar</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pago in pagos %}
+                                    <tr>
+                                        <td class="text-center">{{pago.cantidadPago}}</td>
+                                        <td class="text-center">{{pago.tipoMembresia}}</td>
+
+
+                                        <form action="" method="post" class="edit_costos">
+                                            <input type="hidden" name="id_costos"
+                                                value="{{ pago.idCantidad }}">
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-primary edit-btn"
+                                                    data-toggle="modal" data-target="#editarCostoModal"
+                                                    data-id="{{ pago.idCantidad }}">
+                                                    <span class="material-icons">edit</span>
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+
+                                    {% endfor %}
+                                    <!-- Modal para Editar Pregunta -->
+                                    <div class="modal" id="editarCostoModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false"
+                                        style="position: relative;">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Editar Costos</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="editarCostoForm" method="post"
+                                                        action="{% url 'actualizar_pago' %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" id="edit-idCantidad" name="id_costos">
+                                                        <div class="form-group">
+                                                            <label for="edit-cantidadPago">Costo:</label>
+                                                            <input class="form-control" type="number" min="0" step="0.01" id="edit-cantidadPago"
+                                                                name="costo" required>
+                                                        </div>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-primary">Guardar
+                                                        cambios</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Termina Feedback -->
+
+    {% block js %}
+
+    <script>
+        // Variable global para verificar si el script ya se ha ejecutado
+        let scriptEjecutado = false;
+
+        $(document).ready(function () {
+            // Verifica si el script ya se ha ejecutado antes de ejecutar el código
+            if (!scriptEjecutado) {
+                // Inicializa DataTable
+                let table = new DataTable('#respuestasTable');
+
+                // Llenar el formulario de edición con los datos de la pregunta seleccionada
+                $(document).on('click', '.edit-btn', function () {
+                    let idCosto = $(this).data('id');
+
+                    $.ajax({
+                        url: "{% url 'obtener_costos' %}",
+                        type: 'GET',
+                        data: { 'id_costos': idCosto},
+                        success: function (data) {
+                            // Llenar los campos del formulario con los datos obtenidos
+                            $('#edit-idCantidad').val(data.idCantidad);
+                            $('#edit-cantidadPago').val(data.cantidadPago);
+                            $('#editarCostoModal').modal('show'); // Mostrar el modal
+                        },
+                        error: function (xhr, errmsg, err) {
+                            alert('Error al obtener los datos de la pregunta.');
+                            console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                        }
+                    });
+                });
+
+                // Enviar datos editados al servidor
+                $(document).on('submit', '#editarCostoForm', function (event) {
+                    event.preventDefault();  // Evita el envío tradicional del formulario
+
+                    $.ajax({
+                        url: $(this).attr('action'),  // Obtiene la URL del atributo action del formulario
+                        type: 'POST',
+                        data: $(this).serialize(),  // Serializa los datos del formulario
+                        success: function (response) {
+                            // Aquí puedes manejar lo que sucede después de una actualización exitosa
+                            alert('Pago actualizado exitosamente. Por favor espera a que se actualice la página');
+                            window.location.href = '';  // Recarga la página para actualizar la tabla (opcional)
+                        },
+                        error: function (xhr, errmsg, err) {
+                            // Aquí puedes manejar los errores
+                            alert('Error al actualizar la pregunta.');
+                            console.log(xhr.status + ": " + xhr.responseText);  // Muestra el error en la consola
+                        }
+                    });
+                });
+
+                // Establece la variable scriptEjecutado en true para indicar que el script ya se ejecutó
+                scriptEjecutado = true;
+            }
+        });
+    </script>
+
+
+
+
+
+
+    {% endblock %}
+    <!-- // END Page Content /////////////////////////////////////////////////-->
+
+    {% endblock%}

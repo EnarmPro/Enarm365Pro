@@ -21,6 +21,7 @@ class Preguntas(models.Model):
     nombrePregunta = models.TextField()
     nivelPregunta = models.CharField(max_length=300,default='Baja')
     justificacionPregunta = models.TextField(default='')
+    tipoPregunta = models.TextField(default='Continua')
     fkTemarios = models.ForeignKey(Temarios,on_delete=models.CASCADE,default=1) 
     fkCategorias = models.ForeignKey(Categorias, on_delete=models.CASCADE,default=1)
     class Meta:
@@ -111,3 +112,11 @@ class PanelInformation(models.Model):
 
     class Meta:
         db_table = 'PanelInformation'
+
+class CantidadPagos(models.Model):
+    idCantidad = models.AutoField(primary_key=True)
+    cantidadPago = models.FloatField()
+    tipoMembresia = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'CantidadPagos'

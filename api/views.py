@@ -5,7 +5,7 @@ from django import forms
 from django.db.models import Q,Count
 from collections import defaultdict
 from django.shortcuts import redirect, render
-from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario, PaypalPago, PanelInformation
+from api.models import Intentos, Preguntas,Categorias,Respuestas,RegistroRespuestaPreguntas,Temarios, ForoUsuarios,blogTema, blogComentario, PaypalPago, PanelInformation,CantidadPagos
 from django.http import JsonResponse
 from django.db.models import Max
 from django.core.exceptions import ObjectDoesNotExist
@@ -178,7 +178,7 @@ def simulador_free(request):
     
 
     # Obtener todas las preguntas gratuitas
-    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:1]
+    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:10]
 
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
@@ -960,6 +960,10 @@ def update_username_form(request):
 
 def pricing(request):
     template_name = 'pricing.html'
+    pago_Mensual = CantidadPagos.objects.filter(tipoMembresia='Mensual').first()
+    pago_Trimestral = CantidadPagos.objects.filter(tipoMembresia='Trimestral').first()
+    pago_Semestral = CantidadPagos.objects.filter(tipoMembresia='Semestral').first()
+    pago_Anual = CantidadPagos.objects.filter(tipoMembresia='Anual').first()
 
     if request.user.is_authenticated:
         user = request.user
@@ -993,7 +997,14 @@ def pricing(request):
 
     context = {
         'es_mayor_a_30_dias': es_mayor_a_30_dias,
-        'ultimo_pago': ultimo_pago
+        'ultimo_pago': ultimo_pago,
+        'pago_Mensual':pago_Mensual,
+        'pago_Trimestral':pago_Trimestral,
+        'pago_Semestral':pago_Semestral,
+        'pago_Anual':pago_Anual
+
+
+
     }
 
     return render(request, template_name, context)
@@ -1333,6 +1344,8 @@ def paypalanual(request):
 
 def create_order(request):
     if request.method == 'POST':
+        pago = CantidadPagos.objects.filter(tipoMembresia='Mensual').first()
+
         access_token = get_paypal_access_token()
         data = json.loads(request.body)
 
@@ -1345,7 +1358,7 @@ def create_order(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "299.0"  # Ajusta según el precio total de los productos
+                    "value": pago.cantidadPago  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1362,6 +1375,8 @@ def create_order(request):
 
 def create_order_anual(request):
     if request.method == 'POST':
+        pago = CantidadPagos.objects.filter(tipoMembresia='Anual').first()
+
         access_token = get_paypal_access_token()
         data = json.loads(request.body)
         
@@ -1374,7 +1389,7 @@ def create_order_anual(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "3000.0"  # Ajusta según el precio total de los productos
+                    "value": pago.cantidadPago  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1391,6 +1406,8 @@ def create_order_anual(request):
 
 def create_order_trimestral(request):
     if request.method == 'POST':
+        pago = CantidadPagos.objects.filter(tipoMembresia='Trimestral').first()
+
         access_token = get_paypal_access_token()
         data = json.loads(request.body)
         
@@ -1403,7 +1420,7 @@ def create_order_trimestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "629.0"  # Ajusta según el precio total de los productos
+                    "value": pago.cantidadPago  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1420,6 +1437,8 @@ def create_order_trimestral(request):
 
 def create_order_semestral(request):
     if request.method == 'POST':
+        pago = CantidadPagos.objects.filter(tipoMembresia='Semestral').first()
+
         access_token = get_paypal_access_token()
         data = json.loads(request.body)
         
@@ -1432,7 +1451,7 @@ def create_order_semestral(request):
             "purchase_units": [{
                 "amount": {
                     "currency_code": "MXN",
-                    "value": "1500.0"  # Ajusta según el precio total de los productos
+                    "value": pago.cantidadPago  # Ajusta según el precio total de los productos
                 }
             }]
         }
@@ -1851,6 +1870,67 @@ def modificarBlogInformativo(request):
         return JsonResponse({'message': 'Se actualizo el blog exitosamente'})
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+def adminPagos(request):
+    template_name = 'adminPagos.html'
+    pagos = CantidadPagos.objects.all()
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+
+    context = {
+        'pagos':pagos,
+        'es_mayor_a_30_dias':es_mayor_a_30_dias
+    }
+
+    return render(request,template_name,context)
+
+def obtener_costos(request):
+    if request.method == 'GET':
+        id_costos = request.GET.get('id_costos')
+        costos = get_object_or_404(CantidadPagos, pk=id_costos)
+        
+        data = {
+            'idCantidad': costos.idCantidad,
+            'cantidadPago': costos.cantidadPago,
+        
+        }
+        
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def actualizar_pago(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        id_costos = request.POST.get('id_costos')
+        pago = get_object_or_404(CantidadPagos, pk=id_costos)
+        
+        pago.cantidadPago = request.POST.get('costo')
+        # Obtener los objetos relacionados
+        pago.save()
+        
+        return JsonResponse({'message': 'Pago actualizado exitosamente'})
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def error_404(request):
     return render(request, '404.html', status=404)
