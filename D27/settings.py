@@ -148,18 +148,17 @@ if not DEBUG:    # Tell Django to copy static assets into a path called `staticf
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-mail = os.environ.get("MAIL")
-mail_pass = os.environ.get("MAIL_PASSWORD")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'live.smtp.mailtrap.io'
-EMAIL_PORT = '587'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'api'
-EMAIL_HOST_PASSWORD = 'cb50c1d6d6c852bf77490c3214541310'
-DEFAULT_FROM_EMAIL = mail
+EMAIL_HOST_USER = 'soporte@enarm365.com'
+EMAIL_HOST_PASSWORD = 'ndqi rnod poaa sayu'
+DEFAULT_FROM_EMAIL = 'soporte@enarm365.com'
 EMAIL_SUBJECT_PREFIX = "Password Recovery"
+
 
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL = "/"

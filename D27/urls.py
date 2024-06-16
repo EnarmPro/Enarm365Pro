@@ -16,12 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include,re_path
+from django.contrib.auth import views as auth_views
 from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral,PersonasPagos, eliminar_item, eliminar_comentario,revisionPreguntas,insertarPregunta,eliminar_pregunta,obtener_pregunta,editar_pregunta,revisionRespuestas, eliminar_respuesta, obtener_respuesta,actualizar_respuesta,modificarBlogInformativo,adminPagos, obtener_costos, actualizar_pago, cargarPreguntasExcel, cargar_preguntas_excel,error_404
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/",include("django.contrib.auth.urls")),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path("", index, name="index"),
     path("accounts/register/", registration_view, name="register"),
     path("simulator_free/", simulador_free, name="simulator_free"),
