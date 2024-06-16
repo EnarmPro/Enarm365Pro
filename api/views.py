@@ -20,6 +20,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import datetime
+import pandas as pd
 
 
 class RegistrationForm(UserCreationForm):
@@ -1931,6 +1932,67 @@ def actualizar_pago(request):
         
         return JsonResponse({'message': 'Pago actualizado exitosamente'})
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def cargarPreguntasExcel(request):
+    template_name = 'excelPreguntas.html'
+    if request.user.is_authenticated:
+        user = request.user
+        
+        try:
+            # Obtener el registro más reciente de PaypalPago para el usuario actual
+            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+
+            # Obtener la fecha actual
+            fecha_actual = timezone.now()
+
+            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+
+            if ultimo_pago.tipo_membresia == 'Mensual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 30
+            elif ultimo_pago.tipo_membresia == 'Trimestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 90
+            elif ultimo_pago.tipo_membresia == 'Semestral':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 180
+            elif ultimo_pago.tipo_membresia == 'Anual':
+                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+
+        except PaypalPago.DoesNotExist:
+            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+            es_mayor_a_30_dias = True
+
+    context = {
+            'es_mayor_a_30_dias':es_mayor_a_30_dias
+        }
+
+    return render(request,template_name,context)
+
+def cargar_preguntas_excel(request):
+    if request.method == 'POST':
+        excel_file = request.FILES['excelFile']
+        
+        try:
+            # Leer el archivo Excel
+            df = pd.read_excel(excel_file)
+
+            # Recorrer cada fila en el DataFrame y crear una instancia de Preguntas
+            for index, row in df.iterrows():
+                pregunta = Preguntas(
+                    nombrePregunta=row['nombrePregunta'],
+                    nivelPregunta=row['nivelPregunta'],
+                    justificacionPregunta=row['justificacionPregunta'],
+                    tipoPregunta=row['tipoPregunta'],
+                    fkTemarios=Temarios.objects.get(pk=row['fkTemarios']),
+                    fkCategorias=Categorias.objects.get(pk=row['fkCategorias'])
+                )
+                pregunta.save()
+            
+            messages.success(request, 'Preguntas cargadas exitosamente.')
+        except Exception as e:
+            messages.error(request, f'Error al cargar el archivo: {e}')
+
+    return redirect('cargarPreguntasExcel')
 
 def error_404(request):
     return render(request, '404.html', status=404)
