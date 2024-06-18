@@ -199,7 +199,8 @@ def simulador_free(request):
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
-            
+        
+
             # Mezclar aleatoriamente las respuestas
         random.shuffle(respuestas_mezcladas)
             
@@ -213,7 +214,8 @@ def simulador_free(request):
             'userName': userName,
             'Intento': revisionIntento,
             'preguntas_con_respuestas_mezcladas': preguntas_con_respuestas_mezcladas,
-            'es_mayor_a_30_dias':es_mayor_a_30_dias
+            'es_mayor_a_30_dias':es_mayor_a_30_dias,
+            
         }
 
     return render(request, template_name, context)
@@ -221,79 +223,88 @@ def simulador_free(request):
 
 def simulador_Personalizado(request):
     template_name = 'Simulator/simulator_personalizado.html'
-    
+
     if request.method == "POST":
         tipo_tiempo = request.POST.get('tiempo')
         preguntas_cantidad = int(request.POST.get('numero'))
         id_tema = request.POST.get('id_tema')
         
+        # Guardar los datos en la sesión
+        request.session['tipo_tiempo'] = tipo_tiempo
+        request.session['preguntas_cantidad'] = preguntas_cantidad
+        request.session['id_tema'] = id_tema
+    else:
+        # Obtener los datos de la sesión
+        tipo_tiempo = request.session.get('tipo_tiempo')
+        preguntas_cantidad = int(request.session.get('preguntas_cantidad'))  # Valor por defecto
+        id_tema = request.session.get('id_tema')
+        
         # Verificar si el usuario está autenticado
-        if request.user.is_authenticated:
-            user = request.user
-            userName = user.username
-        else:
-            userName = None
+    if request.user.is_authenticated:
+        user = request.user
+        userName = user.username
+    else:
+        userName = None
         
         # Obtener todas las preguntas del tema
-        preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
         
         # Separar preguntas aleatorias y seriadas
-        preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-        preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
+    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
 
         # Limitar el número total de preguntas
+    total_preguntas = preguntas_seriadas + preguntas_aleatorias
+    if len(total_preguntas) > preguntas_cantidad:
+        preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
         total_preguntas = preguntas_seriadas + preguntas_aleatorias
-        if len(total_preguntas) > preguntas_cantidad:
-            preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
-            total_preguntas = preguntas_seriadas + preguntas_aleatorias
         
         # Mezclar aleatoriamente solo las preguntas aleatorias
-        random.shuffle(preguntas_aleatorias)
+    random.shuffle(preguntas_aleatorias)
         
         # Unir las preguntas seriadas y aleatorias
-        preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
+    preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
 
         # Si hay más de una pregunta, mover una aleatoria al inicio
-        if len(preguntas_ordenadas) > 1:
-            index_random = random.randint(1, len(preguntas_ordenadas) - 1)
-            pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
-            preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
+    if len(preguntas_ordenadas) > 1:
+        index_random = random.randint(1, len(preguntas_ordenadas) - 1)
+        pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
+        preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
         # Obtener todas las respuestas disponibles
-        respuestas_todas = Respuestas.objects.all()
+    respuestas_todas = Respuestas.objects.all()
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
-        preguntas_con_respuestas_mezcladas = []
+    preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta ordenada
-        for pregunta in preguntas_ordenadas:
+    for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
-            respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
+        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
             # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
             # excluyendo la respuesta correcta
-            respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
-            respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
+        respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
             
             # Mezclar aleatoriamente las respuestas
-            random.shuffle(respuestas_mezcladas)
+        random.shuffle(respuestas_mezcladas)
             
             # Agregar la pregunta y sus respuestas mezcladas a la lista
-            preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
+        preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
-        context = {
-            'userName': userName,
-            'preguntas_con_respuestas_mezcladas': preguntas_con_respuestas_mezcladas,
-            'tipo_tiempo': tipo_tiempo,
-            'preguntas_cantidad': preguntas_cantidad
+    context = {
+        'userName': userName,
+        'preguntas_con_respuestas_mezcladas': preguntas_con_respuestas_mezcladas,
+        'tipo_tiempo': tipo_tiempo,
+        'preguntas_cantidad': preguntas_cantidad
         }
 
-        return render(request, template_name, context)
+    return render(request, template_name, context)
     
-    # Si no es POST, renderizar la plantilla vacía o con el contexto inicial
-    return render(request, template_name)
+
 
 def registrar_preguntas(request):
     if request.method == 'POST':
@@ -518,6 +529,7 @@ def simuladorEnarmUno(request):
     template_name = 'Simulator/simulator_enarm.html'
     id_tema = request.GET.get('id_tema')
     tipo_tiempo = request.GET.get('tipo_tiempo')
+    preguntas_cantidad = 70
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:
         # Obtener el usuario autenticado
@@ -530,10 +542,31 @@ def simuladorEnarmUno(request):
         userName = None
         
     tema = Temarios.objects.get(idTemarios=id_tema)
-    # Obtener todas las preguntas gratuitas
-
     
-    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)[:70]
+    # Obtener todas las preguntas del tema
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
+        
+    # Separar preguntas aleatorias y seriadas
+    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
+    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+
+    # Limitar el número total de preguntas
+    total_preguntas = preguntas_seriadas + preguntas_aleatorias
+    if len(total_preguntas) > preguntas_cantidad:
+        preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
+        total_preguntas = preguntas_seriadas + preguntas_aleatorias
+        
+        # Mezclar aleatoriamente solo las preguntas aleatorias
+    random.shuffle(preguntas_aleatorias)
+        
+    # Unir las preguntas seriadas y aleatorias
+    preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
+
+        # Si hay más de una pregunta, mover una aleatoria al inicio
+    if len(preguntas_ordenadas) > 1:
+        index_random = random.randint(1, len(preguntas_ordenadas) - 1)
+        pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
+        preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
     # Obtener todas las respuestas disponibles
     respuestas_todas = Respuestas.objects.filter()
@@ -542,7 +575,7 @@ def simuladorEnarmUno(request):
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
-    for pregunta in preguntas_gratuitas:
+    for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
         respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
@@ -559,8 +592,6 @@ def simuladorEnarmUno(request):
             # Agregar la pregunta y sus respuestas mezcladas a la lista
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
-        # Mezclar aleatoriamente las preguntas con sus respuestas
-        random.shuffle(preguntas_con_respuestas_mezcladas)
 
     context = {
             'userName': userName,
@@ -576,6 +607,7 @@ def simuladorEnarmSeccionDos(request):
     template_name = 'Simulator/simulator_enarm_dos.html'
     id_tema = request.GET.get('id_tema')
     tipo_tiempo = request.GET.get('tipo_tiempo')
+    preguntas_cantidad = 140
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:
         # Obtener el usuario autenticado
@@ -590,7 +622,29 @@ def simuladorEnarmSeccionDos(request):
     tema = Temarios.objects.get(idTemarios=id_tema)
     # Obtener todas las preguntas gratuitas
 
-    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)[:140]
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
+        
+    # Separar preguntas aleatorias y seriadas
+    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
+    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+
+    # Limitar el número total de preguntas
+    total_preguntas = preguntas_seriadas + preguntas_aleatorias
+    if len(total_preguntas) > preguntas_cantidad:
+        preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
+        total_preguntas = preguntas_seriadas + preguntas_aleatorias
+        
+        # Mezclar aleatoriamente solo las preguntas aleatorias
+    random.shuffle(preguntas_aleatorias)
+        
+    # Unir las preguntas seriadas y aleatorias
+    preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
+
+        # Si hay más de una pregunta, mover una aleatoria al inicio
+    if len(preguntas_ordenadas) > 1:
+        index_random = random.randint(1, len(preguntas_ordenadas) - 1)
+        pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
+        preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
 
     # Obtener todas las respuestas disponibles
@@ -600,7 +654,7 @@ def simuladorEnarmSeccionDos(request):
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
-    for pregunta in preguntas_gratuitas:
+    for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
         respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
@@ -618,7 +672,7 @@ def simuladorEnarmSeccionDos(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        random.shuffle(preguntas_con_respuestas_mezcladas)
+        preguntas_con_respuestas_mezcladas
 
     context = {
             'userName': userName,
@@ -634,6 +688,7 @@ def simuladorEnarmSeccionTres(request):
     template_name = 'Simulator/simulator_enarm_tres.html'
     id_tema = request.GET.get('id_tema')
     tipo_tiempo = request.GET.get('tipo_tiempo')
+    preguntas_cantidad = 280
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:
         # Obtener el usuario autenticado
@@ -648,7 +703,29 @@ def simuladorEnarmSeccionTres(request):
     tema = Temarios.objects.get(idTemarios=id_tema)
     # Obtener todas las preguntas gratuitas
 
-    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)[:280]
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
+        
+    # Separar preguntas aleatorias y seriadas
+    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
+    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+
+    # Limitar el número total de preguntas
+    total_preguntas = preguntas_seriadas + preguntas_aleatorias
+    if len(total_preguntas) > preguntas_cantidad:
+        preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
+        total_preguntas = preguntas_seriadas + preguntas_aleatorias
+        
+        # Mezclar aleatoriamente solo las preguntas aleatorias
+    random.shuffle(preguntas_aleatorias)
+        
+    # Unir las preguntas seriadas y aleatorias
+    preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
+
+        # Si hay más de una pregunta, mover una aleatoria al inicio
+    if len(preguntas_ordenadas) > 1:
+        index_random = random.randint(1, len(preguntas_ordenadas) - 1)
+        pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
+        preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
 
     # Obtener todas las respuestas disponibles
@@ -658,7 +735,7 @@ def simuladorEnarmSeccionTres(request):
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
-    for pregunta in preguntas_gratuitas:
+    for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
         respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
@@ -676,7 +753,7 @@ def simuladorEnarmSeccionTres(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        random.shuffle(preguntas_con_respuestas_mezcladas)
+        preguntas_con_respuestas_mezcladas
 
     context = {
             'userName': userName,
@@ -868,9 +945,31 @@ def simulador_diagnostico(request):
         userName = None
         revisionIntento = None
 
+    preguntas_cantidad = 100
     # Obtener todas las preguntas gratuitas
-    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Diagnostico')[:100]
+    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Diagnostico')
+        
+    # Separar preguntas aleatorias y seriadas
+    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
+    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
 
+    # Limitar el número total de preguntas
+    total_preguntas = preguntas_seriadas + preguntas_aleatorias
+    if len(total_preguntas) > preguntas_cantidad:
+        preguntas_aleatorias = preguntas_aleatorias[:max(0, preguntas_cantidad - len(preguntas_seriadas))]
+        total_preguntas = preguntas_seriadas + preguntas_aleatorias
+        
+        # Mezclar aleatoriamente solo las preguntas aleatorias
+    random.shuffle(preguntas_aleatorias)
+        
+    # Unir las preguntas seriadas y aleatorias
+    preguntas_ordenadas = preguntas_seriadas + preguntas_aleatorias
+
+        # Si hay más de una pregunta, mover una aleatoria al inicio
+    if len(preguntas_ordenadas) > 1:
+        index_random = random.randint(1, len(preguntas_ordenadas) - 1)
+        pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
+        preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
     # Obtener todas las respuestas disponibles
     respuestas_todas = Respuestas.objects.filter(fkCategorias=5)
 
@@ -878,7 +977,7 @@ def simulador_diagnostico(request):
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
-    for pregunta in preguntas_gratuitas:
+    for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
         respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
@@ -896,7 +995,7 @@ def simulador_diagnostico(request):
         preguntas_con_respuestas_mezcladas.append((pregunta, respuestas_mezcladas))
 
         # Mezclar aleatoriamente las preguntas con sus respuestas
-        random.shuffle(preguntas_con_respuestas_mezcladas)
+        preguntas_con_respuestas_mezcladas
 
     context = {
             'userName': userName,

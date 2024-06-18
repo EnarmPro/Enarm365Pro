@@ -142,10 +142,14 @@
         <div class="posts-cards">
             <div class="card" id="preguntas">
                 <div class="pregunta-actual">
-                    {% for pregunta, respuestas_mezcladas in preguntas_con_respuestas_mezcladas %}
-                    <form action="" class="formulario-gratuito pregunta" data-question-id="{{ pregunta.idPregunta }}" id="formulario-{{ pregunta.idPregunta }}">
+                    {% for pregunta,respuestas_mezcladas in preguntas_con_respuestas_mezcladas %}
+                    <form action="" class="formulario-gratuito pregunta" data-question-id="{{ pregunta.idPregunta }}" id="formulario-{{ pregunta.idPregunta }} " data-justificacion="{{ pregunta.justificacionPregunta }}">
                         {% csrf_token %}
-                        <h5 class="title-question">Pregunta: {{ pregunta.nombrePregunta }}</h5>
+                        
+                        <h5 class="title-question">Pregunta: {{ pregunta.nombrePregunta }} </h5>
+                        <div class="justificacion" style="display: none;">
+                            <p><strong>Justificación:</strong> {{ pregunta.justificacionPregunta }}</p>
+                        </div>
                         {% for respuesta in respuestas_mezcladas %}
                             <div class="answer_type" data-radio-id="{{ pregunta.idPregunta }}">
                                 <input type="radio" id="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}" name="respuesta_{{ pregunta.idPregunta }}" value="{{ respuesta.idRespuestas }}">

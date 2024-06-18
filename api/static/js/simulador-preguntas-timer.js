@@ -43,6 +43,7 @@ function main() {
             btn.addEventListener('click', function () {
                 const formularioVisible = document.querySelector('.formulario-timer[data-question-id]:not([style="display: none;"])');
                 const preguntaId = formularioVisible.getAttribute('data-question-id');
+                const justificacion = formularioVisible.getAttribute('data-justificacion');
                 const respuestaSeleccionada = formularioVisible.querySelector('input[type="radio"]:checked');
                 const respuestaId = respuestaSeleccionada ? respuestaSeleccionada.value : null;
 
@@ -52,7 +53,11 @@ function main() {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Respuesta registrada',
-                                text: `Respuesta registrada con éxito. \n La respuesta correcta es: \n ${data.respuesta_correcta}`
+                                html: `
+                                    Respuesta registrada con éxito.<br>
+                                    La respuesta correcta es: ${data.respuesta_correcta}<br><br>
+                                    <strong>Justificación:</strong> ${justificacion}
+                                    `
                             }).then(() => {
                                 currentQuestion++;
                                 if (currentQuestion <= totalQuestions) {

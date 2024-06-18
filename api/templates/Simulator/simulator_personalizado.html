@@ -127,7 +127,7 @@
             <div class="card" id="preguntas">
                 <div class="pregunta-actual">
                     {% for pregunta, respuestas_mezcladas in preguntas_con_respuestas_mezcladas %}
-                    <form action="" class="formulario-timer pregunta" data-question-id="{{ pregunta.idPregunta }}" id="formulario-{{ pregunta.idPregunta }}">
+                    <form action="" class="formulario-timer pregunta" data-question-id="{{ pregunta.idPregunta }}" id="formulario-{{ pregunta.idPregunta }}" data-justificacion="{{ pregunta.justificacionPregunta }}">
                         {% csrf_token %}
                         <h5 class="title-question">Pregunta: {{ pregunta.nombrePregunta }}</h5>
                         {% for respuesta in respuestas_mezcladas %}

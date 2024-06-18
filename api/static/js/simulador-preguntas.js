@@ -136,6 +136,7 @@ function main() {
         function nextQuestion() {
             const formularioVisible = document.querySelector('.formulario-gratuito[data-question-id]:not([style="display: none;"])');
             const preguntaId = formularioVisible.getAttribute('data-question-id');
+            const justificacion = formularioVisible.getAttribute('data-justificacion');
             const respuestaSeleccionada = formularioVisible.querySelector('input[type="radio"]:checked');
             const respuestaId = respuestaSeleccionada ? respuestaSeleccionada.value : null;
             
@@ -143,11 +144,16 @@ function main() {
                 // Registrar la respuesta actual
                 enviarRespuestaPorAjax(preguntaId, respuestaId)
                 .then(data => {
+                    
                     // Mostrar la respuesta correcta en un SweetAlert
                     Swal.fire({
                         icon: 'success',
                         title: 'Respuesta registrada',
-                        text: `Respuesta registrada con éxito. La respuesta correcta es: ${data.respuesta_correcta}`
+                        html: `
+                        Respuesta registrada con éxito.<br>
+                        La respuesta correcta es: ${data.respuesta_correcta}<br><br>
+                        <strong>Justificación:</strong> ${justificacion}
+                        `
                     }).then(() => {
                         // Incrementar el número de pregunta actual
                         currentQuestion++;

@@ -66,10 +66,6 @@
 
 
 
-
-
-
-
 <div class="page-section border-bottom-2">
     <div class="container page__container">
         <div class="page-separator">
@@ -261,7 +257,7 @@
         {% for intento in intentos %}
 
         
-        {% if not intento.fkPregunta__fkTemarios__nombreTemario == 'Gratuito' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Diagnostico'%}
+        {% if not intento.fkPregunta__fkTemarios__nombreTemario == 'Gratuito' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Diagnostico' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 25' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 50' and not intento.fkPregunta__fkTemarios__nombreTemario == 'Enarm 100'%}
 
         
         <div class="col-md-6 col-lg-4 col-xl-3">

@@ -21,7 +21,7 @@ class Preguntas(models.Model):
     nombrePregunta = models.TextField()
     nivelPregunta = models.CharField(max_length=300,default='Baja')
     justificacionPregunta = models.TextField(default='')
-    tipoPregunta = models.TextField(default='Continua')
+    tipoPregunta = models.TextField(default='Aleatoria')
     fkTemarios = models.ForeignKey(Temarios,on_delete=models.CASCADE,default=1) 
     fkCategorias = models.ForeignKey(Categorias, on_delete=models.CASCADE,default=1)
     class Meta:
