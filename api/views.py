@@ -2089,25 +2089,71 @@ def cargarPreguntasExcel(request):
 
 def cargar_preguntas_excel(request):
     if request.method == 'POST':
-        excel_file = request.FILES['excelFile']
+        excel_file = request.FILES.get('excelFile')
         
+        if not excel_file:
+            messages.error(request, 'No se ha seleccionado ningún archivo.')
+            return redirect('cargarPreguntasExcel')
+
         try:
             # Leer el archivo Excel
             df = pd.read_excel(excel_file)
 
-            # Recorrer cada fila en el DataFrame y crear una instancia de Preguntas
-            for index, row in df.iterrows():
-                pregunta = Preguntas(
-                    nombrePregunta=row['nombrePregunta'],
-                    nivelPregunta=row['nivelPregunta'],
-                    justificacionPregunta=row['justificacionPregunta'],
-                    tipoPregunta=row['tipoPregunta'],
-                    fkTemarios=Temarios.objects.get(pk=row['fkTemarios']),
-                    fkCategorias=Categorias.objects.get(pk=row['fkCategorias'])
-                )
-                pregunta.save()
+            # Verificar si las columnas necesarias están presentes
+            required_columns = [
+                'nombrePregunta', 'nivelPregunta', 'justificacionPregunta', 
+                'tipoPregunta', 'fkTemarios', 'fkCategorias', 
+                'respuestaUno', 'statusRespuestaUno', 'respuestaDos', 
+                'statusRespuestaDos', 'respuestaTres', 'statusRespuestaTres', 
+                'respuestaCuatro', 'statusRespuestaCuatro'
+            ]
             
-            messages.success(request, 'Preguntas cargadas exitosamente.')
+            for column in required_columns:
+                if column not in df.columns:
+                    messages.error(request, f'La columna {column} no está presente en el archivo.')
+                    return redirect('cargarPreguntasExcel')
+
+            # Recorrer cada fila en el DataFrame y crear instancias de Preguntas y Respuestas
+            for index, row in df.iterrows():
+                try:
+                    temario = Temarios.objects.get(pk=row['fkTemarios'])
+                    categoria = Categorias.objects.get(pk=row['fkCategorias'])
+                    
+                    pregunta = Preguntas(
+                        nombrePregunta=row['nombrePregunta'],
+                        nivelPregunta=row['nivelPregunta'],
+                        justificacionPregunta=row['justificacionPregunta'],
+                        tipoPregunta=row['tipoPregunta'],
+                        fkTemarios=temario,
+                        fkCategorias=categoria
+                    )
+                    pregunta.save()
+                    
+                    respuestas = [
+                        {'nombre': row['respuestaUno'], 'status': row['statusRespuestaUno']},
+                        {'nombre': row['respuestaDos'], 'status': row['statusRespuestaDos']},
+                        {'nombre': row['respuestaTres'], 'status': row['statusRespuestaTres']},
+                        {'nombre': row['respuestaCuatro'], 'status': row['statusRespuestaCuatro']}
+                    ]
+                    
+                    for respuesta_data in respuestas:
+                        respuesta = Respuestas(
+                            nombreRespuestas=respuesta_data['nombre'],
+                            statusRespuestas=respuesta_data['status'],
+                            fkPregunta=pregunta,
+                            fkCategorias=categoria
+                        )
+                        respuesta.save()
+
+                except Temarios.DoesNotExist:
+                    messages.error(request, f'El temario con id {row["fkTemarios"]} no existe.')
+                except Categorias.DoesNotExist:
+                    messages.error(request, f'La categoría con id {row["fkCategorias"]} no existe.')
+                except Exception as e:
+                    messages.error(request, f'Error al procesar la fila {index + 1}: {e}')
+                    continue
+
+            messages.success(request, 'Preguntas y respuestas cargadas exitosamente.')
         except Exception as e:
             messages.error(request, f'Error al cargar el archivo: {e}')
 
