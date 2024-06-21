@@ -6,13 +6,55 @@ html {
 body {
   background-color: rgb(212, 212, 225);
 }
-body.backlogin{
-  background-image: url('../img/fondos/LoginBackground.webp') ;
+body.backlogin {
+  background-image: url('../img/fondos/LoginBackground.webp');
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Asegura que el contenedor tenga la altura completa de la vista */
+  width: 100%;
 }
+
+@media (max-width: 768px) {
+  body.backlogin {
+    background-size: contain; /* Ajusta el tamaño de la imagen en pantallas más pequeñas */
+    background-color: #240018;
+  }
+  body.backregister{
+    background-size: contain; /* Ajusta el tamaño de la imagen en pantallas más pequeñas */
+    background-color: #051a46;
+  }
+  body.custom-background{
+    background-size: contain; /* Ajusta el tamaño de la imagen en pantallas más pequeñas */
+    background-color: #10193c;
+  }
+}
+
+@media (max-width: 480px) {
+  body.backlogin {
+    background-size: contain;
+    background-color: #240018;
+    background-position: top; /* Ajusta la posición de la imagen en pantallas muy pequeñas */
+  }
+  body.backregister{
+    background-size: contain;
+    background-color: #051a46;
+    background-position: top;
+  }
+  body.custom-background{
+    background-size: contain;
+    background-color: #10193c;
+    background-position: top;
+  }
+}
+
 body.backregister{
   background-image: url('../img/fondos/passforgot.webp') ;
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Asegura que el contenedor tenga la altura completa de la vista */
+  width: 100%;
 }
 .logincontainer {
  
@@ -242,6 +284,10 @@ body.custom-background {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Asegura que el contenedor tenga la altura completa de la vista */
+  width: 100%;
 }
 
 .overlay {

@@ -541,14 +541,17 @@ def simuladorEnarmUno(request):
         # Si el usuario no está autenticado, establecer userName como None
         userName = None
         
-    tema = Temarios.objects.get(idTemarios=id_tema)
+    tema = Temarios.objects.get(idTemarios=id_tema) 
     
     # Obtener todas las preguntas del tema
-    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema) 
+
         
     # Separar preguntas aleatorias y seriadas
     preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
     preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+
+    # Segundo filtro por categorias --- N
 
     # Limitar el número total de preguntas
     total_preguntas = preguntas_seriadas + preguntas_aleatorias
