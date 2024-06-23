@@ -160,10 +160,10 @@ function startTimer(duration, display) {
 }
 
 window.onload = function () {
-    var tiempoContainer = document.getElementById('tiempo-data');
-    var tiempo_min = tiempoContainer.getAttribute('data-totaltiempo');
-    var cantidadContainer = document.getElementById('cantidad-data');
-    var cantidad_preguntas = cantidadContainer.getAttribute('data-cantidadtotal');
+
+    var tiempo_min = 1;
+
+    var cantidad_preguntas = 15;
     var fifteenMinutes = 60 * (tiempo_min * cantidad_preguntas);
     var display = document.querySelector('#timer');
     startTimer(fifteenMinutes, display);

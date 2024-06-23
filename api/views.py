@@ -179,14 +179,19 @@ def simulador_free(request):
     
 
     # Obtener todas las preguntas gratuitas
-    preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito')[:10]
+    preguntas_gratuitas = list(Preguntas.objects.filter(fkCategorias__descripcionCategoria='Gratuito'))
 
+    # Mezclar las preguntas aleatoriamente
+    random.shuffle(preguntas_gratuitas)
+
+    # Seleccionar las primeras 10 preguntas
+    preguntas_seleccionadas = preguntas_gratuitas[:10]
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
-    for pregunta in preguntas_gratuitas:
+    for pregunta in preguntas_seleccionadas:
         # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
         respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
         respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
@@ -246,12 +251,16 @@ def simulador_Personalizado(request):
     else:
         userName = None
         
-        # Obtener todas las preguntas del tema
+    # Obtener todas las preguntas del tema
     preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
-        
-        # Separar preguntas aleatorias y seriadas
-    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+
+    # Convertir el QuerySet a una lista para poder mezclarla
+    preguntas_mezcladas = list(preguntas_gratuitas)
+    random.shuffle(preguntas_mezcladas)
+
+    # Separar preguntas aleatorias y seriadas
+    preguntas_aleatorias = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Continua']
+    preguntas_seriadas = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Seriada']
 
         # Limitar el número total de preguntas
     total_preguntas = preguntas_seriadas + preguntas_aleatorias
@@ -271,20 +280,22 @@ def simulador_Personalizado(request):
         pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
         preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
-        # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.all()
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta ordenada
     for pregunta in preguntas_ordenadas:
-            # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
-            
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
@@ -544,12 +555,15 @@ def simuladorEnarmUno(request):
     tema = Temarios.objects.get(idTemarios=id_tema) 
     
     # Obtener todas las preguntas del tema
-    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema) 
+    preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
 
-        
+    # Convertir el QuerySet a una lista para poder mezclarla
+    preguntas_mezcladas = list(preguntas_gratuitas)
+    random.shuffle(preguntas_mezcladas)
+
     # Separar preguntas aleatorias y seriadas
-    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+    preguntas_aleatorias = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Continua']
+    preguntas_seriadas = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Seriada']
 
     # Segundo filtro por categorias --- N
 
@@ -571,20 +585,22 @@ def simuladorEnarmUno(request):
         pregunta_aleatoria_inicio = preguntas_ordenadas.pop(index_random)
         preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
-    # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.filter()
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
     for pregunta in preguntas_ordenadas:
-            # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
-            
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
@@ -625,11 +641,16 @@ def simuladorEnarmSeccionDos(request):
     tema = Temarios.objects.get(idTemarios=id_tema)
     # Obtener todas las preguntas gratuitas
 
+    # Obtener todas las preguntas del tema
     preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
-        
+
+    # Convertir el QuerySet a una lista para poder mezclarla
+    preguntas_mezcladas = list(preguntas_gratuitas)
+    random.shuffle(preguntas_mezcladas)
+
     # Separar preguntas aleatorias y seriadas
-    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+    preguntas_aleatorias = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Continua']
+    preguntas_seriadas = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Seriada']
 
     # Limitar el número total de preguntas
     total_preguntas = preguntas_seriadas + preguntas_aleatorias
@@ -650,20 +671,22 @@ def simuladorEnarmSeccionDos(request):
         preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
 
-    # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.filter()
 
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
     for pregunta in preguntas_ordenadas:
-            # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
             
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
@@ -706,11 +729,16 @@ def simuladorEnarmSeccionTres(request):
     tema = Temarios.objects.get(idTemarios=id_tema)
     # Obtener todas las preguntas gratuitas
 
+    # Obtener todas las preguntas del tema
     preguntas_gratuitas = Preguntas.objects.filter(fkTemarios=id_tema)
-        
+
+    # Convertir el QuerySet a una lista para poder mezclarla
+    preguntas_mezcladas = list(preguntas_gratuitas)
+    random.shuffle(preguntas_mezcladas)
+
     # Separar preguntas aleatorias y seriadas
-    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+    preguntas_aleatorias = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Continua']
+    preguntas_seriadas = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Seriada']
 
     # Limitar el número total de preguntas
     total_preguntas = preguntas_seriadas + preguntas_aleatorias
@@ -731,20 +759,20 @@ def simuladorEnarmSeccionTres(request):
         preguntas_ordenadas.insert(0, pregunta_aleatoria_inicio)
 
 
-    # Obtener todas las respuestas disponibles
-    respuestas_todas = Respuestas.objects.filter()
-
         # Lista para almacenar las preguntas con sus respuestas mezcladas
     preguntas_con_respuestas_mezcladas = []
 
         # Iterar sobre cada pregunta gratuita
     for pregunta in preguntas_ordenadas:
-            # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
-            
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
@@ -951,10 +979,14 @@ def simulador_diagnostico(request):
     preguntas_cantidad = 100
     # Obtener todas las preguntas gratuitas
     preguntas_gratuitas = Preguntas.objects.filter(fkCategorias__descripcionCategoria='Diagnostico')
-        
+
+    # Convertir el QuerySet a una lista para poder mezclarla
+    preguntas_mezcladas = list(preguntas_gratuitas)
+    random.shuffle(preguntas_mezcladas)
+
     # Separar preguntas aleatorias y seriadas
-    preguntas_aleatorias = list(preguntas_gratuitas.filter(tipoPregunta='Continua'))
-    preguntas_seriadas = list(preguntas_gratuitas.filter(tipoPregunta='Seriada'))
+    preguntas_aleatorias = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Continua']
+    preguntas_seriadas = [pregunta for pregunta in preguntas_mezcladas if pregunta.tipoPregunta == 'Seriada']
 
     # Limitar el número total de preguntas
     total_preguntas = preguntas_seriadas + preguntas_aleatorias
@@ -982,11 +1014,15 @@ def simulador_diagnostico(request):
         # Iterar sobre cada pregunta gratuita
     for pregunta in preguntas_ordenadas:
             # Obtener la respuesta correcta asociada a la pregunta
-        respuesta_correcta = Respuestas.objects.get(fkPregunta=pregunta)
-            
-            # Obtener tres respuestas incorrectas aleatorias de entre todas las respuestas disponibles,
-            # excluyendo la respuesta correcta
-        respuestas_incorrectas = random.sample(list(respuestas_todas.exclude(pk=respuesta_correcta.pk)), 3)
+        # Obtener todas las respuestas correctas e incorrectas para la pregunta actual
+        respuestas_correctas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Correcto')
+        respuestas_incorrectas = Respuestas.objects.filter(fkPregunta=pregunta, statusRespuestas='Incorrecto')
+
+        # Tomar una respuesta correcta (suponiendo que solo hay una correcta por pregunta)
+        respuesta_correcta = random.choice(respuestas_correctas)
+
+        # Tomar tres respuestas incorrectas aleatorias
+        respuestas_incorrectas = random.sample(list(respuestas_incorrectas), 3)
             
             # Combinar la respuesta correcta con las respuestas incorrectas
         respuestas_mezcladas = [respuesta_correcta] + respuestas_incorrectas
