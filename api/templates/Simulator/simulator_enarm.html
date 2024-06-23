@@ -131,7 +131,7 @@
                         <h5 class="title-question">Pregunta: {{ pregunta.nombrePregunta }}</h5>
                         {% for respuesta in respuestas_mezcladas %}
                         <div class="answer_type" data-radio-id="{{ pregunta.idPregunta }}">
-                            <input type="radio" id="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}" name="respuesta_{{ pregunta.idPregunta }}" value="{{ respuesta.idRespuestas }}">
+                            <input type="radio" id="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}" name="respuesta_{{ pregunta.idPregunta }}" value="{{ respuesta.idRespuestas }}" required>
                             <label for="opcion_{{ pregunta.idPregunta }}_{{ respuesta.idRespuestas }}">{{ respuesta.nombreRespuestas }}</label>
                         </div>
                         {% endfor %}

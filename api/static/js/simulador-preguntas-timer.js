@@ -81,6 +81,7 @@ function main() {
                             console.error('Error al registrar la respuesta:', error);
                         });
                 } else {
+                    alert('Por favor, selecciona una respuesta antes de continuar.');
                     console.error('No se ha seleccionado ninguna respuesta o no se ha encontrado el ID de la pregunta.');
                 }
             });

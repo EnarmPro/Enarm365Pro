@@ -57,6 +57,8 @@ function main() {
                     console.log(currentQuestion)
                     if (currentQuestion <= totalQuestions) {
                         updateProgressBar();
+                        // Mostrar la siguiente pregunta
+                        mostrarSiguientePregunta();
                         
                     } else {
                         // Si no hay más preguntas disponibles, marcar el cuestionario como completado
@@ -64,11 +66,9 @@ function main() {
                         alert('¡Cuestionario completado!');
                     }
                 } else {
+                    alert('Por favor, selecciona una respuesta antes de continuar.');
                     console.error('No se ha seleccionado ninguna respuesta o no se ha encontrado el ID de la pregunta.');
                 }
-
-                // Mostrar la siguiente pregunta
-                mostrarSiguientePregunta();
             });
         });
     }
