@@ -1909,44 +1909,46 @@ def editar_pregunta(request):
 
 def revisionRespuestas(request):
     template_name = 'adminTableRespuestas.html'
-    todas_respuestas = Respuestas.objects.all()
-    todas_preguntas = Preguntas.objects.all()
-    categorias = Categorias.objects.all()
+    if request.method == 'GET' and request.user.is_superuser:
+        id_categoria = request.GET.get('id_categoria')
+        todas_respuestas = Respuestas.objects.filter(fkCategorias=id_categoria)
+        todas_preguntas = Preguntas.objects.all()
+        categorias = Categorias.objects.all()
 
-    if request.user.is_authenticated:
-        user = request.user
-        
-        try:
-            # Obtener el registro más reciente de PaypalPago para el usuario actual
-            ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
+        if request.user.is_authenticated:
+            user = request.user
+            
+            try:
+                # Obtener el registro más reciente de PaypalPago para el usuario actual
+                ultimo_pago = PaypalPago.objects.filter(fk_User=user).latest('fecha_pago')
 
-            # Obtener la fecha actual
-            fecha_actual = timezone.now()
+                # Obtener la fecha actual
+                fecha_actual = timezone.now()
 
-            # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
-            diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
+                # Calcular la diferencia de tiempo entre la fecha del último pago y la fecha actual
+                diferencia_tiempo = fecha_actual - ultimo_pago.fecha_pago
 
-            if ultimo_pago.tipo_membresia == 'Mensual':
-                es_mayor_a_30_dias = diferencia_tiempo.days > 30
-            elif ultimo_pago.tipo_membresia == 'Trimestral':
-                es_mayor_a_30_dias = diferencia_tiempo.days > 90
-            elif ultimo_pago.tipo_membresia == 'Semestral':
-                es_mayor_a_30_dias = diferencia_tiempo.days > 180
-            elif ultimo_pago.tipo_membresia == 'Anual':
-                es_mayor_a_30_dias = diferencia_tiempo.days > 365
+                if ultimo_pago.tipo_membresia == 'Mensual':
+                    es_mayor_a_30_dias = diferencia_tiempo.days > 30
+                elif ultimo_pago.tipo_membresia == 'Trimestral':
+                    es_mayor_a_30_dias = diferencia_tiempo.days > 90
+                elif ultimo_pago.tipo_membresia == 'Semestral':
+                    es_mayor_a_30_dias = diferencia_tiempo.days > 180
+                elif ultimo_pago.tipo_membresia == 'Anual':
+                    es_mayor_a_30_dias = diferencia_tiempo.days > 365
 
-        except PaypalPago.DoesNotExist:
-            # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
-            es_mayor_a_30_dias = True
+            except PaypalPago.DoesNotExist:
+                # Manejar el caso en el que no exista ningún registro de PaypalPago para el usuario actual
+                es_mayor_a_30_dias = True
 
-    context = {
-        'todas_respuestas':todas_respuestas,
-        'categorias':categorias,
-        'todas_preguntas':todas_preguntas,
-        'es_mayor_a_30_dias':es_mayor_a_30_dias
+        context = {
+            'todas_respuestas':todas_respuestas,
+            'categorias':categorias,
+            'todas_preguntas':todas_preguntas,
+            'es_mayor_a_30_dias':es_mayor_a_30_dias
 
 
-    }
+        }
     return render(request,template_name,context)
 
 def insertarPregunta(request):
