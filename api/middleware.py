@@ -20,7 +20,7 @@ class LimitConcurrentSessionsMiddleware(MiddlewareMixin):
 
             active_sessions = ActiveSession.objects.filter(user=request.user)
 
-            if active_sessions.count() > 2:
+            if active_sessions.count() > 1:
                 oldest_session = active_sessions.order_by('last_activity').first()
                 Session.objects.filter(session_key=oldest_session.session_key).delete()
                 oldest_session.delete()
