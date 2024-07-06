@@ -2159,37 +2159,44 @@ def cargar_preguntas_excel(request):
             # Recorrer cada fila en el DataFrame y crear instancias de Preguntas y Respuestas
             for index, row in df.iterrows():
                 try:
-                    temario = Temarios.objects.get(pk=row['fkTemarios'])
+                    # Obtener la categoría
                     categoria = Categorias.objects.get(pk=row['fkCategorias'])
-                    
-                    pregunta = Preguntas(
-                        nombrePregunta=row['nombrePregunta'],
-                        nivelPregunta=row['nivelPregunta'],
-                        justificacionPregunta=row['justificacionPregunta'],
-                        tipoPregunta=row['tipoPregunta'],
-                        fkTemarios=temario,
-                        fkCategorias=categoria
-                    )
-                    pregunta.save()
-                    
-                    respuestas = [
-                        {'nombre': row['respuestaUno'], 'status': row['statusRespuestaUno']},
-                        {'nombre': row['respuestaDos'], 'status': row['statusRespuestaDos']},
-                        {'nombre': row['respuestaTres'], 'status': row['statusRespuestaTres']},
-                        {'nombre': row['respuestaCuatro'], 'status': row['statusRespuestaCuatro']}
-                    ]
-                    
-                    for respuesta_data in respuestas:
-                        respuesta = Respuestas(
-                            nombreRespuestas=respuesta_data['nombre'],
-                            statusRespuestas=respuesta_data['status'],
-                            fkPregunta=pregunta,
-                            fkCategorias=categoria
-                        )
-                        respuesta.save()
 
-                except Temarios.DoesNotExist:
-                    messages.error(request, f'El temario con id {row["fkTemarios"]} no existe.')
+                    # Dividir los temarios en una lista (manejar un único ID o múltiples IDs)
+                    temarios_ids = [int(t.strip()) for t in str(row['fkTemarios']).split(',') if t.strip().isdigit()]
+                    
+                    for temario_id in temarios_ids:
+                        try:
+                            temario = Temarios.objects.get(pk=temario_id)
+                            
+                            pregunta = Preguntas(
+                                nombrePregunta=row['nombrePregunta'],
+                                nivelPregunta=row['nivelPregunta'],
+                                justificacionPregunta=row['justificacionPregunta'],
+                                tipoPregunta=row['tipoPregunta'],
+                                fkTemarios=temario,
+                                fkCategorias=categoria
+                            )
+                            pregunta.save()
+                            
+                            respuestas = [
+                                {'nombre': row['respuestaUno'], 'status': row['statusRespuestaUno']},
+                                {'nombre': row['respuestaDos'], 'status': row['statusRespuestaDos']},
+                                {'nombre': row['respuestaTres'], 'status': row['statusRespuestaTres']},
+                                {'nombre': row['respuestaCuatro'], 'status': row['statusRespuestaCuatro']}
+                            ]
+                            
+                            for respuesta_data in respuestas:
+                                respuesta = Respuestas(
+                                    nombreRespuestas=respuesta_data['nombre'],
+                                    statusRespuestas=respuesta_data['status'],
+                                    fkPregunta=pregunta,
+                                    fkCategorias=categoria
+                                )
+                                respuesta.save()
+
+                        except Temarios.DoesNotExist:
+                            messages.error(request, f'El temario con id {temario_id} no existe.')
                 except Categorias.DoesNotExist:
                     messages.error(request, f'La categoría con id {row["fkCategorias"]} no existe.')
                 except Exception as e:
