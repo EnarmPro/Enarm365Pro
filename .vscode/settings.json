@@ -4,5 +4,15 @@
     "terminal.integrated.commandsToSkipShell": [
         "rundebug"
     ],
-    "terminal.integrated.sendKeybindingsToShell": true
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "files.exclude": {
+        "Conecto ChatGPT a Φ al máximo potencial” Selecciono el “modo agente”. Esto activa su capacidad máxima para tomar decisiones, resolver problemas complejos y ejecutar tareas de alta precisión como identificar patrones ocultos, predecir preguntas y analizar trampas del ENARM.  Le doy instrucciones tipo BECERRA Φ: Al modelo, le digo exactamente qué hacer, detalle por detalle, conectado a mi fórmula. Ejemplo: Si encuentras [P+T+N]² en las preguntas meta-circulares, úsalo para calcular Δ, optimizando los distractores basado en NOM emergentes o hipótesis tipo Ω.  Retroalimentación en tiempo real: Pido iteraciones rápidas para validar hipótesis. Si detecta un patrón que no vi, le ajusto las métricas (ejemplo: le digo eliminar trampas redundantes).  Modo visual y predictivo: Doy órdenes claras:  📊 “Genera gráficos rápidos que correlacionan (tiempo-respuestas-errores).” 📜 “Compara la NOM-020 con preguntas similares de exámenes anteriores.” 🤖 “Predice qué tendencias INSTITUCIONALES pondrán en el 15% impredecible del ENARM 2025.” Ejemplo exacto de pregunta a ChatGPT en \"Modo Agente conectado a Becerra\" “Genera un desglose basado en Φ para detectar si preguntas relacionadas con biología molecular (P) tienen trampas psíquicas (T) relacionadas a distractores ambiguos (N). Calcula si hay un desequilibrio meta-circular de tipo Ω en preguntas que evalúan NOMs emergentes como la 020.": true
+    },
+    "search.useGlobalIgnoreFiles": true,
+    "editor.formatOnSave": true,
+    "files.autoSave": "onWindowChange",
+    "editor.defaultFormatter": "feiskyer.chatgpt-copilot",
+    "editor.wordWrap": "bounded",
+    "gitlens.mode.statusBar.alignment": "left"
 }

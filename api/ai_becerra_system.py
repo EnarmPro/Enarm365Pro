@@ -1,13 +1,12 @@
-from django.db import models
-from api.models import Preguntas, Respuestas, RegistroRespuestaPreguntas, User, Categorias
+from api.models import Preguntas, Respuestas, RegistroRespuestaPreguntas
 import numpy as np
-import json
 from datetime import datetime, timedelta
 import re
+import matplotlib
+matplotlib.use('Agg')  # Para evitar problemas con GUI
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import defaultdict
-import openai
 
 class PatronBecerra:
     """
@@ -74,7 +73,7 @@ class PatronBecerra:
         
         # Calcular similitud entre opciones
         for i, opcion1 in enumerate(opciones_respuesta):
-            for j, opcion2 in enumerate(opciones_respuesta[i+1:], i+1):
+            for opcion2 in opciones_respuesta[i+1:]:
                 similitud = self._calcular_similitud_texto(opcion1, opcion2)
                 if similitud > 0.7:  # Alta similitud = ambigüedad
                     score += 0.25

@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include,re_path
 from django.contrib.auth import views as auth_views
 from api.views import index, registration_view,simulador_free,registrar_preguntas, registrar_intentos, simulador_Personalizado,mostrarTemas,simuladorTema,mostrarTemasEnarm,simuladorEnarmUno,simuladorEnarmSeccionDos,simuladorEnarmSeccionTres,lista_intentos,detalle_intento,dashboard , simulador_diagnostico, seleccionDatosPersonalizado,actualizarDatos, forocomentarios, update_username_form, pricing,blog, blogtemas,blogcomentarios, registertemascomentarios ,blogansiedad,blogestudio,blogmotivado, paypal, create_order, capture_order,paypalanual,create_order_anual,historialPagos,create_order_trimestral,create_order_semestral, paypalsemestral,paypaltrimestral,PersonasPagos, eliminar_item, eliminar_comentario,revisionPreguntas,insertarPregunta,eliminar_pregunta,obtener_pregunta,editar_pregunta,revisionRespuestas, eliminar_respuesta, obtener_respuesta,actualizar_respuesta,modificarBlogInformativo,adminPagos, obtener_costos, actualizar_pago, cargarPreguntasExcel, cargar_preguntas_excel,error_404
+from api.becerra_views import dashboard_becerra_phi, analizar_pregunta_phi, detector_patrones_ptn, analizador_noms_emergentes, predictor_tendencias_2025, generar_grafico_correlacion, modo_agente_becerra
+from api.enarm_views_completo import mega_dashboard_enarm, analisis_errores_aciertos, temas_frecuencias, detector_similitudes, analizador_dificultad, detector_trampas, critica_100_puntos, ecuacion_general_view, ejecutar_analisis_completo, generar_plan_estudio_ia
 
 
 urlpatterns = [
@@ -84,6 +86,28 @@ urlpatterns = [
     path('actualizar_pago/', actualizar_pago, name='actualizar_pago'),
     path('cargarPreguntasExcel/', cargarPreguntasExcel, name='cargarPreguntasExcel'),
     path('cargar_preguntas_excel/', cargar_preguntas_excel, name='cargar_preguntas_excel'),
+    
+    # URLs Sistema Becerra Φ
+    path('dashboard_becerra/', dashboard_becerra_phi, name='dashboard_becerra_phi'),
+    path('analizar_pregunta_phi/', analizar_pregunta_phi, name='analizar_pregunta_phi'),
+    path('detector_patrones/', detector_patrones_ptn, name='detector_patrones_ptn'),
+    path('analizador_noms/', analizador_noms_emergentes, name='analizador_noms_emergentes'),
+    path('predictor_2025/', predictor_tendencias_2025, name='predictor_tendencias_2025'),
+    path('generar_grafico/', generar_grafico_correlacion, name='generar_grafico_correlacion'),
+    path('modo_agente/', modo_agente_becerra, name='modo_agente_becerra'),
+    
+    # URLs Mega Analizador ENARM Completo
+    path('mega_dashboard/', mega_dashboard_enarm, name='mega_dashboard_enarm'),
+    path('analisis_errores_aciertos/', analisis_errores_aciertos, name='analisis_errores_aciertos'),
+    path('temas_frecuencias/', temas_frecuencias, name='temas_frecuencias'),
+    path('detector_similitudes/', detector_similitudes, name='detector_similitudes'),
+    path('analizador_dificultad/', analizador_dificultad, name='analizador_dificultad'),
+    path('detector_trampas/', detector_trampas, name='detector_trampas'),
+    path('critica_100_puntos/', critica_100_puntos, name='critica_100_puntos'),
+    path('ecuacion_general/', ecuacion_general_view, name='ecuacion_general_view'),
+    path('ejecutar_analisis_completo/', ejecutar_analisis_completo, name='ejecutar_analisis_completo'),
+    path('generar_plan_estudio_ia/', generar_plan_estudio_ia, name='generar_plan_estudio_ia'),
+    
     re_path(r'^.*/$', error_404),
 ]
 
