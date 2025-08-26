@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-warning">
+                <div class="card-header bg-gradient-warning text-dark">
+                    <h3 class="mb-0">🤖 Modo Agente Becerra Φ</h3>
+                    <p class="mb-0">Capacidad máxima de IA - Toma decisiones, resuelve problemas complejos y ejecuta tareas de alta precisión</p>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Panel de Control Principal -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="card border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    <h5>💬 Consola de Comandos BECERRA Φ</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label for="comandoInput" class="form-label">Comando:</label>
+                                        <textarea class="form-control" id="comandoInput" rows="4" 
+                                                placeholder="Escribe tu comando detallado aquí..."></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group mb-3">
+                                        <label for="contextoInput" class="form-label">Contexto adicional (opcional):</label>
+                                        <input type="text" class="form-control" id="contextoInput" 
+                                               placeholder="Especifica categoría, temario, o parámetros adicionales...">
+                                    </div>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-warning btn-lg" onclick="ejecutarComando()">
+                                            🚀 Ejecutar en Modo Agente
+                                        </button>
+                                        <button class="btn btn-outline-secondary" onclick="limpiarConsola()">
+                                            🗑️ Limpiar
+                                        </button>
+                                        <button class="btn btn-info" onclick="guardarComando()">
+                                            💾 Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card border-info">
+                                <div class="card-header bg-info text-white">
+                                    <h6>🎯 Comandos Rápidos</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% for comando in comandos_ejemplo %}
+                                    <button class="btn btn-outline-info btn-sm mb-2 w-100 text-start" 
+                                            onclick="cargarComando('{{ comando|escapejs }}')">
+                                        {{ comando|truncatechars:50 }}
+                                    </button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Resultados -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-success">
+                                <div class="card-header bg-success text-white d-flex justify-content-between">
+                                    <h5>📊 Resultados del Análisis</h5>
+                                    <div id="statusIndicator" class="badge bg-light text-dark">Listo</div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="resultadosContainer">
+                                        <div class="text-center text-muted py-5">
+                                            <i class="fas fa-robot fa-3x mb-3"></i>
+                                            <h5>Modo Agente Listo</h5>
+                                            <p>Escribe un comando arriba para comenzar el análisis avanzado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historial de Comandos -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>📝 Historial de Comandos</h6>
+                                </div>
+                                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                    <div id="historialContainer">
+                                        <p class="text-muted">No hay comandos ejecutados aún</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>⚡ Métricas de Rendimiento</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <h4 id="comandosEjecutados">0</h4>
+                                            <small>Comandos</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <h4 id="patrones DetElectado">0</h4>
+                                            <small>Patrones</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <h4 id="precisionPromedio">0%</h4>
+                                            <small>Precisión</small>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-3">
+                                        <div class="progress-bar bg-warning" id="barraProgreso" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración Avanzada -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-secondary">
+                                <div class="card-header bg-secondary text-white">
+                                    <h6>⚙️ Configuración del Agente</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Coeficiente Φ:</label>
+                                            <input type="range" class="form-range" id="coeficientePhi" 
+                                                   min="1.5" max="2.0" step="0.01" value="1.618">
+                                            <div class="text-center"><small id="valorPhi">1.618</small></div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Sensibilidad Ω:</label>
+                                            <input type="range" class="form-range" id="sensibilidadOmega" 
+                                                   min="0.5" max="1.5" step="0.1" value="1.0">
+                                            <div class="text-center"><small id="valorOmega">1.0</small></div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Umbral de Patrón:</label>
+                                            <input type="range" class="form-range" id="umbralPatron" 
+                                                   min="0.3" max="0.9" step="0.1" value="0.6">
+                                            <div class="text-center"><small id="valorUmbral">0.6</small></div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check form-switch mt-4">
+                                                <input class="form-check-input" type="checkbox" id="modoVerbose" checked>
+                                                <label class="form-check-label" for="modoVerbose">
+                                                    Modo Verbose
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let historialComandos = [];
+let metricas = {
+    comandosEjecutados: 0,
+    patronesDetectados: 0,
+    precision: 0
+};
+
+function cargarComando(comando) {
+    document.getElementById('comandoInput').value = comando;
+}
+
+function ejecutarComando() {
+    const comando = document.getElementById('comandoInput').value.trim();
+    const contexto = document.getElementById('contextoInput').value.trim();
+    
+    if (!comando) {
+        alert('Por favor escribe un comando');
+        return;
+    }
+    
+    // Actualizar estado
+    document.getElementById('statusIndicator').textContent = 'Procesando...';
+    document.getElementById('statusIndicator').className = 'badge bg-warning text-dark';
+    
+    // Mostrar indicador de carga
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-warning" role="status"></div>
+            <h5 class="mt-3">Modo Agente Ejecutándose...</h5>
+            <p>Analizando patrones con metodología Becerra Φ</p>
+        </div>
+    `;
+    
+    // Agregar al historial inmediatamente
+    agregarAlHistorial(comando, 'ejecutando');
+    
+    // Ejecutar comando
+    fetch('{% url "modo_agente_becerra" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: `comando=${encodeURIComponent(comando)}&contexto=${encodeURIComponent(contexto)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        mostrarResultados(data);
+        actualizarHistorial(comando, data);
+        actualizarMetricas(data);
+    })
+    .catch(error => {
+        mostrarError(error);
+        document.getElementById('statusIndicator').textContent = 'Error';
+        document.getElementById('statusIndicator').className = 'badge bg-danger';
+    });
+}
+
+function mostrarResultados(data) {
+    document.getElementById('statusIndicator').textContent = 'Completado';
+    document.getElementById('statusIndicator').className = 'badge bg-success';
+    
+    let html = `
+        <div class="alert alert-${data.status === 'success' ? 'success' : 'warning'}">
+            <h6>🎯 ${data.tipo_analisis || 'Análisis Completado'}</h6>
+            <p>${data.message || data.resumen || ''}</p>
+        </div>
+    `;
+    
+    if (data.resultados && data.resultados.length > 0) {
+        html += `
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>📋 Resultados Detallados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Valor Φ</th>
+                                    <th>Nivel</th>
+                                    <th>Recomendaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+        `;
+        
+        data.resultados.forEach(resultado => {
+            html += `
+                <tr>
+                    <td>${resultado.pregunta_id}</td>
+                    <td><span class="badge ${resultado.phi_value > 3 ? 'bg-danger' : resultado.phi_value > 2 ? 'bg-warning' : 'bg-success'}">${resultado.phi_value}</span></td>
+                    <td>${resultado.nivel_dificultad}</td>
+                    <td>${resultado.recomendaciones ? resultado.recomendaciones.slice(0, 2).join('; ') : 'N/A'}</td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table></div></div></div>';
+    }
+    
+    if (data.predicciones_principales) {
+        html += `
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>🔮 Predicciones ENARM 2025</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+        `;
+        
+        data.predicciones_principales.forEach(pred => {
+            html += `
+                <div class="col-md-4 mb-2">
+                    <div class="card border-primary">
+                        <div class="card-body text-center">
+                            <h6>${pred.tema}</h6>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: ${pred.probabilidad * 100}%"></div>
+                            </div>
+                            <small>${Math.round(pred.probabilidad * 100)}% probabilidad</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div></div></div>';
+    }
+    
+    if (data.desequilibrios && data.desequilibrios.length > 0) {
+        html += `
+            <div class="alert alert-warning mt-3">
+                <h6>⚠️ Desequilibrios Meta-circulares Ω Detectados</h6>
+                <p>Se encontraron ${data.desequilibrios.length} desequilibrios que requieren atención especial.</p>
+            </div>
+        `;
+    }
+    
+    document.getElementById('resultadosContainer').innerHTML = html;
+}
+
+function mostrarError(error) {
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="alert alert-danger">
+            <h6>❌ Error en Ejecución</h6>
+            <p>${error.message}</p>
+        </div>
+    `;
+}
+
+function agregarAlHistorial(comando, estado) {
+    const timestamp = new Date().toLocaleTimeString();
+    historialComandos.unshift({
+        comando: comando,
+        timestamp: timestamp,
+        estado: estado
+    });
+    
+    actualizarHistorialUI();
+}
+
+function actualizarHistorial(comando, resultado) {
+    if (historialComandos.length > 0) {
+        historialComandos[0].estado = resultado.status;
+        historialComandos[0].resultado = resultado;
+    }
+    actualizarHistorialUI();
+}
+
+function actualizarHistorialUI() {
+    const container = document.getElementById('historialContainer');
+    
+    if (historialComandos.length === 0) {
+        container.innerHTML = '<p class="text-muted">No hay comandos ejecutados aún</p>';
+        return;
+    }
+    
+    let html = '';
+    historialComandos.slice(0, 10).forEach(item => {
+        const estadoClass = item.estado === 'success' ? 'success' : 
+                           item.estado === 'ejecutando' ? 'warning' : 'danger';
+        
+        html += `
+            <div class="border-start border-${estadoClass} border-3 ps-3 mb-3">
+                <small class="text-muted">${item.timestamp}</small>
+                <p class="mb-1">${item.comando.substring(0, 80)}...</p>
+                <span class="badge bg-${estadoClass}">${item.estado}</span>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function actualizarMetricas(data) {
+    metricas.comandosEjecutados++;
+    
+    if (data.resultados) {
+        metricas.patronesDetectados += data.resultados.length;
+    }
+    
+    if (data.status === 'success') {
+        metricas.precision = Math.round((metricas.precision * (metricas.comandosEjecutados - 1) + 100) / metricas.comandosEjecutados);
+    }
+    
+    document.getElementById('comandosEjecutados').textContent = metricas.comandosEjecutados;
+    document.getElementById('patronesDetectados').textContent = metricas.patronesDetectados;
+    document.getElementById('precisionPromedio').textContent = metricas.precision + '%';
+    
+    const progreso = Math.min((metricas.comandosEjecutados / 10) * 100, 100);
+    document.getElementById('barraProgreso').style.width = progreso + '%';
+}
+
+function limpiarConsola() {
+    document.getElementById('comandoInput').value = '';
+    document.getElementById('contextoInput').value = '';
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="text-center text-muted py-5">
+            <i class="fas fa-robot fa-3x mb-3"></i>
+            <h5>Modo Agente Listo</h5>
+            <p>Escribe un comando arriba para comenzar el análisis avanzado</p>
+        </div>
+    `;
+    document.getElementById('statusIndicator').textContent = 'Listo';
+    document.getElementById('statusIndicator').className = 'badge bg-light text-dark';
+}
+
+function guardarComando() {
+    const comando = document.getElementById('comandoInput').value.trim();
+    if (!comando) {
+        alert('No hay comando para guardar');
+        return;
+    }
+    
+    const comandosGuardados = JSON.parse(localStorage.getItem('comandosBecerra') || '[]');
+    comandosGuardados.push({
+        comando: comando,
+        fecha: new Date().toISOString()
+    });
+    localStorage.setItem('comandosBecerra', JSON.stringify(comandosGuardados));
+    
+    alert('Comando guardado exitosamente');
+}
+
+// Configuración en tiempo real
+document.getElementById('coeficientePhi').addEventListener('input', function() {
+    document.getElementById('valorPhi').textContent = this.value;
+});
+
+document.getElementById('sensibilidadOmega').addEventListener('input', function() {
+    document.getElementById('valorOmega').textContent = this.value;
+});
+
+document.getElementById('umbralPatron').addEventListener('input', function() {
+    document.getElementById('valorUmbral').textContent = this.value;
+});
+</script>
+{% endblock %}

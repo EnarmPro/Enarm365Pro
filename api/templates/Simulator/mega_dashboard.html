@@ -1,0 +1,912 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Principal -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h2 class="mb-0">🎯 MEGA DASHBOARD ENARM - ANÁLISIS DEFINITIVO</h2>
+                    <p class="mb-0">Sistema completo de análisis: Errores, Aciertos, Patrones, Trampas y Ecuación General</p>
+                </div>
+                <div class="card-body">
+                    <!-- Métricas Principales -->
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h3>{{ reporte.reporte.resumen_ejecutivo.score_predicho|floatformat:1 }}</h3>
+                                    <small>Score Predicho</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h3>{{ reporte.reporte.ecuacion_completa.meta_analisis.total_preguntas_analizadas }}</h3>
+                                    <small>Preguntas Analizadas</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h3>{{ reporte.reporte.ecuacion_completa.meta_analisis.total_intentos_analizados }}</h3>
+                                    <small>Intentos Totales</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body">
+                                    <h3>{{ reporte.reporte.ecuacion_completa.meta_analisis.precision_ecuacion|floatformat:1 }}%</h3>
+                                    <small>Precisión IA</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-warning">
+                                <div class="card-body">
+                                    <h6 class="text-warning">🚨 Recomendación Principal:</h6>
+                                    <p class="mb-0">{{ reporte.reporte.resumen_ejecutivo.recomendacion_principal }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ecuación General -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-success">
+                <div class="card-header bg-success text-white">
+                    <h4>🧮 ECUACIÓN GENERAL DEFINITIVA ENARM</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="text-center mb-3">
+                                <h5 class="text-primary">{{ reporte.reporte.ecuacion_completa.formula }}</h5>
+                            </div>
+                            
+                            <!-- Coeficientes -->
+                            <div class="row">
+                                {% for coef, valor in reporte.reporte.ecuacion_completa.coeficientes.items %}
+                                {% if coef != 'Φ' %}
+                                <div class="col-md-4 mb-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <strong>{{ coef }}:</strong>
+                                        <span class="badge {% if valor < 0.5 %}bg-danger{% elif valor < 0.7 %}bg-warning{% else %}bg-success{% endif %}">
+                                            {{ valor|floatformat:3 }}
+                                        </span>
+                                    </div>
+                                    <small class="text-muted">{{ reporte.reporte.ecuacion_completa.explicacion|dict_get:coef }}</small>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    <h6>📊 Resultado Final</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h2 class="text-primary">{{ reporte.reporte.ecuacion_completa.score_predicho|floatformat:1 }}/100</h2>
+                                    <p class="mb-0">Score ENARM Predicho</p>
+                                    
+                                    <div class="progress mt-3">
+                                        <div class="progress-bar" style="width: {{ reporte.reporte.ecuacion_completa.score_predicho }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recomendaciones de Mejora -->
+                    {% if reporte.reporte.ecuacion_completa.recomendaciones_mejora %}
+                    <div class="mt-4">
+                        <h6>🎯 Plan de Mejora Inmediata:</h6>
+                        <div class="row">
+                            {% for recomendacion in reporte.reporte.ecuacion_completa.recomendaciones_mejora %}
+                            <div class="col-md-6 mb-2">
+                                <div class="alert alert-warning py-2 mb-1">
+                                    <small>{{ recomendacion }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Módulos de Análisis -->
+    <div class="row mb-4">
+        <!-- 1. Errores vs Aciertos -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white">
+                    <h6>📊 1. Análisis Errores vs Aciertos</h6>
+                </div>
+                <div class="card-body">
+                    <p>Análisis detallado por categorías, temarios y patrones temporales.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-info" onclick="ejecutarAnalisis('errores_aciertos')">
+                            🔍 Analizar Errores y Aciertos
+                        </button>
+                        <a href="{% url 'analisis_errores_aciertos' %}" class="btn btn-outline-info btn-sm">
+                            📈 Ver Reporte Completo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Temas Frecuencias -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h6>📈 2. Temas Más/Menos Vistos</h6>
+                </div>
+                <div class="card-body">
+                    <p>Identificación de temas sobre-practicados y sub-practicados.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-warning" onclick="ejecutarAnalisis('temas_frecuencias')">
+                            🔍 Analizar Frecuencias
+                        </button>
+                        <a href="{% url 'temas_frecuencias' %}" class="btn btn-outline-warning btn-sm">
+                            📊 Ver Distribución Completa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Detector Similitudes -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h6>🔍 3. Detector de Similitudes</h6>
+                </div>
+                <div class="card-body">
+                    <p>Identificar temas parecidos y críticos para diferenciar.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-secondary" onclick="ejecutarAnalisis('similitudes')">
+                            🕵️ Detectar Similitudes
+                        </button>
+                        <a href="{% url 'detector_similitudes' %}" class="btn btn-outline-secondary btn-sm">
+                            🎯 Ver Diferenciación
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Dificultad Extrema -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h6>⚡ 4. Analizador Dificultad Extrema</h6>
+                </div>
+                <div class="card-body">
+                    <p>Patrones en preguntas de máxima dificultad y complejidad.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-danger" onclick="ejecutarAnalisis('dificultad')">
+                            💀 Analizar Dificultad
+                        </button>
+                        <a href="{% url 'analizador_dificultad' %}" class="btn btn-outline-danger btn-sm">
+                            🧬 Ver Patrones Complejos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Detector Trampas -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-dark">
+                <div class="card-header bg-dark text-white">
+                    <h6>🕵️ 5. Detector de Trampas</h6>
+                </div>
+                <div class="card-body">
+                    <p>Identificación de trampas, estructuras engañosas y cómo evitarlas.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-dark" onclick="ejecutarAnalisis('trampas')">
+                            🎭 Detectar Trampas
+                        </button>
+                        <a href="{% url 'detector_trampas' %}" class="btn btn-outline-dark btn-sm">
+                            🛡️ Ver Estrategias Anti-Trampas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Crítica 100/100 -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-success">
+                <div class="card-header bg-success text-white">
+                    <h6>🎯 6. Sistema Crítica 100/100</h6>
+                </div>
+                <div class="card-body">
+                    <p>Análisis específico para lograr puntuación perfecta.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" onclick="ejecutarAnalisis('critica_100')">
+                            🏆 Analizar para 100/100
+                        </button>
+                        <a href="{% url 'critica_100_puntos' %}" class="btn btn-outline-success btn-sm">
+                            ⭐ Ver Plan Perfección
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generador de Plan de Estudio IA -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5>🤖 Generador de Plan de Estudio con IA</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>Basado en tu ecuación general, genera un plan personalizado de estudio para maximizar tu score ENARM.</p>
+                            <div class="d-flex gap-3">
+                                <button class="btn btn-primary btn-lg" onclick="generarPlanEstudioIA()">
+                                    🧠 Generar Plan con IA
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="descargarReporteCompleto()">
+                                    📋 Descargar Reporte Completo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6>🎯 Objetivo Recomendado</h6>
+                                    <h3 class="text-success">85+ puntos</h3>
+                                    <small>Basado en tu perfil actual</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas Críticas -->
+    {% if reporte.reporte.alertas_criticas %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h6>🚨 Alertas Críticas</h6>
+                </div>
+                <div class="card-body">
+                    {% for alerta in reporte.reporte.alertas_criticas %}
+                    <div class="alert alert-{{ alerta.nivel|lower }} mb-2">
+                        <strong>{{ alerta.nivel }}:</strong> {{ alerta.mensaje }}
+                        <br><small><strong>Acción:</strong> {{ alerta.accion }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Panel de Resultados Dinámicos -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-gradient-info text-white d-flex justify-content-between">
+                    <h5>📊 Resultados de Análisis</h5>
+                    <div id="statusAnalisis" class="badge bg-light text-dark">Listo</div>
+                </div>
+                <div class="card-body">
+                    <div id="resultadosContainer">
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <h5>Panel de Análisis Listo</h5>
+                            <p>Selecciona cualquier módulo de análisis arriba para ver resultados detallados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables globales
+let analisisEnProceso = false;
+
+function ejecutarAnalisis(tipo) {
+    if (analisisEnProceso) {
+        alert('Análisis en proceso, por favor espera...');
+        return;
+    }
+    
+    analisisEnProceso = true;
+    document.getElementById('statusAnalisis').textContent = 'Procesando...';
+    document.getElementById('statusAnalisis').className = 'badge bg-warning text-dark';
+    
+    // Mostrar indicador de carga
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+            <h5 class="mt-3">Ejecutando Análisis ${tipo.toUpperCase()}</h5>
+            <p>Procesando datos con algoritmos avanzados...</p>
+            <div class="progress mx-auto" style="width: 50%;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+            </div>
+        </div>
+    `;
+    
+    fetch('{% url "ejecutar_analisis_completo" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            'tipo': tipo,
+            'parametros': {}
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        mostrarResultadosAnalisis(data, tipo);
+        document.getElementById('statusAnalisis').textContent = 'Completado';
+        document.getElementById('statusAnalisis').className = 'badge bg-success';
+        analisisEnProceso = false;
+    })
+    .catch(error => {
+        mostrarError(error, tipo);
+        document.getElementById('statusAnalisis').textContent = 'Error';
+        document.getElementById('statusAnalisis').className = 'badge bg-danger';
+        analisisEnProceso = false;
+    });
+}
+
+function mostrarResultadosAnalisis(data, tipo) {
+    if (data.status === 'success') {
+        let html = `
+            <div class="alert alert-success">
+                <h6>✅ Análisis ${tipo.toUpperCase()} Completado</h6>
+            </div>
+        `;
+        
+        // Mostrar resultados específicos según el tipo
+        switch(tipo) {
+            case 'errores_aciertos':
+                html += mostrarResultadosErrores(data.resultado);
+                break;
+            case 'temas_frecuencias':
+                html += mostrarResultadosTemas(data.resultado);
+                break;
+            case 'similitudes':
+                html += mostrarResultadosSimilitudes(data.resultado);
+                break;
+            case 'dificultad':
+                html += mostrarResultadosDificultad(data.resultado);
+                break;
+            case 'trampas':
+                html += mostrarResultadosTrampas(data.resultado);
+                break;
+            case 'critica_100':
+                html += mostrarResultadosCritica100(data.resultado);
+                break;
+            case 'ecuacion_general':
+                html += mostrarResultadosEcuacion(data.resultado);
+                break;
+        }
+        
+        document.getElementById('resultadosContainer').innerHTML = html;
+    } else {
+        mostrarError(data, tipo);
+    }
+}
+
+function mostrarResultadosErrores(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6>📊 Errores por Categoría</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr><th>Categoría</th><th>Aciertos</th><th>Errores</th><th>% Error</th></tr>
+                        </thead>
+                        <tbody>
+    `;
+    
+    for (const [categoria, stats] of Object.entries(datos.por_categoria)) {
+        const porcentajeError = stats.total > 0 ? ((stats.errores / stats.total) * 100).toFixed(1) : 0;
+        const claseColor = porcentajeError > 50 ? 'table-danger' : porcentajeError > 30 ? 'table-warning' : 'table-success';
+        
+        html += `
+            <tr class="${claseColor}">
+                <td>${categoria}</td>
+                <td>${stats.aciertos}</td>
+                <td>${stats.errores}</td>
+                <td>${porcentajeError}%</td>
+            </tr>
+        `;
+    }
+    
+    html += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6>⚠️ Patrones de Error Detectados</h6>
+    `;
+    
+    if (datos.patrones_error && datos.patrones_error.length > 0) {
+        for (const patron of datos.patrones_error) {
+            html += `
+                <div class="alert alert-warning py-2 mb-2">
+                    <strong>${patron.nombre}:</strong> ${patron.tasa_error.toFixed(1)}% error<br>
+                    <small>${patron.recomendacion}</small>
+                </div>
+            `;
+        }
+    } else {
+        html += '<p class="text-muted">No se detectaron patrones críticos de error.</p>';
+    }
+    
+    html += '</div></div>';
+    return html;
+}
+
+function mostrarResultadosTemas(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6>🔥 Temas Más Practicados (Top 10)</h6>
+                <div class="list-group">
+    `;
+    
+    const temasMasVistos = datos.mas_vistos.slice(0, 10);
+    for (const tema of temasMasVistos) {
+        html += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>${tema.categoria}</strong><br>
+                    <small>${tema.temario}</small>
+                </div>
+                <span class="badge bg-primary">${tema.frecuencia} veces</span>
+            </div>
+        `;
+    }
+    
+    html += `
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6>❄️ Temas Menos Practicados</h6>
+                <div class="list-group">
+    `;
+    
+    const temasMenosVistos = datos.menos_vistos.slice(0, 10);
+    for (const tema of temasMenosVistos) {
+        html += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>${tema.categoria}</strong><br>
+                    <small>${tema.temario}</small>
+                </div>
+                <span class="badge bg-danger">${tema.frecuencia} veces</span>
+            </div>
+        `;
+    }
+    
+    html += '</div></div>';
+    
+    // Agregar temas críticos
+    if (datos.temas_criticos && datos.temas_criticos.length > 0) {
+        html += `
+            <div class="col-12 mt-3">
+                <div class="alert alert-danger">
+                    <h6>🚨 Temas Críticos Identificados (${datos.temas_criticos.length})</h6>
+                    <p>Temas de alta dificultad con poca práctica - Requieren atención inmediata</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    return html;
+}
+
+function mostrarResultadosSimilitudes(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-12">
+                <h6>🎯 Pares de Preguntas Muy Similares (${datos.pares_muy_similares.length})</h6>
+    `;
+    
+    if (datos.pares_muy_similares.length > 0) {
+        html += '<div class="accordion" id="similitudesAccordion">';
+        
+        datos.pares_muy_similares.slice(0, 5).forEach((par, index) => {
+            html += `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#similitud${index}">
+                            Similitud: ${(par.similitud * 100).toFixed(1)}% - ${par.pregunta_1.categoria} vs ${par.pregunta_2.categoria}
+                        </button>
+                    </h2>
+                    <div id="similitud${index}" class="accordion-collapse collapse" data-bs-parent="#similitudesAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Pregunta 1:</strong><br>
+                                    <small>${par.texto_1}</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Pregunta 2:</strong><br>
+                                    <small>${par.texto_2}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+    } else {
+        html += '<p class="text-success">Excelente! No se encontraron preguntas excesivamente similares.</p>';
+    }
+    
+    html += '</div></div>';
+    return html;
+}
+
+function mostrarResultadosDificultad(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6>💀 Patrones de Estructura Extrema</h6>
+                <div class="list-group">
+    `;
+    
+    for (const [patron, cantidad] of Object.entries(datos.patrones_estructura)) {
+        const patronNombre = patron.replace(/_/g, ' ').toUpperCase();
+        html += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                ${patronNombre}
+                <span class="badge bg-danger">${cantidad}</span>
+            </div>
+        `;
+    }
+    
+    html += `
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6>🎭 Tipos de Trampa en Dificultad Alta</h6>
+    `;
+    
+    for (const [tipo, items] of Object.entries(datos.tipos_trampa_identificados)) {
+        if (items.length > 0) {
+            html += `
+                <div class="mb-2">
+                    <strong>${tipo.replace(/_/g, ' ').toUpperCase()}:</strong>
+                    <span class="badge bg-warning">${items.length} detectadas</span>
+                </div>
+            `;
+        }
+    }
+    
+    html += '</div></div>';
+    return html;
+}
+
+function mostrarResultadosTrampas(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-md-8">
+                <h6>🕵️ Tipos de Trampas Detectadas</h6>
+                <div class="row">
+    `;
+    
+    for (const [tipo, items] of Object.entries(datos.tipos_trampa)) {
+        const cantidad = Array.isArray(items) ? items.length : items;
+        const tipoNombre = tipo.replace(/_/g, ' ').toUpperCase();
+        
+        html += `
+            <div class="col-md-6 mb-2">
+                <div class="card border-warning">
+                    <div class="card-body py-2">
+                        <h6 class="card-title mb-1">${tipoNombre}</h6>
+                        <span class="badge bg-warning">${cantidad} detectadas</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h6>🛡️ Estrategias Anti-Trampas</h6>
+                <ul class="list-group list-group-flush">
+    `;
+    
+    for (const estrategia of datos.estrategias_evitar) {
+        html += `<li class="list-group-item py-1"><small>• ${estrategia}</small></li>`;
+    }
+    
+    html += '</ul></div></div>';
+    return html;
+}
+
+function mostrarResultadosCritica100(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h6>🎯 Estado Actual para 100/100</h6>
+    `;
+    
+    if (datos.areas_debiles_criticas && datos.areas_debiles_criticas.length > 0) {
+        html += `
+            <div class="alert alert-warning">
+                <strong>🚨 ${datos.areas_debiles_criticas.length} áreas requieren mejora para 100/100:</strong>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Área</th>
+                            <th>% Actual</th>
+                            <th>Objetivo</th>
+                            <th>Mejora Requerida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        for (const area of datos.areas_debiles_criticas) {
+            html += `
+                <tr>
+                    <td>${area.categoria}</td>
+                    <td><span class="badge bg-warning">${area.porcentaje_actual.toFixed(1)}%</span></td>
+                    <td><span class="badge bg-success">95%</span></td>
+                    <td><span class="badge bg-danger">+${area.objetivo_mejorar.toFixed(1)}%</span></td>
+                </tr>
+            `;
+        }
+        
+        html += '</tbody></table></div>';
+    } else {
+        html += `
+            <div class="alert alert-success">
+                <h5>🏆 ¡FELICIDADES!</h5>
+                <p>Todas las áreas están > 95%. Estás listo para intentar 100/100 puntos.</p>
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+            <div class="col-12">
+                <h6>📋 Plan de Perfeccionamiento</h6>
+                <div class="row">
+    `;
+    
+    const fases = ['fase_1_fundamentos', 'fase_2_patrones', 'fase_3_trampas', 'fase_4_velocidad'];
+    const faseNames = ['Fundamentos', 'Patrones', 'Anti-Trampas', 'Velocidad'];
+    
+    fases.forEach((fase, index) => {
+        if (datos.plan_perfeccionamiento[fase] && datos.plan_perfeccionamiento[fase].length > 0) {
+            html += `
+                <div class="col-md-6 mb-2">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white py-1">
+                            <small>FASE ${index + 1}: ${faseNames[index]}</small>
+                        </div>
+                        <div class="card-body py-2">
+                            <ul class="mb-0">
+            `;
+            
+            for (const item of datos.plan_perfeccionamiento[fase]) {
+                html += `<li><small>${item}</small></li>`;
+            }
+            
+            html += '</ul></div></div></div>';
+        }
+    });
+    
+    html += '</div></div></div>';
+    return html;
+}
+
+function mostrarResultadosEcuacion(datos) {
+    let html = `
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h4 class="text-primary">${datos.formula}</h4>
+                <h2 class="text-success">Score Predicho: ${datos.score_predicho.toFixed(1)}/100</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h6>🔢 Coeficientes Calculados</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr><th>Coeficiente</th><th>Valor</th><th>Significado</th><th>Estado</th></tr>
+                        </thead>
+                        <tbody>
+    `;
+    
+    for (const [coef, valor] of Object.entries(datos.coeficientes)) {
+        if (coef !== 'Φ') {
+            const estado = valor < 0.5 ? 'CRÍTICO' : valor < 0.7 ? 'MEJORABLE' : 'BUENO';
+            const colorEstado = valor < 0.5 ? 'danger' : valor < 0.7 ? 'warning' : 'success';
+            
+            html += `
+                <tr>
+                    <td><strong>${coef}</strong></td>
+                    <td>${valor.toFixed(3)}</td>
+                    <td><small>${datos.explicacion[coef]}</small></td>
+                    <td><span class="badge bg-${colorEstado}">${estado}</span></td>
+                </tr>
+            `;
+        }
+    }
+    
+    html += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h6>📊 Meta-Análisis</h6>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <p><strong>Preguntas Analizadas:</strong> ${datos.meta_analisis.total_preguntas_analizadas}</p>
+                        <p><strong>Intentos Analizados:</strong> ${datos.meta_analisis.total_intentos_analizados}</p>
+                        <p><strong>Precisión Ecuación:</strong> <span class="badge bg-info">${datos.meta_analisis.precision_ecuacion.toFixed(1)}%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return html;
+}
+
+function generarPlanEstudioIA() {
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status"></div>
+            <h5 class="mt-3">🤖 Generando Plan de Estudio Personalizado</h5>
+            <p>Analizando tu perfil y creando estrategia óptima...</p>
+        </div>
+    `;
+    
+    fetch('{% url "generar_plan_estudio_ia" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            mostrarPlanEstudio(data.plan);
+        } else {
+            mostrarError(data, 'plan_estudio');
+        }
+    })
+    .catch(error => {
+        mostrarError(error, 'plan_estudio');
+    });
+}
+
+function mostrarPlanEstudio(plan) {
+    let html = `
+        <div class="alert alert-success">
+            <h5>🤖 Plan de Estudio Personalizado Generado</h5>
+            <p><strong>Objetivo:</strong> ${plan.objetivo_score} puntos | <strong>Tiempo estimado:</strong> ${plan.tiempo_estimado}</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h6>📅 Plan Diario</h6>
+                <div class="list-group">
+    `;
+    
+    for (const actividad of plan.plan_diario) {
+        const colorPrioridad = actividad.prioridad === 'CRÍTICA' ? 'danger' : 
+                              actividad.prioridad === 'ALTA' ? 'warning' : 'info';
+        
+        html += `
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${actividad.actividad}</strong><br>
+                        <small>Tiempo: ${actividad.tiempo}</small>
+                        ${actividad.cantidad ? `<br><small>Cantidad: ${actividad.cantidad}</small>` : ''}
+                    </div>
+                    <span class="badge bg-${colorPrioridad}">${actividad.prioridad}</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6>📋 Plan Semanal</h6>
+                <div class="list-group">
+    `;
+    
+    for (const dia of plan.plan_semanal) {
+        html += `<div class="list-group-item py-1"><small>${dia}</small></div>`;
+    }
+    
+    html += '</div></div></div>';
+    
+    if (plan.recursos_recomendados && plan.recursos_recomendados.length > 0) {
+        html += `
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h6>📚 Recursos Recomendados</h6>
+                    <div class="d-flex flex-wrap gap-2">
+        `;
+        
+        for (const recurso of plan.recursos_recomendados) {
+            html += `<span class="badge bg-secondary">${recurso}</span>`;
+        }
+        
+        html += '</div></div></div>';
+    }
+    
+    document.getElementById('resultadosContainer').innerHTML = html;
+}
+
+function mostrarError(error, tipo) {
+    document.getElementById('resultadosContainer').innerHTML = `
+        <div class="alert alert-danger">
+            <h6>❌ Error en Análisis ${tipo.toUpperCase()}</h6>
+            <p>${error.message || error}</p>
+        </div>
+    `;
+}
+
+function descargarReporteCompleto() {
+    // Funcionalidad para descargar reporte completo
+    alert('Funcionalidad de descarga en desarrollo. Por ahora puedes hacer screenshot del dashboard.');
+}
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-ejecutar ecuación general al cargar
+    setTimeout(() => {
+        ejecutarAnalisis('ecuacion_general');
+    }, 1000);
+});
+</script>
+{% endblock %}
